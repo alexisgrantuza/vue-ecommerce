@@ -1,0 +1,1979 @@
+export const mockData = [
+  {
+    "id": 1,
+    "title": "Wireless Bluetooth Headphones",
+    "description": "Premium wireless headphones with active noise cancellation and 30-hour battery life. Perfect for music lovers and professionals.",
+    "price": 199.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
+      "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.5,
+    "num_reviews": 128,
+    "discount": 15,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-01-15T10:30:00Z",
+    "updated_at": "2024-07-10T14:22:00Z"
+  },
+  {
+    "id": 2,
+    "title": "Classic Cotton T-Shirt",
+    "description": "Comfortable 100% cotton t-shirt available in multiple colors. Soft fabric with excellent breathability for everyday wear.",
+    "price": 24.99,
+    "category": "Clothing",
+    "images": [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500",
+      "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.2,
+    "num_reviews": 89,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-02-20T09:15:00Z",
+    "updated_at": "2024-06-25T16:45:00Z"
+  },
+  {
+    "id": 3,
+    "title": "Stainless Steel Water Bottle",
+    "description": "Double-wall insulated water bottle that keeps drinks cold for 24 hours or hot for 12 hours. BPA-free and leak-proof design.",
+    "price": 34.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500",
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.7,
+    "num_reviews": 203,
+    "discount": 20,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-01-08T11:20:00Z",
+    "updated_at": "2024-07-12T13:30:00Z"
+  },
+  {
+    "id": 4,
+    "title": "Leather Laptop Bag",
+    "description": "Genuine leather laptop bag with multiple compartments. Fits laptops up to 15.6 inches. Professional and durable design.",
+    "price": 89.99,
+    "category": "Accessories",
+    "images": [
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500",
+      "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 156,
+    "discount": 10,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-03-05T14:45:00Z",
+    "updated_at": "2024-07-08T10:15:00Z"
+  },
+  {
+    "id": 5,
+    "title": "Organic Green Tea",
+    "description": "Premium organic green tea leaves sourced from mountain plantations. Rich in antioxidants and perfect for daily consumption.",
+    "price": 18.99,
+    "category": "Food & Beverages",
+    "images": [
+      "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=500",
+      "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.6,
+    "num_reviews": 92,
+    "discount": 0,
+    "popular": true,
+    "onSale": false,
+    "created_at": "2024-02-12T08:30:00Z",
+    "updated_at": "2024-06-18T15:20:00Z"
+  },
+  {
+    "id": 6,
+    "title": "Smartphone Case",
+    "description": "Protective smartphone case with shock-absorbing corners and raised edges. Compatible with wireless charging.",
+    "price": 15.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1556656793-08538906a9f8?w=500",
+      "https://images.unsplash.com/photo-1601593346740-925612772716?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.1,
+    "num_reviews": 267,
+    "discount": 25,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-01-25T12:00:00Z",
+    "updated_at": "2024-07-15T09:40:00Z"
+  },
+  {
+    "id": 7,
+    "title": "Yoga Mat",
+    "description": "Non-slip yoga mat made from eco-friendly materials. 6mm thickness provides excellent cushioning for all yoga practices.",
+    "price": 42.99,
+    "category": "Sports & Fitness",
+    "images": [
+      "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=500",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.5,
+    "num_reviews": 174,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-03-18T16:25:00Z",
+    "updated_at": "2024-07-02T11:50:00Z"
+  },
+  {
+    "id": 8,
+    "title": "Ceramic Coffee Mug",
+    "description": "Handcrafted ceramic coffee mug with ergonomic handle. Microwave and dishwasher safe. Perfect for morning coffee rituals.",
+    "price": 12.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?w=500",
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 85,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-04-02T13:15:00Z",
+    "updated_at": "2024-06-30T14:35:00Z"
+  },
+  {
+    "id": 9,
+    "title": "Denim Jeans",
+    "description": "Classic straight-fit denim jeans made from premium cotton blend. Comfortable and versatile for casual and semi-formal occasions.",
+    "price": 69.99,
+    "category": "Clothing",
+    "images": [
+      "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500",
+      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 198,
+    "discount": 30,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-02-28T10:45:00Z",
+    "updated_at": "2024-07-14T12:20:00Z"
+  },
+  {
+    "id": 10,
+    "title": "Wireless Charger",
+    "description": "Fast wireless charging pad compatible with all Qi-enabled devices. LED indicator and foreign object detection for safety.",
+    "price": 29.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500",
+      "https://images.unsplash.com/photo-1595838064634-f9e48b0e7dc9?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.2,
+    "num_reviews": 143,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-03-22T15:30:00Z",
+    "updated_at": "2024-06-15T17:10:00Z"
+  },
+  {
+    "id": 11,
+    "title": "Sunglasses",
+    "description": "Polarized sunglasses with UV400 protection. Lightweight frame with anti-reflective coating for optimal visual clarity.",
+    "price": 79.99,
+    "category": "Accessories",
+    "images": [
+      "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500",
+      "https://images.unsplash.com/photo-1556306535-38febf6782e7?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.6,
+    "num_reviews": 221,
+    "discount": 15,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-01-30T09:20:00Z",
+    "updated_at": "2024-07-11T16:55:00Z"
+  },
+  {
+    "id": 12,
+    "title": "Protein Powder",
+    "description": "Whey protein powder with 25g protein per serving. Supports muscle growth and recovery. Available in chocolate flavor.",
+    "price": 49.99,
+    "category": "Sports & Fitness",
+    "images": [
+      "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=500",
+      "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 167,
+    "discount": 20,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-04-10T11:40:00Z",
+    "updated_at": "2024-07-05T13:25:00Z"
+  },
+  {
+    "id": 13,
+    "title": "Scented Candle",
+    "description": "Hand-poured soy candle with vanilla and lavender scent. 40-hour burn time in elegant glass container.",
+    "price": 22.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1602874801006-a1d93c0013e3?w=500",
+      "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.7,
+    "num_reviews": 134,
+    "discount": 0,
+    "popular": true,
+    "onSale": false,
+    "created_at": "2024-02-14T14:20:00Z",
+    "updated_at": "2024-06-28T10:45:00Z"
+  },
+  {
+    "id": 14,
+    "title": "Running Shoes",
+    "description": "Lightweight running shoes with responsive cushioning and breathable mesh upper. Perfect for daily training and long runs.",
+    "price": 129.99,
+    "category": "Sports & Fitness",
+    "images": [
+      "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500",
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.5,
+    "num_reviews": 289,
+    "discount": 25,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-01-18T08:15:00Z",
+    "updated_at": "2024-07-13T15:30:00Z"
+  },
+  {
+    "id": 15,
+    "title": "Wristwatch",
+    "description": "Classic analog wristwatch with leather strap. Water-resistant with date display and luminous hands.",
+    "price": 159.99,
+    "category": "Accessories",
+    "images": [
+      "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=500",
+      "https://images.unsplash.com/photo-1533139502658-0198f920d8e8?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 178,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-03-08T12:50:00Z",
+    "updated_at": "2024-06-22T09:15:00Z"
+  },
+  {
+    "id": 16,
+    "title": "Gourmet Chocolate",
+    "description": "Premium dark chocolate with 70% cocoa content. Artisan crafted with natural ingredients and no artificial flavors.",
+    "price": 16.99,
+    "category": "Food & Beverages",
+    "images": [
+      "https://images.unsplash.com/photo-1511381939415-e44015466834?w=500",
+      "https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.8,
+    "num_reviews": 112,
+    "discount": 0,
+    "popular": true,
+    "onSale": false,
+    "created_at": "2024-04-25T16:10:00Z",
+    "updated_at": "2024-07-01T11:25:00Z"
+  },
+  {
+    "id": 17,
+    "title": "Portable Speaker",
+    "description": "Bluetooth portable speaker with 12-hour battery life. Waterproof design with deep bass and crystal clear sound.",
+    "price": 89.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500",
+      "https://images.unsplash.com/photo-1541375736763-031966ee84a8?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 195,
+    "discount": 15,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-02-05T13:35:00Z",
+    "updated_at": "2024-07-09T14:50:00Z"
+  },
+  {
+    "id": 18,
+    "title": "Hoodie",
+    "description": "Comfortable cotton blend hoodie with kangaroo pocket. Perfect for casual wear and layering during cooler weather.",
+    "price": 54.99,
+    "category": "Clothing",
+    "images": [
+      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500",
+      "https://images.unsplash.com/photo-1565084888279-aca607ecce0c?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.2,
+    "num_reviews": 156,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-03-12T10:25:00Z",
+    "updated_at": "2024-06-20T15:40:00Z"
+  },
+  {
+    "id": 19,
+    "title": "Kitchen Knife Set",
+    "description": "Professional 6-piece kitchen knife set with wooden block. High-carbon stainless steel blades with ergonomic handles.",
+    "price": 119.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?w=500",
+      "https://images.unsplash.com/photo-1556909114-8b9b5a1e5b3f?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.6,
+    "num_reviews": 234,
+    "discount": 35,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-01-22T11:55:00Z",
+    "updated_at": "2024-07-16T08:20:00Z"
+  },
+  {
+    "id": 20,
+    "title": "Backpack",
+    "description": "Durable canvas backpack with laptop compartment and multiple pockets. Water-resistant and perfect for daily commuting.",
+    "price": 79.99,
+    "category": "Accessories",
+    "images": [
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500",
+      "https://images.unsplash.com/photo-1581605405669-fcdf81165afa?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 187,
+    "discount": 20,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-02-18T14:30:00Z",
+    "updated_at": "2024-07-07T12:45:00Z"
+  },
+  {
+    "id": 21,
+    "title": "Essential Oil Set",
+    "description": "Aromatherapy essential oil set with 6 popular scents including lavender, peppermint, and eucalyptus. Pure and natural.",
+    "price": 39.99,
+    "category": "Health & Beauty",
+    "images": [
+      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=500",
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.5,
+    "num_reviews": 145,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-03-28T09:45:00Z",
+    "updated_at": "2024-06-25T16:20:00Z"
+  },
+  {
+    "id": 22,
+    "title": "Gaming Mouse",
+    "description": "High-precision gaming mouse with customizable RGB lighting. 12,000 DPI sensor and programmable buttons for competitive gaming.",
+    "price": 69.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1527814050087-3793815479db?w=500",
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.7,
+    "num_reviews": 298,
+    "discount": 25,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-01-12T15:20:00Z",
+    "updated_at": "2024-07-14T10:35:00Z"
+  },
+  {
+    "id": 23,
+    "title": "Dress Shirt",
+    "description": "Classic white dress shirt made from premium cotton. Wrinkle-resistant and perfect for business and formal occasions.",
+    "price": 45.99,
+    "category": "Clothing",
+    "images": [
+      "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500",
+      "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 167,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-04-15T12:10:00Z",
+    "updated_at": "2024-06-18T14:55:00Z"
+  },
+  {
+    "id": 24,
+    "title": "Plant Pot Set",
+    "description": "Set of 3 ceramic plant pots with drainage holes and saucers. Perfect for indoor plants and succulents.",
+    "price": 32.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500",
+      "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 89,
+    "discount": 15,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-03-30T11:15:00Z",
+    "updated_at": "2024-07-03T09:30:00Z"
+  },
+  {
+    "id": 25,
+    "title": "Resistance Bands",
+    "description": "Set of 5 resistance bands with different resistance levels. Includes handles, door anchor, and workout guide.",
+    "price": 28.99,
+    "category": "Sports & Fitness",
+    "images": [
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500",
+      "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.2,
+    "num_reviews": 203,
+    "discount": 0,
+    "popular": true,
+    "onSale": false,
+    "created_at": "2024-02-08T16:40:00Z",
+    "updated_at": "2024-06-12T13:15:00Z"
+  },
+  {
+    "id": 26,
+    "title": "Wallet",
+    "description": "Genuine leather bifold wallet with RFID blocking technology. Multiple card slots and bill compartment.",
+    "price": 39.99,
+    "category": "Accessories",
+    "images": [
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500",
+      "https://images.unsplash.com/photo-1627123424574-724758594e93?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.5,
+    "num_reviews": 156,
+    "discount": 10,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-04-08T10:25:00Z",
+    "updated_at": "2024-07-11T15:50:00Z"
+  },
+  {
+    "id": 27,
+    "title": "Herbal Tea Blend",
+    "description": "Caffeine-free herbal tea blend with chamomile, lemon balm, and mint. Perfect for relaxation and evening enjoyment.",
+    "price": 21.99,
+    "category": "Food & Beverages",
+    "images": [
+      "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=500",
+      "https://images.unsplash.com/photo-1597318811814-bc9ba9e4b76c?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.6,
+    "num_reviews": 124,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-03-20T13:55:00Z",
+    "updated_at": "2024-06-28T11:40:00Z"
+  },
+  {
+    "id": 28,
+    "title": "USB Cable",
+    "description": "High-speed USB-C to USB-A cable with braided nylon sleeve. 6 feet length with fast charging and data transfer capabilities.",
+    "price": 12.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1558618664-fbd21c0054cd?w=500",
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.1,
+    "num_reviews": 345,
+    "discount": 0,
+    "popular": true,
+    "onSale": false,
+    "created_at": "2024-01-28T09:30:00Z",
+    "updated_at": "2024-07-15T16:25:00Z"
+  },
+  {
+    "id": 29,
+    "title": "Sneakers",
+    "description": "Casual canvas sneakers with rubber sole. Comfortable and versatile for everyday wear. Available in multiple colors.",
+    "price": 59.99,
+    "category": "Clothing",
+    "images": [
+      "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500",
+      "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 189,
+    "discount": 20,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-02-25T14:45:00Z",
+    "updated_at": "2024-07-08T12:10:00Z"
+  },
+  {
+    "id": 30,
+    "title": "Desk Lamp",
+    "description": "LED desk lamp with adjustable brightness and color temperature. USB charging port and touch controls.",
+    "price": 49.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500",
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 178,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-04-12T11:20:00Z",
+    "updated_at": "2024-06-30T09:45:00Z"
+  },
+  {
+    "id": 31,
+    "title": "Face Moisturizer",
+    "description": "Hydrating face moisturizer with SPF 30 protection. Suitable for all skin types with anti-aging properties.",
+    "price": 34.99,
+    "category": "Health & Beauty",
+    "images": [
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500",
+      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.5,
+    "num_reviews": 234,
+    "discount": 15,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-01-20T15:10:00Z",
+    "updated_at": "2024-07-06T14:30:00Z"
+  },
+  {
+    "id": 32,
+    "title": "Mechanical Keyboard",
+    "description": "RGB mechanical keyboard with blue switches. Customizable backlighting and programmable keys for gaming and productivity.",
+    "price": 149.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=500",
+      "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.6,
+    "num_reviews": 167,
+    "discount": 20,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-03-15T10:30:00Z",
+    "updated_at": "2024-07-12T16:45:00Z"
+  },
+  {
+    "id": 33,
+    "title": "Summer Dress",
+    "description": "Flowy summer dress made from breathable cotton fabric. Perfect for warm weather with floral print design.",
+    "price": 64.99,
+    "category": "Clothing",
+    "images": [
+      "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500",
+      "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 145,
+    "discount": 25,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-04-18T13:25:00Z",
+    "updated_at": "2024-07-01T11:15:00Z"
+  },
+  {
+    "id": 34,
+    "title": "Cooking Pan Set",
+    "description": "Non-stick cooking pan set with 3 different sizes. Heat-resistant handles and dishwasher safe coating.",
+    "price": 89.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1556909114-8b9b5a1e5b3f?w=500",
+      "https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.7,
+    "num_reviews": 289,
+    "discount": 30,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-02-10T08:45:00Z",
+    "updated_at": "2024-07-14T15:20:00Z"
+  },
+  {
+    "id": 35,
+    "title": "Fitness Tracker",
+    "description": "Waterproof fitness tracker with heart rate monitoring, sleep tracking, and 7-day battery life.",
+    "price": 99.99,
+    "category": "Sports & Fitness",
+    "images": [
+      "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500",
+      "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 234,
+    "discount": 0,
+    "popular": true,
+    "onSale": false,
+    "created_at": "2024-01-25T12:15:00Z",
+    "updated_at": "2024-06-20T10:40:00Z"
+  },
+  {
+    "id": 36,
+    "title": "Handbag",
+    "description": "Elegant leather handbag with multiple compartments. Adjustable strap and magnetic closure for security.",
+    "price": 129.99,
+    "category": "Accessories",
+    "images": [
+      "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500",
+      "https://images.unsplash.com/photo-1627123424574-724758594e93?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.5,
+    "num_reviews": 178,
+    "discount": 15,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-03-08T14:50:00Z",
+    "updated_at": "2024-07-09T12:25:00Z"
+  },
+  {
+    "id": 37,
+    "title": "Artisan Coffee Beans",
+    "description": "Single-origin coffee beans roasted to perfection. Medium roast with notes of chocolate and caramel.",
+    "price": 24.99,
+    "category": "Food & Beverages",
+    "images": [
+      "https://images.unsplash.com/photo-1559496417-e7f25cb247cd?w=500",
+      "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.8,
+    "num_reviews": 156,
+    "discount": 0,
+    "popular": true,
+    "onSale": false,
+    "created_at": "2024-04-22T09:30:00Z",
+    "updated_at": "2024-07-05T16:55:00Z"
+  },
+  {
+    "id": 38,
+    "title": "Tablet Stand",
+    "description": "Adjustable aluminum tablet stand compatible with all tablet sizes. Foldable design for portability.",
+    "price": 19.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.2,
+    "num_reviews": 198,
+    "discount": 20,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-02-28T11:40:00Z",
+    "updated_at": "2024-06-15T13:20:00Z"
+  },
+  {
+    "id": 39,
+    "title": "Cardigan",
+    "description": "Soft knit cardigan perfect for layering. Button-front design with pockets and ribbed cuffs.",
+    "price": 72.99,
+    "category": "Clothing",
+    "images": [
+      "https://images.unsplash.com/photo-1565084888279-aca607ecce0c?w=500",
+      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 123,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-04-05T15:15:00Z",
+    "updated_at": "2024-06-25T09:30:00Z"
+  },
+  {
+    "id": 40,
+    "title": "Throw Pillows",
+    "description": "Set of 2 decorative throw pillows with removable covers. Soft filling and modern geometric patterns.",
+    "price": 36.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500",
+      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 167,
+    "discount": 10,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-03-25T12:20:00Z",
+    "updated_at": "2024-07-02T14:45:00Z"
+  },
+  {
+    "id": 41,
+    "title": "Protein Bars",
+    "description": "Box of 12 protein bars with 20g protein each. Peanut butter flavor with natural ingredients and no artificial sweeteners.",
+    "price": 32.99,
+    "category": "Sports & Fitness",
+    "images": [
+      "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=500",
+      "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.1,
+    "num_reviews": 245,
+    "discount": 15,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-01-30T10:05:00Z",
+    "updated_at": "2024-07-10T15:35:00Z"
+  },
+  {
+    "id": 42,
+    "title": "Phone Stand",
+    "description": "Adjustable phone stand made from bamboo. Eco-friendly design compatible with all smartphone sizes.",
+    "price": 14.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500",
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 189,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-04-02T16:30:00Z",
+    "updated_at": "2024-06-18T11:50:00Z"
+  },
+  {
+    "id": 43,
+    "title": "Baseball Cap",
+    "description": "Classic baseball cap with adjustable strap. Cotton twill construction with embroidered logo.",
+    "price": 22.99,
+    "category": "Accessories",
+    "images": [
+      "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=500",
+      "https://images.unsplash.com/photo-1556306535-38febf6782e7?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.2,
+    "num_reviews": 134,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-03-18T13:45:00Z",
+    "updated_at": "2024-06-22T16:10:00Z"
+  },
+  {
+    "id": 44,
+    "title": "Honey",
+    "description": "Raw organic honey from local beekeepers. Pure and unfiltered with natural enzymes and antioxidants.",
+    "price": 18.99,
+    "category": "Food & Beverages",
+    "images": [
+      "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=500",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.7,
+    "num_reviews": 98,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-04-28T11:25:00Z",
+    "updated_at": "2024-07-03T14:40:00Z"
+  },
+  {
+    "id": 45,
+    "title": "Bed Sheets",
+    "description": "Luxury cotton bed sheet set with deep pockets. Breathable and hypoallergenic fabric in queen size.",
+    "price": 79.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500",
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.6,
+    "num_reviews": 267,
+    "discount": 25,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-02-15T09:50:00Z",
+    "updated_at": "2024-07-11T13:25:00Z"
+  },
+  {
+    "id": 46,
+    "title": "Shampoo",
+    "description": "Sulfate-free shampoo for all hair types. Enriched with natural oils and botanical extracts for healthy hair.",
+    "price": 16.99,
+    "category": "Health & Beauty",
+    "images": [
+      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=500",
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 198,
+    "discount": 0,
+    "popular": true,
+    "onSale": false,
+    "created_at": "2024-03-12T14:15:00Z",
+    "updated_at": "2024-06-28T10:30:00Z"
+  },
+  {
+    "id": 47,
+    "title": "Dumbbells",
+    "description": "Set of 2 adjustable dumbbells with weight plates. Range from 5-50 pounds each for complete home workouts.",
+    "price": 249.99,
+    "category": "Sports & Fitness",
+    "images": [
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500",
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.5,
+    "num_reviews": 156,
+    "discount": 20,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-01-08T15:40:00Z",
+    "updated_at": "2024-07-13T09:15:00Z"
+  },
+  {
+    "id": 48,
+    "title": "Power Bank",
+    "description": "10,000mAh portable power bank with fast charging. Multiple USB ports and LED battery indicator.",
+    "price": 39.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500",
+      "https://images.unsplash.com/photo-1558618664-fbd21c0054cd?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 289,
+    "discount": 0,
+    "popular": true,
+    "onSale": false,
+    "created_at": "2024-02-22T12:55:00Z",
+    "updated_at": "2024-07-07T16:20:00Z"
+  },
+  {
+    "id": 49,
+    "title": "Blazer",
+    "description": "Tailored blazer made from premium wool blend. Professional fit perfect for business meetings and formal events.",
+    "price": 159.99,
+    "category": "Clothing",
+    "images": [
+      "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500",
+      "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.6,
+    "num_reviews": 134,
+    "discount": 30,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-04-08T10:20:00Z",
+    "updated_at": "2024-07-15T14:45:00Z"
+  },
+  {
+    "id": 50,
+    "title": "Air Purifier",
+    "description": "HEPA air purifier with 3-stage filtration system. Covers up to 500 sq ft with quiet operation and smart controls.",
+    "price": 199.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500",
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.7,
+    "num_reviews": 245,
+    "discount": 25,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-01-15T13:30:00Z",
+    "updated_at": "2024-07-16T11:05:00Z"
+  },
+  
+  {
+    "id": 51,
+    "title": "Wireless Bluetooth Headphones",
+    "slug": "wireless-bluetooth-headphones",
+    "description": "Premium wireless headphones with active noise cancellation and 30-hour battery life. Perfect for music lovers and professionals.",
+    "price": 199.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
+      "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.5,
+    "num_reviews": 128,
+    "discount": 15,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-01-15T10:30:00Z",
+    "updated_at": "2024-07-10T14:22:00Z"
+  },
+  {
+    "id": 52,
+    "title": "Smart Fitness Watch",
+    "slug": "smart-fitness-watch",
+    "description": "Advanced fitness tracker with heart rate monitoring, GPS, and 7-day battery life. Track your workouts and health metrics.",
+    "price": 299.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500",
+      "https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 256,
+    "discount": 0,
+    "popular": true,
+    "onSale": false,
+    "created_at": "2024-02-20T09:15:00Z",
+    "updated_at": "2024-07-12T11:45:00Z"
+  },
+  {
+    "id": 53,
+    "title": "Organic Cotton T-Shirt",
+    "slug": "organic-cotton-t-shirt",
+    "description": "Comfortable and sustainable organic cotton t-shirt. Available in multiple colors and sizes. Perfect for everyday wear.",
+    "price": 24.99,
+    "category": "Clothing",
+    "images": [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500",
+      "https://images.unsplash.com/photo-1503341338985-57ba467cea38?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.7,
+    "num_reviews": 89,
+    "discount": 20,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-03-10T14:20:00Z",
+    "updated_at": "2024-07-08T16:30:00Z"
+  },
+  {
+    "id": 54,
+    "title": "Ceramic Coffee Mug Set",
+    "slug": "ceramic-coffee-mug-set",
+    "description": "Set of 4 handcrafted ceramic mugs with beautiful glazed finish. Perfect for your morning coffee or tea routine.",
+    "price": 39.99,
+    "category": "Home & Kitchen",
+    "images": [
+      "https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?w=500",
+      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.6,
+    "num_reviews": 45,
+    "discount": 10,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-01-25T11:00:00Z",
+    "updated_at": "2024-07-05T09:15:00Z"
+  },
+  {
+    "id": 55,
+    "title": "Yoga Mat Premium",
+    "slug": "yoga-mat-premium",
+    "description": "High-quality non-slip yoga mat with excellent grip and cushioning. Eco-friendly materials for your practice.",
+    "price": 49.99,
+    "category": "Sports & Fitness",
+    "images": [
+      "https://images.unsplash.com/photo-1506629905687-384052bc5863?w=500",
+      "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 167,
+    "discount": 25,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-04-12T08:45:00Z",
+    "updated_at": "2024-07-14T13:20:00Z"
+  },
+  {
+    "id": 56,
+    "title": "Leather Wallet",
+    "slug": "leather-wallet",
+    "description": "Genuine leather wallet with RFID blocking technology. Multiple card slots and bill compartments for organization.",
+    "price": 79.99,
+    "category": "Accessories",
+    "images": [
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500",
+      "https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.2,
+    "num_reviews": 73,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-05-18T15:30:00Z",
+    "updated_at": "2024-07-11T10:45:00Z"
+  },
+  {
+    "id": 57,
+    "title": "Succulent Plant Collection",
+    "slug": "succulent-plant-collection",
+    "description": "Beautiful collection of 6 assorted succulent plants in decorative pots. Low maintenance and perfect for any space.",
+    "price": 34.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500",
+      "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.8,
+    "num_reviews": 112,
+    "discount": 15,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-03-22T12:15:00Z",
+    "updated_at": "2024-07-09T14:50:00Z"
+  },
+  {
+    "id": 58,
+    "title": "Wireless Phone Charger",
+    "slug": "wireless-phone-charger",
+    "description": "Fast wireless charging pad compatible with all Qi-enabled devices. Sleek design with LED indicator.",
+    "price": 29.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1585792180666-f7347c490ee2?w=500",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.1,
+    "num_reviews": 98,
+    "discount": 30,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-06-05T09:20:00Z",
+    "updated_at": "2024-07-13T11:30:00Z"
+  },
+  {
+    "id": 59,
+    "title": "Bamboo Cutting Board",
+    "slug": "bamboo-cutting-board",
+    "description": "Eco-friendly bamboo cutting board with juice groove. Antibacterial and easy to clean kitchen essential.",
+    "price": 19.99,
+    "category": "Home & Kitchen",
+    "images": [
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500",
+      "https://images.unsplash.com/photo-1584489913128-a3d19fb5901c?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.5,
+    "num_reviews": 134,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-02-14T16:40:00Z",
+    "updated_at": "2024-07-07T12:25:00Z"
+  },
+  {
+    "id": 60,
+    "title": "Running Shoes",
+    "slug": "running-shoes",
+    "description": "Lightweight running shoes with advanced cushioning and breathable mesh upper. Perfect for daily training.",
+    "price": 129.99,
+    "category": "Sports & Fitness",
+    "images": [
+      "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=500",
+      "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 201,
+    "discount": 20,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-04-28T13:55:00Z",
+    "updated_at": "2024-07-15T15:10:00Z"
+  },
+  {
+    "id": 61,
+    "title": "Stainless Steel Water Bottle",
+    "slug": "stainless-steel-water-bottle",
+    "description": "Double-wall insulated water bottle keeps drinks cold for 24 hours or hot for 12 hours. BPA-free and leak-proof.",
+    "price": 34.99,
+    "category": "Sports & Fitness",
+    "images": [
+      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500",
+      "https://images.unsplash.com/photo-1544829099-b9a0c5303bea?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.6,
+    "num_reviews": 87,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-05-12T10:25:00Z",
+    "updated_at": "2024-07-06T14:40:00Z"
+  },
+  {
+    "id": 62,
+    "title": "Denim Jacket",
+    "slug": "denim-jacket",
+    "description": "Classic denim jacket with vintage wash and comfortable fit. A timeless piece for any wardrobe.",
+    "price": 89.99,
+    "category": "Clothing",
+    "images": [
+      "https://images.unsplash.com/photo-1544966503-7bb607e4db2f?w=500",
+      "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 156,
+    "discount": 25,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-03-30T11:50:00Z",
+    "updated_at": "2024-07-12T09:30:00Z"
+  },
+  {
+    "id": 63,
+    "title": "Essential Oil Diffuser",
+    "slug": "essential-oil-diffuser",
+    "description": "Ultrasonic aromatherapy diffuser with LED lights and timer settings. Create a relaxing atmosphere at home.",
+    "price": 45.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500",
+      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.2,
+    "num_reviews": 92,
+    "discount": 15,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-06-20T14:15:00Z",
+    "updated_at": "2024-07-14T16:20:00Z"
+  },
+  {
+    "id": 64,
+    "title": "Laptop Stand",
+    "slug": "laptop-stand",
+    "description": "Adjustable aluminum laptop stand with ergonomic design. Improves posture and reduces neck strain.",
+    "price": 59.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500",
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.7,
+    "num_reviews": 118,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-04-08T08:30:00Z",
+    "updated_at": "2024-07-10T13:45:00Z"
+  },
+  {
+    "id": 65,
+    "title": "Canvas Tote Bag",
+    "slug": "canvas-tote-bag",
+    "description": "Durable canvas tote bag with reinforced handles. Perfect for shopping, beach trips, or everyday use.",
+    "price": 16.99,
+    "category": "Accessories",
+    "images": [
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500",
+      "https://images.unsplash.com/photo-1506629905687-384052bc5863?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 64,
+    "discount": 20,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-05-25T12:20:00Z",
+    "updated_at": "2024-07-08T15:35:00Z"
+  },
+  {
+    "id": 66,
+    "title": "Portable Bluetooth Speaker",
+    "slug": "portable-bluetooth-speaker",
+    "description": "Waterproof portable speaker with 360-degree sound and 20-hour battery life. Perfect for outdoor adventures.",
+    "price": 79.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=500",
+      "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.5,
+    "num_reviews": 189,
+    "discount": 10,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-02-08T09:40:00Z",
+    "updated_at": "2024-07-13T10:55:00Z"
+  },
+  {
+    "id": 67,
+    "title": "Skincare Routine Set",
+    "slug": "skincare-routine-set",
+    "description": "Complete skincare routine with cleanser, toner, serum, and moisturizer. Suitable for all skin types.",
+    "price": 149.99,
+    "category": "Beauty",
+    "images": [
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.8,
+    "num_reviews": 245,
+    "discount": 30,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-01-30T15:10:00Z",
+    "updated_at": "2024-07-15T11:25:00Z"
+  },
+  {
+    "id": 68,
+    "title": "Desk Organizer",
+    "slug": "desk-organizer",
+    "description": "Bamboo desk organizer with multiple compartments for pens, papers, and office supplies. Keep your workspace tidy.",
+    "price": 32.99,
+    "category": "Office",
+    "images": [
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500",
+      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.1,
+    "num_reviews": 78,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-06-12T13:35:00Z",
+    "updated_at": "2024-07-09T16:50:00Z"
+  },
+  {
+    "id": 69,
+    "title": "Wireless Gaming Mouse",
+    "slug": "wireless-gaming-mouse",
+    "description": "High-precision gaming mouse with customizable RGB lighting and programmable buttons. Perfect for competitive gaming.",
+    "price": 89.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500",
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.6,
+    "num_reviews": 132,
+    "discount": 15,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-03-15T10:45:00Z",
+    "updated_at": "2024-07-11T14:20:00Z"
+  },
+  {
+    "id": 70,
+    "title": "Silk Pillowcase",
+    "slug": "silk-pillowcase",
+    "description": "Luxurious mulberry silk pillowcase that's gentle on hair and skin. Hypoallergenic and temperature regulating.",
+    "price": 69.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.7,
+    "num_reviews": 103,
+    "discount": 25,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-04-22T16:00:00Z",
+    "updated_at": "2024-07-12T12:15:00Z"
+  },
+  {
+    "id": 71,
+    "title": "Protein Powder",
+    "slug": "protein-powder",
+    "description": "Whey protein powder with 25g protein per serving. Available in vanilla and chocolate flavors. Perfect for post-workout recovery.",
+    "price": 54.99,
+    "category": "Sports & Fitness",
+    "images": [
+      "https://images.unsplash.com/photo-1544966503-7bb607e4db2f?w=500",
+      "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 178,
+    "discount": 20,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-05-08T11:30:00Z",
+    "updated_at": "2024-07-14T09:45:00Z"
+  },
+  {
+    "id": 72,
+    "title": "Ceramic Dinner Plates Set",
+    "slug": "ceramic-dinner-plates-set",
+    "description": "Set of 6 elegant ceramic dinner plates with modern design. Dishwasher and microwave safe.",
+    "price": 89.99,
+    "category": "Home & Kitchen",
+    "images": [
+      "https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?w=500",
+      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.2,
+    "num_reviews": 56,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-06-30T14:50:00Z",
+    "updated_at": "2024-07-10T17:30:00Z"
+  },
+  {
+    "id": 73,
+    "title": "Sunglasses",
+    "slug": "sunglasses",
+    "description": "Polarized sunglasses with UV400 protection and lightweight frame. Classic aviator style for any occasion.",
+    "price": 124.99,
+    "category": "Accessories",
+    "images": [
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500",
+      "https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.5,
+    "num_reviews": 94,
+    "discount": 15,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-02-28T12:10:00Z",
+    "updated_at": "2024-07-13T15:25:00Z"
+  },
+  {
+    "id": 74,
+    "title": "Electric Kettle",
+    "slug": "electric-kettle",
+    "description": "Stainless steel electric kettle with rapid boiling technology and auto shut-off. Perfect for tea and coffee lovers.",
+    "price": 49.99,
+    "category": "Home & Kitchen",
+    "images": [
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500",
+      "https://images.unsplash.com/photo-1584489913128-a3d19fb5901c?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 167,
+    "discount": 10,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-04-15T09:25:00Z",
+    "updated_at": "2024-07-08T13:40:00Z"
+  },
+  {
+    "id": 75,
+    "title": "Resistance Bands Set",
+    "slug": "resistance-bands-set",
+    "description": "Complete resistance bands set with 5 different resistance levels. Includes door anchor and exercise guide.",
+    "price": 29.99,
+    "category": "Sports & Fitness",
+    "images": [
+      "https://images.unsplash.com/photo-1506629905687-384052bc5863?w=500",
+      "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.1,
+    "num_reviews": 89,
+    "discount": 35,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-07-01T16:20:00Z",
+    "updated_at": "2024-07-15T10:05:00Z"
+  },
+  {
+    "id": 76,
+    "title": "Mechanical Keyboard",
+    "slug": "mechanical-keyboard",
+    "description": "RGB mechanical keyboard with tactile switches and customizable backlighting. Perfect for gaming and typing.",
+    "price": 159.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500",
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.6,
+    "num_reviews": 211,
+    "discount": 20,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-01-12T11:40:00Z",
+    "updated_at": "2024-07-14T14:55:00Z"
+  },
+  {
+    "id": 77,
+    "title": "Face Mask Set",
+    "slug": "face-mask-set",
+    "description": "Variety pack of 12 face masks for different skin concerns. Hydrating, purifying, and anti-aging formulas.",
+    "price": 39.99,
+    "category": "Beauty",
+    "images": [
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 156,
+    "discount": 25,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-03-18T13:15:00Z",
+    "updated_at": "2024-07-11T16:30:00Z"
+  },
+  {
+    "id":   78,
+    "title": "Notebook Set",
+    "slug": "notebook-set",
+    "description": "Set of 3 premium notebooks with dotted pages and elastic closure. Perfect for journaling and note-taking.",
+    "price": 24.99,
+    "category": "Office",
+    "images": [
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500",
+      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.2,
+    "num_reviews": 67,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-05-20T15:45:00Z",
+    "updated_at": "2024-07-09T12:20:00Z"
+  },
+  {
+    "id": 79,
+    "title": "Hiking Backpack",
+    "slug": "hiking-backpack",
+    "description": "Durable 40L hiking backpack with multiple compartments and hydration system compatibility. Perfect for day hikes.",
+    "price": 99.99,
+    "category": "Sports & Fitness",
+    "images": [
+      "https://images.unsplash.com/photo-1506629905687-384052bc5863?w=500",
+      "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.7,
+    "num_reviews": 143,
+    "discount": 30,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-04-05T10:30:00Z",
+    "updated_at": "2024-07-12T11:45:00Z"
+  },
+  {
+    "id": 80,
+    "title": "Smart Light Bulbs",
+    "slug": "smart-light-bulbs",
+    "description": "Set of 4 WiFi-enabled smart LED bulbs with color changing and dimming capabilities. Control with your smartphone.",
+    "price": 64.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500",
+      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 198,
+    "discount": 15,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-06-08T14:20:00Z",
+    "updated_at": "2024-07-15T09:35:00Z"
+  },
+  {
+    "id": 81,
+    "title": "Wireless Earbuds",
+    "slug": "wireless-earbuds",
+    "description": "True wireless earbuds with noise cancellation and 8-hour battery life. Includes charging case for extended use.",
+    "price": 149.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
+      "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.5,
+    "num_reviews": 289,
+    "discount": 20,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-02-12T08:50:00Z",
+    "updated_at": "2024-07-13T12:10:00Z"
+  },
+  {
+    "id": 82,
+    "title": "Cooking Knife Set",
+    "slug": "cooking-knife-set",
+    "description": "Professional 8-piece knife set with high-carbon stainless steel blades and ergonomic handles. Includes knife block.",
+    "price": 179.99,
+    "category": "Home & Kitchen",
+    "images": [
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500",
+      "https://images.unsplash.com/photo-1584489913128-a3d19fb5901c?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.8,
+    "num_reviews": 124,
+    "discount": 25,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-03-25T11:15:00Z",
+    "updated_at": "2024-07-10T15:30:00Z"
+  },
+  {
+    "id": 83,
+    "title": "Crossbody Bag",
+    "slug": "crossbody-bag",
+    "description": "Stylish leather crossbody bag with adjustable strap and multiple pockets. Perfect for everyday use and travel.",
+    "price": 89.99,
+    "category": "Accessories",
+    "images": [
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500",
+      "https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 87,
+    "discount": 15,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-04-18T14:40:00Z",
+    "updated_at": "2024-07-11T10:25:00Z"
+  },
+  {
+    "id": 84,
+    "title": "Air Fryer",
+    "slug": "air-fryer",
+    "description": "Compact air fryer with 3.5L capacity and digital controls. Cook healthier meals with 85% less oil.",
+    "price": 119.99,
+    "category": "Home & Kitchen",
+    "images": [
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500",
+      "https://images.unsplash.com/photo-1584489913128-a3d19fb5901c?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.6,
+    "num_reviews": 234,
+    "discount": 30,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-05-15T09:55:00Z",
+    "updated_at": "2024-07-14T13:15:00Z"
+  },
+  {
+    "id": 85,
+    "title": "Vitamin D3 Supplements",
+    "slug": "vitamin-d3-supplements",
+    "description": "High-potency Vitamin D3 softgels for immune support and bone health. 60 capsules per bottle.",
+    "price": 19.99,
+    "category": "Health",
+    "images": [
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.2,
+    "num_reviews": 156,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-06-22T16:10:00Z",
+    "updated_at": "2024-07-08T11:50:00Z"
+  },
+  {
+    "id": 86,
+    "title": "Desk Lamp",
+    "slug": "desk-lamp",
+    "description": "LED desk lamp with adjustable brightness and color temperature. USB charging port and touch controls.",
+    "price": 45.99,
+    "category": "Office",
+    "images": [
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500",
+      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 98,
+    "discount": 20,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-01-28T13:35:00Z",
+    "updated_at": "2024-07-12T16:45:00Z"
+  },
+  {
+    "id": 87,
+    "title": "Weighted Blanket",
+    "slug": "weighted-blanket",
+    "description": "Therapeutic weighted blanket (15 lbs) with soft minky fabric. Promotes better sleep and reduces anxiety.",
+    "price": 89.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.7,
+    "num_reviews": 167,
+    "discount": 25,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-03-08T10:20:00Z",
+    "updated_at": "2024-07-09T14:35:00Z"
+  },
+  {
+    "id": 88,
+    "title": "Bluetooth Car Adapter",
+    "slug": "bluetooth-car-adapter",
+    "description": "Wireless Bluetooth car adapter with hands-free calling and music streaming. Easy plug-and-play installation.",
+    "price": 34.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1585792180666-f7347c490ee2?w=500",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.1,
+    "num_reviews": 143,
+    "discount": 15,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-04-30T15:25:00Z",
+    "updated_at": "2024-07-13T09:40:00Z"
+  },
+  {
+    "id":   89,
+    "title": "Skinny Jeans",
+    "slug": "skinny-jeans",
+    "description": "Comfortable stretch denim skinny jeans with classic five-pocket styling. Available in multiple washes.",
+    "price": 79.99,
+    "category": "Clothing",
+    "images": [
+      "https://images.unsplash.com/photo-1544966503-7bb607e4db2f?w=500",
+      "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.2,
+    "num_reviews": 189,
+    "discount": 40,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-02-18T12:45:00Z",
+    "updated_at": "2024-07-15T11:20:00Z"
+  },
+  {
+    "id": 90,
+    "title": "Coffee Grinder",
+    "slug": "coffee-grinder",
+    "description": "Burr coffee grinder with 15 grind settings and stainless steel burrs. Perfect for espresso to French press.",
+    "price": 149.99,
+    "category": "Home & Kitchen",
+    "images": [
+      "https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?w=500",
+      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.5,
+    "num_reviews": 178,
+    "discount": 20,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-05-28T11:30:00Z",
+    "updated_at": "2024-07-10T14:50:00Z"
+  },
+  {
+    "id": 91,
+    "title": "Foam Roller",
+    "slug": "foam-roller",
+    "description": "High-density foam roller for muscle recovery and myofascial release. Textured surface for effective massage.",
+    "price": 29.99,
+    "category": "Sports & Fitness",
+    "images": [
+      "https://images.unsplash.com/photo-1506629905687-384052bc5863?w=500",
+      "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 124,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-06-15T14:15:00Z",
+    "updated_at": "2024-07-11T12:30:00Z"
+  },
+  {
+    "id": 92,
+    "title": "Wireless Charger Stand",
+    "slug": "wireless-charger-stand",
+    "description": "Adjustable wireless charging stand with fast charging capability. Works with phones in portrait or landscape mode.",
+    "price": 39.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1585792180666-f7347c490ee2?w=500",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 156,
+    "discount": 25,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-03-12T16:40:00Z",
+    "updated_at": "2024-07-14T15:55:00Z"
+  },
+  {
+    "id": 93,
+    "title": "Lip Balm Set",
+    "slug": "lip-balm-set",
+    "description": "Natural lip balm set with 6 different flavors. Made with organic ingredients and beeswax.",
+    "price": 24.99,
+    "category": "Beauty",
+    "images": [
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.6,
+    "num_reviews": 87,
+    "discount": 30,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-07-02T09:25:00Z",
+    "updated_at": "2024-07-15T13:10:00Z"
+  },
+  {
+    "id": 94,
+    "title": "Monitor Stand",
+    "slug": "monitor-stand",
+    "description": "Adjustable monitor stand with storage drawer. Raises screen to eye level for better ergonomics.",
+    "price": 54.99,
+    "category": "Office",
+    "images": [
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500",
+      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.2,
+    "num_reviews": 98,
+    "discount": 15,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-04-10T11:50:00Z",
+    "updated_at": "2024-07-12T10:15:00Z"
+  },
+  {
+    "id": 95,
+    "title": "Hoodie",
+    "slug": "hoodie",
+    "description": "Comfortable cotton blend hoodie with kangaroo pocket and drawstring hood. Perfect for casual wear.",
+    "price": 59.99,
+    "category": "Clothing",
+    "images": [
+      "https://images.unsplash.com/photo-1544966503-7bb607e4db2f?w=500",
+      "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.5,
+    "num_reviews": 167,
+    "discount": 20,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-01-20T14:30:00Z",
+    "updated_at": "2024-07-08T16:45:00Z"
+  },
+  {
+    "id": 96,
+    "title": "Herb Garden Kit",
+    "slug": "herb-garden-kit",
+    "description": "Indoor herb garden kit with 10 herb varieties, pots, and growing medium. Fresh herbs at your fingertips.",
+    "price": 44.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500",
+      "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.7,
+    "num_reviews": 134,
+    "discount": 25,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-05-02T10:40:00Z",
+    "updated_at": "2024-07-13T14:25:00Z"
+  },
+  {
+    "id": 97,
+    "title": "USB-C Hub",
+    "slug": "usb-c-hub",
+    "description": "7-in-1 USB-C hub with HDMI, USB 3.0 ports, SD card reader, and power delivery. Perfect for laptops.",
+    "price": 69.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1585792180666-f7347c490ee2?w=500",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 189,
+    "discount": 0,
+    "popular": false,
+    "onSale": false,
+    "created_at": "2024-06-18T13:20:00Z",
+    "updated_at": "2024-07-14T11:35:00Z"
+  },
+  {
+    "id": 98,
+    "title": "Bath Towel Set",
+    "slug": "bath-towel-set",
+    "description": "Luxury 6-piece bath towel set made from 100% Egyptian cotton. Super absorbent and quick-drying.",
+    "price": 89.99,
+    "category": "Home & Garden",
+    "images": [
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.6,
+    "num_reviews": 145,
+    "discount": 35,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-03-05T15:55:00Z",
+    "updated_at": "2024-07-09T17:10:00Z"
+  },
+  {
+    "id": 99,
+    "title": "Phone Case",
+    "slug": "phone-case",
+    "description": "Protective phone case with shock absorption and wireless charging compatibility. Clear design shows phone color.",
+    "price": 19.99,
+    "category": "Electronics",
+    "images": [
+      "https://images.unsplash.com/photo-1585792180666-f7347c490ee2?w=500",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.3,
+    "num_reviews": 234,
+    "discount": 10,
+    "popular": false,
+    "onSale": true,
+    "created_at": "2024-04-25T12:05:00Z",
+    "updated_at": "2024-07-15T08:20:00Z"
+  },
+  {
+    "id": 100,
+    "title": "Multivitamin Gummies",
+    "slug": "multivitamin-gummies",
+    "description": "Adult multivitamin gummies with essential vitamins and minerals. Delicious fruit flavors, 90 gummies per bottle.",
+    "price": 24.99,
+    "category": "Health",
+    "images": [
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500"
+    ],
+    "is_active": true,
+    "rating": 4.4,
+    "num_reviews": 178,
+    "discount": 20,
+    "popular": true,
+    "onSale": true,
+    "created_at": "2024-06-28T11:10:00Z",
+    "updated_at": "2024-07-11T15:25:00Z"
+  }
+
+]
+
+export const users = [
+  {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "password": "password123",
+    "phone": "1234567890",
+    "address": "123 Main St, Anytown, USA",
+    "role": "customer",
+    "created_at": "2024-01-15T10:30:00Z",
+    "updated_at": "2024-07-10T14:22:00Z"
+  },
+  {
+    "id": 2,
+    "name": "Jane Smith",
+    "email": "jane.smith@example.com",
+    "password": "password123",
+    "phone": "0987654321",
+    "address": "456 Elm St, Anytown, USA",
+    "role": "customer",
+    "created_at": "2024-02-20T09:15:00Z",
+    "updated_at": "2024-07-15T16:45:00Z"
+  },
+]
