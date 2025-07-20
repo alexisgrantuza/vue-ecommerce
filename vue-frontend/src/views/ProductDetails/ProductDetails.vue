@@ -73,10 +73,10 @@
           <div class="price-section">
             <div class="price-display">
               <span class="current-price">
-                ₱ {{ product.discount > 0 ? calculateDiscountedPrice() : product.price }}
+                ₱{{ product.discount > 0 ? calculateDiscountedPrice() : product.price }}
               </span>
               <span v-if="product.discount > 0" class="original-price">
-                ₱ {{ product.price }}
+                ₱{{ product.price }}
               </span>
             </div>
             <div v-if="product.discount > 0" class="savings">
@@ -177,7 +177,7 @@ const fetchProduct = async () => {
     
     if (response) {
       product.value = response
-      selectedImage.value = response.data?.images?.[0] || ''
+      selectedImage.value = response.images?.[0] || ''
     } else {
       ElMessage.error('Product not found')
       router.push('/')
@@ -220,7 +220,7 @@ const addToWishlist = () => {
 <style scoped>
 .product-view {
   min-height: 100vh;
-  background: #0a0a0a;
+  background: #fff;
   padding: 20px 0;
 }
 
@@ -257,7 +257,7 @@ const addToWishlist = () => {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;
-  background: #1a1a1a;
+  background: #fafafa;
   padding: 40px;
   border-radius: 12px;
 }
@@ -273,7 +273,7 @@ const addToWishlist = () => {
   height: 500px;
   border-radius: 12px;
   overflow: hidden;
-  background: #2a2a2a;
+  background: #fafafa;
 }
 
 .product-main-img {
@@ -329,7 +329,7 @@ const addToWishlist = () => {
   display: flex;
   flex-direction: column;
   gap: 30px;
-  color: #fff;
+  color: #000;
 }
 
 .product-header {
@@ -341,7 +341,7 @@ const addToWishlist = () => {
 .product-title {
   font-size: 32px;
   font-weight: 700;
-  color: #ffffff;
+  color: #000;
   margin: 0;
   line-height: 1.2;
 }
@@ -353,8 +353,8 @@ const addToWishlist = () => {
 }
 
 .category-tag {
-  background: #2d2d2d;
-  color: #999;
+  background: #000;
+  color: #fff;
   border: 1px solid #404040;
 }
 
@@ -395,13 +395,13 @@ const addToWishlist = () => {
 }
 
 .product-description h3 {
-  color: #ffffff;
+  color: #000;
   font-size: 20px;
   margin: 0 0 15px 0;
 }
 
 .product-description p {
-  color: #ccc;
+  color: #000;
   font-size: 16px;
   line-height: 1.6;
   margin: 0;
@@ -422,7 +422,7 @@ const addToWishlist = () => {
 .quantity-selector label {
   font-size: 16px;
   font-weight: 500;
-  color: #fff;
+  color: #000;
 }
 
 .quantity-input {
@@ -449,7 +449,7 @@ const addToWishlist = () => {
 }
 
 .wishlist-btn {
-  background: #2d2d2d;
+  background: #000;
   border-color: #404040;
   color: #fff;
   height: 50px;
@@ -463,7 +463,7 @@ const addToWishlist = () => {
 }
 
 .product-specs h3 {
-  color: #ffffff;
+  color: #000;
   font-size: 20px;
   margin: 0 0 15px 0;
 }
@@ -472,7 +472,7 @@ const addToWishlist = () => {
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
-  border-bottom: 1px solid #2d2d2d;
+  border-bottom: 1px solid #fafafa;
 }
 
 .spec-label {
@@ -481,7 +481,7 @@ const addToWishlist = () => {
 }
 
 .spec-value {
-  color: #fff;
+  color: #000;
 }
 
 .spec-value.in-stock {
@@ -489,7 +489,7 @@ const addToWishlist = () => {
 }
 
 .error-section {
-  background: #1a1a1a;
+  background: #fafafa;
   padding: 60px;
   border-radius: 12px;
   text-align: center;

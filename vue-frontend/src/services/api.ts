@@ -4,7 +4,13 @@ import type {
   RegisterRequest,
   Category, 
   User,
-  ApiResponse 
+  ApiResponse, 
+  AddToCartRequest,
+  Cart,
+  UpdateCartRequest,
+  CreateOrderRequest,
+  Order,
+  Product
 } from '@/types/api';
 
 // Create axios instance with enhanced configuration
@@ -100,3 +106,43 @@ export const deleteUser = (id: number): Promise<ApiResponse<User>> =>
     handleApiResponse(() => apiService.delete(`users/user/${id}`));
 
 export default apiService;
+
+
+// Cart methods
+export const addToCart = (data: AddToCartRequest): Promise<ApiResponse<Cart>> => 
+    handleApiResponse(() => apiService.post('/cart', data));
+
+export const updateCart = (data: UpdateCartRequest): Promise<ApiResponse<Cart>> => 
+    handleApiResponse(() => apiService.put('/cart', data));
+
+export const getCart = (): Promise<ApiResponse<Cart[]>> => 
+    handleApiResponse(() => apiService.get('/cart'));
+
+export const removeFromCart = (id: number): Promise<ApiResponse<Cart>> => 
+    handleApiResponse(() => apiService.delete(`/cart/${id}`));
+
+
+// Order methods
+export const createOrder = (data: CreateOrderRequest): Promise<ApiResponse<Order>> => 
+    handleApiResponse(() => apiService.post('/orders', data));
+
+export const getOrders = (): Promise<ApiResponse<Order[]>> => 
+    handleApiResponse(() => apiService.get('/orders'));
+
+export const getOrder = (id: number): Promise<ApiResponse<Order>> => 
+    handleApiResponse(() => apiService.get(`/orders/${id}`));
+
+export const updateOrder = (id: number, data: CreateOrderRequest): Promise<ApiResponse<Order>> => 
+    handleApiResponse(() => apiService.put(`/orders/${id}`, data));
+
+export const deleteOrder = (id: number): Promise<ApiResponse<Order>> => 
+    handleApiResponse(() => apiService.delete(`/orders/${id}`));
+
+
+
+// Product methods
+export const getProducts = (): Promise<ApiResponse<Product[]>> => 
+    handleApiResponse(() => apiService.get('/products'));
+
+export const getProduct = (id: number): Promise<ApiResponse<Product>> => 
+    handleApiResponse(() => apiService.get(`/products/${id}`));

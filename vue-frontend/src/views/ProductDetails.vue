@@ -177,7 +177,7 @@ const fetchProduct = async () => {
 
     if (response) {
       product.value = response
-      selectedImage.value = response.data?.images?.[0] || ''
+      selectedImage.value = response.images?.[0] || ''
     } else {
       ElMessage.error('Product not found')
       router.push('/')

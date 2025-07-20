@@ -17,6 +17,18 @@
       <el-tag v-if="product.discount > 0" class="discount-tag" type="danger" size="small">
         -{{ product.discount }}%
       </el-tag>
+      <el-button 
+        :class="['wishlist-btn', { 'in-wishlist': isInWishlist }]" 
+        size="small" 
+        circle 
+        @click.stop="toggleWishlist"
+        :title="isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'"
+      >
+        <el-icon :class="{ 'heart-filled': isInWishlist }">
+          <StarFilled v-if="isInWishlist" />
+          <Star v-else />
+        </el-icon>
+      </el-button>
     </div>
     
     <div class="product-content">
@@ -32,7 +44,7 @@
       <!-- Category -->
       <div class="product-category">
         <el-tag type="info" size="small" class="category-tag">
-          {{ product.category.name || 'Clothes' }}
+          {{ product.category || 'Clothes' }}
         </el-tag>
       </div>
       
@@ -61,27 +73,49 @@
 </template>
 
 <script setup lang="ts">
-import { Picture } from '@element-plus/icons-vue'
+import { Picture, Star, StarFilled } from '@element-plus/icons-vue'
 import type { Product } from '@/types/api'
 import { ElMessage } from 'element-plus'
 import { useCartStore } from '@/stores/cart'
+import { useWishlistStore } from '@/stores/wishlist'
+import { computed } from 'vue'
 
+// Store Instances
 const cartStore = useCartStore()
+const wishlistStore = useWishlistStore()
 
+// Props
 const props = defineProps<{
   product: Product
 }>()
 
+// Computed
+const isInWishlist = computed(() => wishlistStore.isInWishlist(props.product.id))
+
+// Emits
 const emit = defineEmits(['product-click'])
 
+// Methods
 const calculateDiscountedPrice = (): string => {
   const price = parseFloat(props.product.price.toString())
   return (price * (100 - props.product.discount) / 100).toFixed(0)
 }
 
-const addToCart = () => {
-  cartStore.addItem(props.product)
-  ElMessage.success('Product added to cart')
+const addToCart = (e: Event) => {
+  e.stopPropagation()
+  cartStore.addToCart(props.product)
+  ElMessage.success(`${props.product.title} added to cart`)
+}
+
+const toggleWishlist = (e: Event) => {
+  e.stopPropagation()
+  const wasAdded = wishlistStore.toggleWishlistItem(props.product)
+  ElMessage({
+    message: wasAdded 
+      ? `${props.product.title} added to wishlist` 
+      : `${props.product.title} removed from wishlist`,
+    type: wasAdded ? 'success' : 'info'
+  })
 }
 
 const handleProductClick = () => {
@@ -101,12 +135,6 @@ const handleProductClick = () => {
   flex-direction: column;
   position: relative;
   cursor: pointer;
-}
-
-.product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  border-color: #ff6600;
 }
 
 .product-image {
@@ -264,6 +292,47 @@ const handleProductClick = () => {
 
 .add-to-cart-btn:active {
   transform: translateY(0);
+}
+
+.wishlist-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.wishlist-btn:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+}
+
+.wishlist-btn.in-wishlist {
+  background: rgba(255, 102, 0, 0.1);
+}
+
+.wishlist-btn.in-wishlist .el-icon {
+  color: #ff6600;
+}
+
+.heart-filled {
+  color: #ff6600;
+  animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
 }
 
 /* Responsive adjustments */

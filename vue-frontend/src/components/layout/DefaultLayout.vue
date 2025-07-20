@@ -109,8 +109,6 @@
 import { ref, onMounted, computed } from 'vue'
 import { ArrowRight } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import AppHeader from '@/components/common/AppHeader.vue'
-import AppFooter from '../common/AppFooter.vue'
 import Carousel from '../Carousel.vue'
 import TrustFeatures from '../TrustFeatures.vue'
 import ProductCard from '../common/card/ProductCard.vue'

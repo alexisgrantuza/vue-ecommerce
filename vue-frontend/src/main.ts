@@ -9,7 +9,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import App from './App.vue'
 import router from './router'
 import { testApiConnection } from './utils/testApi'
-import { useUserAuthStore } from './stores/userAuth'
+import { useProductsStore } from './stores/product'
 
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -21,11 +21,11 @@ app.use(router)
 app.use(ElementPlus)
 
 
-const userStore = useUserAuthStore()
+const productsStore = useProductsStore()
 
-userStore.checkAuth()
-console.log(userStore.user)
+productsStore.fetchProducts()
+console.log(productsStore.products)
 
-testApiConnection()
+// testApiConnection()
 
 app.mount('#app')

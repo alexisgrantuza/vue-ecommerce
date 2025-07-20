@@ -108,10 +108,8 @@ import type { LoginRequest } from '@/types/api'
 import { formRules } from '@/utils/validators'
 import { loginSchema } from '@/libs/z'
 import z from 'zod'
-import { useUserAuthStore } from '@/stores/userAuth'
 import { useRouter } from 'vue-router'
 
-const userStore = useUserAuthStore()
 const router = useRouter()
 
 // Emits
@@ -150,17 +148,17 @@ const handleSubmit = async () => {
     
     const validatedData = loginSchema.parse(formData);
     
-    userStore.setError(null);
     
-    const { success, error } = await userStore.login(validatedData.email, validatedData.password);
+    
+    // const { success, error } = await userStore.login(validatedData.email, validatedData.password);
 
     
-    if (success) {
-      ElMessage.success('Login successful!');
-      emit('login-success');
-    } else {
-      ElMessage.error(error || 'Login failed');
-    }
+    // if (success) {
+    //   ElMessage.success('Login successful!');
+    //   emit('login-success');
+    // } else {
+    //   ElMessage.error(error || 'Login failed');
+    // }
   } catch (error) {
     if (error instanceof z.ZodError) {
       ElMessage.error(error.issues[0].message);

@@ -1,8 +1,8 @@
 // stores/products.ts
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import type { Product } from '@/types/api'
-import { getProducts, getProduct } from '@/services/productService'
+import { mockData } from '@/constants/mock-data'
 
 export const useProductsStore = defineStore('products', () => {
   // State
@@ -13,29 +13,45 @@ export const useProductsStore = defineStore('products', () => {
   // Getters
   const allProducts = computed(() => products.value)
 
+  // Initialize localStorage with mock data if empty
+  const initializeLocalStorage = () => {
+    if (!localStorage.getItem('products')) {
+      localStorage.setItem('products', JSON.stringify(mockData))
+      console.log('Seeded localStorage with mock products')
+    }
+  }
+
+  // Load products from localStorage
+  const loadProducts = () => {
+    const storedProducts = localStorage.getItem('products')
+    if (storedProducts) {
+      products.value = JSON.parse(storedProducts)
+      console.log(`Loaded ${products.value.length} products from localStorage`)
+    } else {
+      console.warn('No products found in localStorage')
+    }
+  }
+
   // Actions
   const fetchProducts = async () => {
     loading.value = true
     error.value = null
     
     try {
-      console.log('Starting to fetch products...')
-      const response = await getProducts()
-      console.log('Raw API Response:', response)
-
-      if (response && Array.isArray(response)) {
-        products.value = response
-        console.log(`Successfully loaded ${products.value.length} products`)
-        return null
-      } else {
-        const errorMessage = 'Failed to fetch products: Invalid response format'
-        error.value = errorMessage
-        console.error('API Error:', errorMessage, { response })
-        return errorMessage
-      }
+      // Initialize localStorage on first load
+      initializeLocalStorage()
+      
+      // Load products from localStorage
+      loadProducts()
+      
+      console.log(`Successfully loaded ${products.value.length} products from localStorage`)
+      return null
     } catch (err: any) {
-      console.error('Error fetching products:', err)
+      console.error('Error loading products:', err)
       error.value = err.message
+      return err.message
+    } finally {
+      loading.value = false
     }
   }
 
@@ -44,21 +60,26 @@ export const useProductsStore = defineStore('products', () => {
     error.value = null
     
     try {
-      const response = await getProduct(id)
-      console.log('Product API Response:', response)
+      // Make sure we have the latest data
+      if (products.value.length === 0) {
+        loadProducts()
+      }
       
-      if (response) {
-        console.log('Product loaded:', response)
-        return response 
+      const product = products.value.find(p => p.id === id)
+      
+      if (product) {
+        console.log('Product loaded:', product)
+        return product
       } else {
-        const errorMessage = 'Product not found or invalid format'
+        const errorMessage = `Product with ID ${id} not found`
         error.value = errorMessage
-        console.error('Product not found or invalid response:', errorMessage, { response })
+        console.error('Product not found:', errorMessage)
         return null
       }
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch product'
+      const errorMessage = err.message || 'Failed to fetch product'
       error.value = errorMessage
+      console.error('Error fetching product:', err)
       return null
     } finally {
       loading.value = false

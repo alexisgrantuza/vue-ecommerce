@@ -65,9 +65,10 @@ export interface Cart {
 }
 
 export interface Order {
-  id: number;
+  id: string;
   user_id: number;
   total_amount: number;
+  shipping: number;
   status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
   shipping_address: string;
   payment_method: string;
@@ -84,6 +85,16 @@ export interface OrderItem {
   price: number;
   created_at: Date;
 }
+
+export interface Wishlist {
+  id: number;
+  user_id: number;
+  product_id: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+
 
 // Extended types for API responses and joined data
 export interface CartWithProduct extends Cart {

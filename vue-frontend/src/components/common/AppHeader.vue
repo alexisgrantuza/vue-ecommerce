@@ -10,34 +10,12 @@
       <el-col :span="2">
         <el-link type="default" @click="handleLogoClick">Contact</el-link>
       </el-col>
-      <template v-if="isAuthenticated">
-    <el-col :span="4">
-      <el-dropdown>
-        <span class="user-account">
-          <el-text type="primary">
-            {{ userInitial }}
-          </el-text>
-          <el-text style="margin-left: 8px">{{ userName }}</el-text>
-          <el-icon><arrow-down /></el-icon>
-        </span>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item>My Profile</el-dropdown-item>
-            <el-dropdown-item>Orders</el-dropdown-item>
-            <el-dropdown-item divided @click="handleLogout">Logout</el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
-    </el-col>
-  </template>
-      <template v-else>
-        <el-col :span="2">
-          <el-link type="default" @click="handleLoginClick">Login</el-link>
-        </el-col>
-        <el-col :span="2">
-          <el-link type="default" @click="handleRegisterClick">Register</el-link>
-        </el-col>
-      </template>
+      <el-col :span="2">
+        <el-link type="default" @click="handleLoginClick">Login</el-link>
+      </el-col>
+      <el-col :span="2">
+        <el-link type="default" @click="handleRegisterClick">Register</el-link>
+      </el-col>
     </el-row>
   </el-header>
 
@@ -80,48 +58,46 @@
       <div class="user-actions">
         <!-- Wishlist -->
         <el-tooltip content="Wishlist" placement="bottom">
-          <el-badge :value="wishlistCount" :hidden="wishlistCount === 0">
-            <el-button :icon="Star" circle @click="handleWishlist" class="action-button"></el-button
-          ></el-badge>
+          <el-badge :value="wishlistStore.wishlistCount" :hidden="wishlistStore.wishlistCount === 0">
+            <el-button :icon="Star" circle @click="router.push('/wishlist')" class="action-button"></el-button>
+          </el-badge>
         </el-tooltip>
 
         <!-- Shopping Cart -->
         <el-tooltip content="Shopping Cart" placement="bottom">
           <el-badge :value="cartStore.itemCount" :hidden="cartStore.itemCount === 0" type="danger">
-            <el-button :icon="ShoppingCart" circle @click="handleCart" class="action-button" />
+            <el-button :icon="ShoppingCart" circle @click="router.push('/cart')" class="action-button" />
           </el-badge>
         </el-tooltip>
       </div>
+
+      <!-- Cart Drawer -->
+      <!-- Removed Cart Drawer -->
     </el-container>
   </el-header>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { Search, Star, ShoppingCart, ArrowDown } from '@element-plus/icons-vue'
+import { Search, Star, ShoppingCart } from '@element-plus/icons-vue'
 import { useCartStore } from '@/stores/cart'
-import { useUserAuthStore } from '@/stores/userAuth'
+import { useWishlistStore } from '@/stores/wishlist'
 import loginForm from '../form/loginForm.vue'
 import registerForm from '../form/registerForm.vue'
 
+// Router
 const router = useRouter()
+
+// Stores
 const cartStore = useCartStore()
-const userStore = useUserAuthStore()
+const wishlistStore = useWishlistStore()  
 
 // Reactive state
 const searchQuery = ref<string>('')
-const wishlistCount = ref<number>(0)
 const loginDialogVisible = ref<boolean>(false)
 const registerDialogVisible = ref<boolean>(false)
-
-console.log(userStore.checkAuth())
-
-// Computed properties
-const isAuthenticated = computed(() => userStore.isAuthenticated)
-const userName = computed(() => userStore.user?.name || 'My Account')
-const userInitial = computed(() => userStore.user?.name?.charAt(0)?.toUpperCase() || 'U')
 
 // Event handlers
 const handleLogoClick = (): void => {
@@ -166,28 +142,131 @@ const handleSearch = (): void => {
     ElMessage.warning('Please enter a search term')
   }
 }
-
-const handleWishlist = (): void => {
-  wishlistCount.value++
-}
-
-const handleCart = (): void => {
-  router.push('/cart')
-}
-
-const handleLogout = async (): Promise<void> => {
-  try {
-    await userStore.logout()
-    ElMessage.success('Successfully logged out')
-    router.push('/')
-  } catch (error) {
-    console.error('Logout error:', error)
-    ElMessage.error('Failed to log out. Please try again.')
-  }
-}
 </script>
 
 <style scoped>
+/* Cart Drawer Styles */
+.cart-items {
+  padding: 0 16px;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.cart-item {
+  display: flex;
+  padding: 16px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-item-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  margin-right: 16px;
+  object-fit: cover;
+}
+
+.cart-item-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cart-item-details h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-item-price {
+  margin-bottom: 8px;
+}
+
+.cart-item-price span:first-child {
+  font-weight: 600;
+  color: #f56c6c;
+  margin-right: 8px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #999 !important;
+  font-size: 12px;
+}
+
+.cart-item-quantity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cart-item-quantity .el-button {
+  padding: 4px 8px;
+  min-width: 28px;
+}
+
+.cart-item-quantity span {
+  min-width: 24px;
+  text-align: center;
+}
+
+.remove-item {
+  margin-left: auto;
+  padding: 0 8px;
+  font-size: 12px;
+}
+
+.cart-summary {
+  padding: 16px;
+  border-top: 1px solid #eee;
+  margin-top: 16px;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.total-amount {
+  color: #f56c6c;
+  font-size: 18px;
+}
+
+.checkout-btn {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.empty-cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.empty-cart .el-button {
+  margin-top: 20px;
+}
+
+/* Header styles */
 .app-header {
   background-color: #ffffff;
   border-bottom: 1px solid #e4e7ed;

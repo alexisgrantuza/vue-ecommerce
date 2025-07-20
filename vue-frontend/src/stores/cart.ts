@@ -1,50 +1,111 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import type { Product } from '@/types/api'
-import type { Cart } from '@/types/api'
 
-
+interface CartItem {
+  product: Product
+  quantity: number
+}
 
 export const useCartStore = defineStore('cart', () => {
-  const items = ref<Cart[]>([])
-  
+  // State
+  const cartItems = ref<CartItem[]>([])
+  const isInitialized = ref(false)
+
+  // Initialize from localStorage
+  const initializeCart = () => {
+    if (isInitialized.value) return
+    
+    const savedCart = localStorage.getItem('cart')
+    if (savedCart) {
+      try {
+        cartItems.value = JSON.parse(savedCart)
+      } catch (e) {
+        console.error('Failed to parse cart from localStorage', e)
+        cartItems.value = []
+      }
+    }
+    isInitialized.value = true
+  }
+
+  // Save to localStorage when cart changes
+  const saveCart = () => {
+    localStorage.setItem('cart', JSON.stringify(cartItems.value))
+  }
+
+  // Watch for changes and save to localStorage
+  watch(cartItems, () => {
+    saveCart()
+  }, { deep: true })
+
+  // Getters
   const itemCount = computed(() => 
-    items.value.reduce((total: number, item: Cart) => total + item.quantity, 0)
+    cartItems.value.reduce((total, item) => total + item.quantity, 0)
   )
 
-  function addItem(product: Product) {
-    const existingItem = items.value.find((item: Cart) => item.product_id === product.id)
+  const cartTotal = computed(() => 
+    cartItems.value.reduce((total, item) => {
+      const price = item.product.discount > 0
+        ? (item.product.price * (100 - item.product.discount) / 100)
+        : item.product.price
+      return total + (price * item.quantity)
+    }, 0)
+  )
+
+  // Actions
+  const addToCart = (product: Product, quantity: number = 1) => {
+    const existingItem = cartItems.value.find(item => item.product.id === product.id)
+    
     if (existingItem) {
-      existingItem.quantity++
+      existingItem.quantity += quantity
     } else {
-      items.value.push({ id: 0, user_id: user.id, product_id: product.id, quantity: 1, created_at: new Date(), updated_at: new Date() })
+      cartItems.value.push({
+        product,
+        quantity
+      })
     }
   }
 
-  function removeItem(productId: number) {
-    const index = items.value.findIndex((item: Cart) => item.product_id === productId)
-    if (index !== -1) {
-      items.value.splice(index, 1)
-    }
-  }
-
-  function updateQuantity(productId: number, quantity: number) {
-    const item = items.value.find((item: Cart) => item.product_id === productId)
+  const updateQuantity = (productId: number, quantity: number) => {
+    const item = cartItems.value.find(item => item.product.id === productId)
     if (item) {
-      item.quantity = quantity
+      if (quantity <= 0) {
+        removeFromCart(productId)
+      } else {
+        item.quantity = quantity
+      }
     }
   }
 
-  function clearCart() {
-    items.value = []
+  const removeFromCart = (productId: number) => {
+    const index = cartItems.value.findIndex(item => item.product.id === productId)
+    if (index !== -1) {
+      cartItems.value.splice(index, 1)
+    }
   }
+
+  const clearCart = () => {
+    cartItems.value = []
+  }
+
+  // Initialize on store creation
+  initializeCart()
 
   return {
-    items,
+    // State
+    cartItems,
+    
+    // Getters
     itemCount,
-    addItem,
-    removeItem,
+    cartTotal,
+    
+    // Actions
+    addToCart,
     updateQuantity,
-    clearCart
+    removeFromCart,
+    clearCart,
+    
+    // For debugging
+    saveCart
   }
 })

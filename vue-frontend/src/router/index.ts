@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/Home/HomeView.vue'
+import WishlistProducts from '@/views/Wishlist/WishlistProducts.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,9 +31,16 @@ const router = createRouter({
           component: () => import('../views/Cart/CartView.vue'),
         },
         {
+          path: 'wishlist',
+          name: 'wishlist',
+          component: WishlistProducts,
+          meta: { requiresAuth: true }
+        },
+        {
           path: 'checkout',
           name: 'checkout',
           component: () => import('../views/Checkout/CheckoutsView.vue'),
+          meta: { requiresAuth: true }
         },
       ]
     },
