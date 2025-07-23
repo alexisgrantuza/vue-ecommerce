@@ -192,7 +192,7 @@ export const mockData = [
   {
     "id": 11,
     "title": "Sunglasses",
-    "description": "Polarized sunglasses with UV400 protection. Lightweight frame with anti-reflective coating for optimal visual clarity.",
+    "description": "Polarized sunglasses with UV400 protection and lightweight frame. Classic aviator style for any occasion.",
     "price": 79.99,
     "category": "Accessories",
     "images": [
@@ -653,7 +653,7 @@ export const mockData = [
     "category": "Sports & Fitness",
     "images": [
       "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500",
-      "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=500"
+      "https://images.unsplash.com/photo-1434494878577-2f02dc6ca35d?w=500"
     ],
     "is_active": true,
     "rating": 4.3,
@@ -1960,7 +1960,16 @@ export const users = [
     "email": "john.doe@example.com",
     "password": "password123",
     "phone": "1234567890",
-    "address": "123 Main St, Anytown, USA",
+    "address": {
+      "id": 1,
+      "number": 123,
+      "street": "Main St",
+      "city": "Manila",
+      "state": "Metro Manila",
+      "zipCode": "1000",
+      "country": "Philippines",
+      "isDefault": true
+    },
     "role": "customer",
     "created_at": "2024-01-15T10:30:00Z",
     "updated_at": "2024-07-10T14:22:00Z"
@@ -1971,9 +1980,55 @@ export const users = [
     "email": "jane.smith@example.com",
     "password": "password123",
     "phone": "0987654321",
-    "address": "456 Elm St, Anytown, USA",
+    "address": {
+      "id": 2,
+      "number": 456,
+      "street": "Elm St",
+      "city": "Quezon City",
+      "state": "Metro Manila",
+      "zipCode": "1100",
+      "country": "Philippines",
+      "isDefault": true
+    },
     "role": "customer",
     "created_at": "2024-02-20T09:15:00Z",
     "updated_at": "2024-07-15T16:45:00Z"
+  }
+]
+
+// Add a separate addresses array for user addresses
+export const userAddresses = [
+  {
+    "id": 1,
+    "number": "123",
+    "street": "Main St",
+    "city": "Manila",
+    "state": "Metro Manila",
+    "zipCode": "1000",
+    "country": "Philippines",
+    "isDefault": true,
+    "userId": 1
   },
+  {
+    "id": 2,
+    "number": "456",
+    "street": "Elm St",
+    "city": "Quezon City",
+    "state": "Metro Manila",
+    "zipCode": "1100",
+    "country": "Philippines",
+    "isDefault": true,
+    "userId": 2
+  },
+  {
+    "id": 3,
+    "number": "789",
+    "street": "Oak St",
+    "city": "Makati",
+    "state": "Metro Manila",
+    "zipCode": "1200",
+    "country": "Philippines",
+    "isDefault": false,
+    "userId": 1
+  }
 ]

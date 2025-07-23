@@ -5,10 +5,11 @@ export interface User {
   email: string;
   password: string;
   phone?: string;
-  address?: string;
+  address?: Address[];
   created_at: Date;
   updated_at: Date;
 }
+
 
 export interface Category {
   id: number;
@@ -73,17 +74,27 @@ export interface Order {
   shipping_address: string;
   payment_method: string;
   payment_status: "pending" | "paid" | "failed";
-  created_at: Date;
-  updated_at: Date;
+  tracking_number?: string;
+  created_at: Date | string;
+  updated_at: Date | string;
+  shipped_at?: Date | string | null;
+  delivered_at?: Date | string | null;
+  items?: OrderItemWithProduct[];
 }
 
 export interface OrderItem {
   id: number;
-  order_id: number;
+  order_id: number | string;
   product_id: number;
   quantity: number;
   price: number;
-  created_at: Date;
+  created_at: Date | string;
+  updated_at?: Date | string;
+  product?: Product;
+}
+
+export interface OrderItemWithProduct extends OrderItem {
+  product: Product;
 }
 
 export interface Wishlist {
@@ -92,6 +103,17 @@ export interface Wishlist {
   product_id: number;
   created_at: Date;
   updated_at: Date;
+}
+
+export interface Address {
+  id: number;
+  houseNumber: string;
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  isDefault: boolean;
 }
 
 
@@ -127,7 +149,7 @@ export interface RegisterRequest {
   email: string;
   password: string;
   phone?: string;
-  address?: string;
+  address?: Address;
   confirmPassword?: string;
   agreeTerms?: boolean;
 }
@@ -142,6 +164,6 @@ export interface UpdateCartRequest {
 }
 
 export interface CreateOrderRequest {
-  shipping_address: string;
+  shipping_address: Address;
   payment_method: string;
 }

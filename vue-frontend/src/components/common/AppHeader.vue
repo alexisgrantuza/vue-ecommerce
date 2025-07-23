@@ -58,15 +58,28 @@
       <div class="user-actions">
         <!-- Wishlist -->
         <el-tooltip content="Wishlist" placement="bottom">
-          <el-badge :value="wishlistStore.wishlistCount" :hidden="wishlistStore.wishlistCount === 0">
-            <el-button :icon="Star" circle @click="router.push('/wishlist')" class="action-button"></el-button>
+          <el-badge
+            :value="wishlistStore.wishlistCount"
+            :hidden="wishlistStore.wishlistCount === 0"
+          >
+            <el-button
+              :icon="Star"
+              circle
+              @click="router.push('/wishlist')"
+              class="action-button"
+            ></el-button>
           </el-badge>
         </el-tooltip>
 
         <!-- Shopping Cart -->
         <el-tooltip content="Shopping Cart" placement="bottom">
           <el-badge :value="cartStore.itemCount" :hidden="cartStore.itemCount === 0" type="danger">
-            <el-button :icon="ShoppingCart" circle @click="router.push('/cart')" class="action-button" />
+            <el-button
+              :icon="ShoppingCart"
+              circle
+              @click="router.push('/cart')"
+              class="action-button"
+            />
           </el-badge>
         </el-tooltip>
       </div>
@@ -92,7 +105,7 @@ const router = useRouter()
 
 // Stores
 const cartStore = useCartStore()
-const wishlistStore = useWishlistStore()  
+const wishlistStore = useWishlistStore()
 
 // Reactive state
 const searchQuery = ref<string>('')
