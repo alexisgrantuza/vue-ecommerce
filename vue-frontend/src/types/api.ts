@@ -74,7 +74,7 @@ export interface Order {
   shipping_address: string;
   payment_method: string;
   payment_status: "pending" | "paid" | "failed";
-  tracking_number?: string;
+  tracking_number?: string | null;
   created_at: Date | string;
   updated_at: Date | string;
   shipped_at?: Date | string | null;
@@ -123,8 +123,8 @@ export interface CartWithProduct extends Cart {
   product: Product;
 }
 
-export interface OrderWithItems extends Order {
-  items: (OrderItem & { product: Product })[];
+export interface OrderWithItems extends Omit<Order, 'items'> {
+  items: (OrderItem & { product: Product })[]
 }
 
 export interface AuthRequest extends Request {

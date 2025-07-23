@@ -2,6 +2,7 @@ import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useCartStore } from '@/stores/cart'
+import { useOrderStore } from '@/stores/order'
 import type { Address } from '@/types/api'
 
 interface PaymentMethod {
@@ -169,15 +170,31 @@ export function useCheckout() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500))
       
-      // Generate order ID
-      const orderId = 'ORD' + Math.floor(100000 + Math.random() * 900000)
+      // Prepare shipping info with cart items
+      const shippingInfo = {
+        address: `${selectedAddress.value.street}, ${selectedAddress.value.city}, ${selectedAddress.value.state} ${selectedAddress.value.zipCode}`,
+        paymentMethod: selectedPaymentMethod.value.id,
+        items: cartItems.value.map(item => ({
+          product_id: item.product.id,
+          quantity: item.quantity,
+          price: item.product.price,
+          product: item.product
+        }))
+      }
       
-      // Don't clear cart to allow order tracking
-      // Cart items will remain for order tracking
+      // Save order to localStorage via Pinia store
+      const orderStore = useOrderStore()
+      const order = orderStore.createOrder(total.value, shippingInfo)
+      
+      console.log('Order created:', order)
+      
+      // Clear the cart after successful order
+      cartStore.clearCart()
       
       ElMessage.success('Your order has been placed successfully! You can track your order in the orders section.')
       
-      return orderId
+      // Return the actual order ID from the created order
+      return order.id
     } catch (error) {
       console.error('Order placement failed:', error)
       ElMessage.error('Failed to place order. Please try again.')

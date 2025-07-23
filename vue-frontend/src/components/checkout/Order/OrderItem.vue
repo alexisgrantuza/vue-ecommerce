@@ -29,7 +29,6 @@
 
 <script setup lang="ts">
 import type { Category } from '@/types/api'
-import { defineProps } from 'vue'
 
 defineProps<{
   item: {

@@ -15,9 +15,7 @@
   </template>
   
   <script setup lang="ts">
-  import { defineProps } from 'vue'
-  
-  defineProps<{
+defineProps<{
     currentStep: number
     steps: string[]
   }>()

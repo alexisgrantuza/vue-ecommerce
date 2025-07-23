@@ -155,7 +155,7 @@
 import { ref, reactive } from 'vue'
 import { ElMessage, type FormInstance } from 'element-plus'
 import { User, Message, Phone, Lock } from '@element-plus/icons-vue'
-import type { RegisterRequest } from '@/types/api'
+import type { RegisterRequest, Address } from '@/types/api'
 import { useRouter } from 'vue-router'
 import { formRules } from '@/utils/validators'
 import { registerSchema } from '@/libs/z'
@@ -179,7 +179,7 @@ const form = reactive<RegisterRequest>({
   name: '',
   email: '',
   phone: '',
-  address: '',
+  address: {} as Address,
   password: '',
   confirmPassword: '',
   agreeTerms: false,

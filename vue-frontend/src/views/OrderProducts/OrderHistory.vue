@@ -16,16 +16,38 @@
     </div>
 
     <div v-else class="orders-list">
-      <el-card v-for="order in filteredOrders" :key="order.id" class="order-card">
+      <el-card 
+        v-for="order in filteredOrders" 
+        :key="order.id" 
+        :id="`order-${order.id}`"
+        class="order-card"
+      >
         <div class="order-card-header">
           <div class="order-info">
             <div class="order-number">Order #{{ order.id }}</div>
             <div class="order-date">Placed on {{ formatDate(order.created_at) }}</div>
           </div>
-          <div class="order-status">
-            <el-tag :type="getStatusType(order.status)" effect="plain">
-              {{ formatStatus(order.status) }}
-            </el-tag>
+          <div class="order-header-actions">
+            <div class="order-status">
+              <el-tag :type="getStatusType(order.status)" effect="plain">
+                {{ formatStatus(order.status) }}
+              </el-tag>
+            </div>
+            <el-dropdown trigger="click" @command="handleCommand($event, order)">
+              <el-button type="text" class="meatball-menu" @click.stop>
+                <el-icon><MoreFilled /></el-icon>
+              </el-button>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item command="view">
+                    <el-icon><View /></el-icon> View Details
+                  </el-dropdown-item>
+                  <el-dropdown-item command="delete" divided class="delete-action">
+                    <el-icon><Delete /></el-icon> Delete Order
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
           </div>
         </div>
 
@@ -33,7 +55,11 @@
 
         <div class="order-items">
           <div v-for="item in order.items" :key="item.id" class="order-item">
-            <el-image :src="item.product.images[0]" fit="cover" class="product-image" />
+            <el-image 
+              :src="item.product.images?.[0] || '/placeholder-image.jpg'" 
+              fit="cover" 
+              class="product-image" 
+            />
             <div class="item-details">
               <h4>{{ item.product.title }}</h4>
               <div class="item-meta">
@@ -89,21 +115,179 @@
         </div>
       </div>
     </el-dialog>
+
+    <!-- Order Details Dialog -->
+    <el-dialog 
+      v-model="showOrderDetails" 
+      :title="`Order #${selectedOrder?.id}`" 
+      width="800px"
+      :before-close="closeOrderDetails"
+    >
+      <div v-if="selectedOrder" class="order-details">
+        <!-- Order Status -->
+        <div class="order-status-section">
+          <h3>Order Status</h3>
+          <el-select 
+            v-model="selectedOrder.status" 
+            placeholder="Select status"
+            @change="updateOrderStatus(selectedOrder)"
+            class="status-selector"
+          >
+            <el-option
+              v-for="status in orderStatuses.filter(s => s.value !== 'all')"
+              :key="status.value"
+              :label="status.label"
+              :value="status.value"
+            />
+          </el-select>
+          
+          <el-timeline class="timeline">
+            <el-timeline-item
+              v-for="(step, index) in orderTimeline"
+              :key="index"
+              :type="getTimelineItemType(step, index)"
+              :timestamp="getTimelineTimestamp(step, selectedOrder)"
+            >
+              {{ step.label }}
+            </el-timeline-item>
+          </el-timeline>
+        </div>
+
+        <!-- Order Items -->
+        <div class="order-items-section">
+          <h3>Order Items</h3>
+          <div class="order-items-list">
+            <div v-for="item in selectedOrder.items" :key="item.id" class="order-item-detail">
+              <el-image 
+                :src="item.product.images?.[0] || '/placeholder-image.jpg'" 
+                class="product-image"
+                fit="cover"
+              />
+              <div class="item-details">
+                <h4>{{ item.product.title }}</h4>
+                <p class="item-sku">SKU: {{ item.product.id || 'N/A' }}</p>
+                <div class="item-meta">
+                  <span class="price">₱{{ item.price.toFixed(2) }}</span>
+                  <span class="quantity">x{{ item.quantity }}</span>
+                  <span class="subtotal">₱{{ (item.price * item.quantity).toFixed(2) }}</span>
+                </div>
+              </div>
+              <el-button 
+                type="danger" 
+                size="small" 
+                :icon="Delete" 
+                circle 
+                @click="removeOrderItem(selectedOrder, item)"
+                class="remove-item-btn"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+          <h3>Order Summary</h3>
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>₱{{ calculateSubtotal(selectedOrder).toFixed(2) }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span>₱{{ (selectedOrder.shipping || 0).toFixed(2) }}</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span>₱{{ selectedOrder.total_amount.toFixed(2) }}</span>
+          </div>
+        </div>
+
+        <!-- Order Information -->
+        <div class="order-info-section">
+          <div class="shipping-info">
+            <h3>Shipping Information</h3>
+            <p>{{ selectedOrder.shipping_address }}</p>
+            <p v-if="selectedOrder.tracking_number">
+              <strong>Tracking Number:</strong> {{ selectedOrder.tracking_number }}
+            </p>
+          </div>
+          <div class="payment-info">
+            <h3>Payment Information</h3>
+            <p><strong>Method:</strong> {{ formatPaymentMethod(selectedOrder.payment_method) }}</p>
+            <p><strong>Status:</strong> {{ selectedOrder.payment_status }}</p>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, nextTick } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { LocationInformation } from '@element-plus/icons-vue'
+import { LocationInformation, MoreFilled, View, Delete } from '@element-plus/icons-vue'
+import { useOrderStore } from '@/stores/order'
 import type { Order, OrderItem, OrderWithItems } from '@/types/api'
 
-// Mock data - Replace with actual API calls
+const router = useRouter()
+const route = useRoute()
+const orderStore = useOrderStore()
+
+// Component state
 const loading = ref(true)
-const orders = ref<OrderWithItems[]>([])
+const activeOrderId = ref<string | null>(null)
+
+// Handle meatball menu commands
+const handleCommand = async (command: string, order: OrderWithItems) => {
+  if (command === 'view') {
+    // Set the selected order and show the details dialog
+    selectedOrder.value = { ...order }
+    showOrderDetails.value = true
+    
+    // Update URL with orderId
+    router.push({ 
+      path: '/order-history', 
+      query: { orderId: order.id } 
+    })
+  } else if (command === 'delete') {
+    try {
+      await ElMessageBox.confirm(
+        'Are you sure you want to delete this order? This action cannot be undone.',
+        'Delete Order',
+        {
+          confirmButtonText: 'Delete',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+          confirmButtonClass: 'el-button--danger',
+        }
+      )
+      // Call the store action to delete the order
+      await orderStore.deleteOrder(order.id)
+      ElMessage.success('Order deleted successfully')
+    } catch (error) {
+      // User cancelled or error occurred
+      if (error !== 'cancel') {
+        console.error('Error deleting order:', error)
+        ElMessage.error('Failed to delete order. Please try again.')
+      }
+    }
+  }
+}
 const activeStatus = ref('all')
 const showTrackingDialog = ref(false)
+const showOrderDetails = ref(false)
 const selectedOrder = ref<OrderWithItems | null>(null)
+
+// Order timeline for the status tracker
+const orderTimeline = [
+  { status: 'pending', label: 'Order Placed' },
+  { status: 'processing', label: 'Processing' },
+  { status: 'shipped', label: 'Shipped' },
+  { status: 'delivered', label: 'Delivered' }
+]
+
+// Use computed to get orders from store
+const orders = computed(() => orderStore.orders)
 
 // Order statuses for filtering
 const orderStatuses = [
@@ -115,100 +299,58 @@ const orderStatuses = [
   { label: 'Cancelled', value: 'cancelled' },
 ]
 
-// Fetch orders from API
+// Fetch orders from store
 const fetchOrders = async () => {
   try {
     loading.value = true
-    // TODO: Replace with actual API call
-    // const response = await api.get('/api/orders')
-    // orders.value = response.data
+    console.log('Fetching orders...')
     
-    // Mock data - remove this in production
-    setTimeout(() => {
-      const mockProduct1 = {
-        id: 101,
-        title: 'Wireless Earbuds Pro',
-        description: 'High-quality wireless earbuds with noise cancellation',
-        price: 1099.99,
-        category: { id: 1, name: 'Electronics' },
-        images: ['https://via.placeholder.com/150'],
-        is_active: true,
-        rating: 4.5,
-        num_reviews: 128,
-        discount: 0,
-        popular: true,
-        onSale: false,
-        created_at: '2023-01-01T00:00:00Z',
-        updated_at: '2023-01-01T00:00:00Z'
-      }
-
-      const mockProduct2 = {
-        id: 102,
-        title: 'Phone Case',
-        description: 'Durable phone case with shock absorption',
-        price: 250.00,
-        category: { id: 2, name: 'Accessories' },
-        images: ['https://via.placeholder.com/150'],
-        is_active: true,
-        rating: 4.2,
-        num_reviews: 89,
-        discount: 0,
-        popular: true,
-        onSale: false,
-        created_at: '2023-01-15T00:00:00Z',
-        updated_at: '2023-01-15T00:00:00Z'
-      }
-
-      const mockOrder: OrderWithItems = {
-        id: 'ORD123456',
-        user_id: 1,
-        total_amount: 2499.99,
-        shipping: 50.00,
-        status: 'shipped',
-        shipping_address: '123 Main St, City, Country',
-        payment_method: 'cod',
-        payment_status: 'pending',
-        tracking_number: 'TRK123456789',
-        created_at: '2023-06-15T10:30:00Z',
-        updated_at: '2023-06-16T14:20:00Z',
-        shipped_at: '2023-06-16T14:20:00Z',
-        delivered_at: null,
-        items: [
-          {
-            id: 1,
-            order_id: 'ORD123456',
-            product_id: 101,
-            quantity: 2,
-            price: 1099.99,
-            created_at: '2023-06-15T10:30:00Z',
-            updated_at: '2023-06-15T10:30:00Z',
-            product: mockProduct1
-          },
-          {
-            id: 2,
-            order_id: 'ORD123456',
-            product_id: 102,
-            quantity: 1,
-            price: 250.00,
-            created_at: '2023-06-15T10:30:00Z',
-            updated_at: '2023-06-15T10:30:00Z',
-            product: mockProduct2
-          }
-        ]
-      }
-
-      orders.value = [mockOrder]
-      loading.value = false
-    }, 1000)
+    // Fetch orders from the store
+    await orderStore.fetchOrderHistory()
+    
+    console.log('Orders fetched:', orders.value)
+    
+    // If we came from checkout with a new order ID, scroll to it
+    const orderId = route.query.orderId as string
+    if (orderId) {
+      console.log('Looking for order with ID:', orderId)
+      
+      // Wait for DOM to update
+      await nextTick()
+      
+      // Small delay to ensure the DOM is fully rendered
+      setTimeout(() => {
+        // Try to find the order in our data first
+        const targetOrder = orders.value.find(order => order.id === orderId)
+        if (targetOrder) {
+          console.log('Found target order:', targetOrder)
+          ElMessage.success(`Order ${orderId} has been placed successfully!`)
+        }
+        
+        // Try to scroll to the order element
+        const orderElement = document.getElementById(`order-${orderId}`)
+        if (orderElement) {
+          orderElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          console.log('Scrolled to order element')
+        } else {
+          console.log('Order element not found in DOM')
+        }
+        
+        // Remove the orderId from URL after processing
+        router.replace({ query: {} })
+      }, 1000)
+    }
   } catch (error) {
     console.error('Failed to fetch orders:', error)
     ElMessage.error('Failed to load orders. Please try again.')
+  } finally {
     loading.value = false
   }
 }
 
 // Filter orders based on active status
 const filteredOrders = computed(() => {
+  console.log('Filtering orders. Active status:', activeStatus.value, 'Orders:', orders.value)
   if (activeStatus.value === 'all') return orders.value
   return orders.value.filter(order => order.status === activeStatus.value)
 })
@@ -223,6 +365,98 @@ const formatDate = (date: Date | string) => {
     hour: '2-digit',
     minute: '2-digit'
   })
+}
+
+// Close order details dialog
+const closeOrderDetails = () => {
+  showOrderDetails.value = false
+  // Remove orderId from URL when closing the dialog
+  router.replace({ query: {} })
+}
+
+// Update order status
+const updateOrderStatus = async (order: OrderWithItems) => {
+  try {
+    await orderStore.updateOrderStatus(order.id, order.status)
+    ElMessage.success('Order status updated successfully')
+  } catch (error) {
+    console.error('Error updating order status:', error)
+    ElMessage.error('Failed to update order status')
+  }
+}
+
+// Remove item from order
+const removeOrderItem = async (order: OrderWithItems, item: OrderItem) => {
+  try {
+    await ElMessageBox.confirm(
+      'Are you sure you want to remove this item from the order?',
+      'Remove Item',
+      {
+        confirmButtonText: 'Remove',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+        confirmButtonClass: 'el-button--danger',
+      }
+    )
+    
+    // In a real app, this would be an API call
+    const itemIndex = order.items.findIndex(i => i.id === item.id)
+    if (itemIndex !== -1) {
+      order.items.splice(itemIndex, 1)
+      
+      // Update order total
+      order.total_amount = calculateSubtotal(order) + (order.shipping || 0)
+      
+      // Save changes to the store
+      orderStore.saveToLocalStorage()
+      
+      ElMessage.success('Item removed from order')
+    }
+  } catch (error) {
+    if (error !== 'cancel') {
+      console.error('Error removing item:', error)
+      ElMessage.error('Failed to remove item')
+    }
+  }
+}
+
+// Calculate subtotal for order items
+const calculateSubtotal = (order: OrderWithItems) => {
+  return order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+}
+
+// Format payment method for display
+const formatPaymentMethod = (method: string) => {
+  if (!method) return 'N/A'
+  return method
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
+
+// Get timeline item type based on order status
+const getTimelineItemType = (step: { status: string }, index: number) => {
+  if (!selectedOrder.value) return 'primary' as const
+  
+  const currentStepIndex = orderTimeline.findIndex(s => s.status === selectedOrder.value?.status)
+  
+  if (index < currentStepIndex) return 'success' as const
+  if (index === currentStepIndex) return 'primary' as const
+  return 'info' as const
+}
+
+// Get timeline timestamp
+const getTimelineTimestamp = (step: { status: string }, order: OrderWithItems) => {
+  switch (step.status) {
+    case 'pending':
+      return formatDate(order.created_at)
+    case 'shipped':
+      return order.shipped_at ? formatDate(order.shipped_at) : ''
+    case 'delivered':
+      return order.delivered_at ? formatDate(order.delivered_at) : ''
+    default:
+      return ''
+  }
 }
 
 // Format status for display
@@ -299,14 +533,8 @@ const cancelOrder = async (order: OrderWithItems) => {
       }
     )
     
-    // TODO: Call API to cancel order
-    // await api.put(`/api/orders/${order.id}/cancel`)
-    
-    // Update local state
-    const index = orders.value.findIndex(o => o.id === order.id)
-    if (index !== -1) {
-      orders.value[index].status = 'cancelled'
-    }
+    // Update order status using the store method
+    orderStore.updateOrderStatus(order.id, 'cancelled')
     
     ElMessage.success('Order has been cancelled')
   } catch (error) {
@@ -340,6 +568,196 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.order-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.order-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.meatball-menu {
+  padding: 4px;
+  margin-left: 4px;
+  color: #606266;
+  transition: all 0.3s;
+}
+
+.meatball-menu:hover {
+  color: #409EFF;
+  background-color: #f5f7fa;
+  border-radius: 4px;
+}
+
+.delete-action {
+  color: #F56C6C;
+}
+
+.delete-action:hover {
+  color: #fff;
+  background-color: #F56C6C;
+}
+
+/* Order Details Dialog Styles */
+.order-details {
+  padding: 0 10px;
+}
+
+.order-status-section {
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.status-selector {
+  margin: 16px 0;
+  width: 200px;
+}
+
+.timeline {
+  margin-top: 20px;
+  padding-left: 10px;
+}
+
+.order-items-section {
+  margin: 24px 0;
+}
+
+.order-items-list {
+  border: 1px solid #ebeef5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.order-item-detail {
+  display: flex;
+  padding: 16px;
+  border-bottom: 1px solid #ebeef5;
+  align-items: flex-start;
+  position: relative;
+}
+
+.order-item-detail:last-child {
+  border-bottom: none;
+}
+
+.order-item-detail .product-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 4px;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.order-item-detail .item-details {
+  flex-grow: 1;
+}
+
+.order-item-detail h4 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.item-sku {
+  color: #909399;
+  font-size: 13px;
+  margin: 0 0 8px;
+}
+
+.item-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.item-meta .price {
+  font-weight: 600;
+  color: #f56c6c;
+}
+
+.item-meta .subtotal {
+  margin-left: auto;
+  font-weight: 600;
+}
+
+.remove-item-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.remove-item-btn:hover {
+  opacity: 1;
+}
+
+.order-summary {
+  margin: 24px 0;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #dcdfe6;
+}
+
+.summary-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  padding-top: 8px;
+  border-top: 1px solid #dcdfe6;
+}
+
+.summary-row.total {
+  font-size: 16px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.order-info-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.shipping-info,
+.payment-info {
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.shipping-info h3,
+.payment-info h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 16px;
+  color: #303133;
+}
+
+.shipping-info p,
+.payment-info p {
+  margin: 8px 0;
+  color: #606266;
+  font-size: 14px;
+}
+
 .order-history-container {
   max-width: 1200px;
   margin: 0 auto;

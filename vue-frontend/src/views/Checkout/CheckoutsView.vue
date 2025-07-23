@@ -221,7 +221,7 @@ const handlePlaceOrder = async () => {
   const orderId = await placeOrder()
   if (orderId) {
     router.push({
-      name: '/order-history',
+      name: 'order-history', // Remove the leading slash to match the route name
       query: { orderId },
     })
   }
