@@ -93,10 +93,10 @@
         type="primary"
         size="large"
         class="register-button"
-        :loading="loading"
+        :loading="userStore.loading"
         native-type="submit"
       >
-        {{ loading ? 'Creating Account...' : 'Create Account' }}
+        {{ userStore.loading ? 'Creating Account...' : 'Create Account' }}
       </el-button>
     </el-form>
 
@@ -145,76 +145,58 @@
     <div class="login-link">
       <div class="signin-prompt">
         Already have an account?
-        <el-link type="primary" @click="handleShowLogin" class="login-link">Sign in</el-link>
+        <el-link type="primary" @click="handleShowLogin" class="login-link-btn">Sign in</el-link>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { ElMessage, type FormInstance } from 'element-plus'
 import { User, Message, Phone, Lock } from '@element-plus/icons-vue'
 import type { RegisterRequest, Address } from '@/types/api'
 import { useRouter } from 'vue-router'
-import { formRules } from '@/utils/validators'
+import { useUserAuthStore } from '@/stores/userAuth'
 import { registerSchema } from '@/libs/z'
 import z from 'zod'
+import { formRules } from '@/utils/validators'
 
 const router = useRouter()
-const rules = formRules
+const userStore = useUserAuthStore()
 
 // Emits
-const emit = defineEmits(['show-login'])
+const emit = defineEmits(['show-register', 'register-success'])
 
 const handleShowLogin = () => {
-  emit('show-login')
+  emit('show-register')
 }
 
 // Form reference
 const registerForm = ref<FormInstance>()
 
-// Form data
-const form = reactive<RegisterRequest>({
+// Form data with proper typing
+interface FormData extends RegisterRequest {
+  addressString?: string
+}
+
+const form = reactive<FormData>({
   name: '',
   email: '',
   phone: '',
-  address: {} as Address,
   password: '',
   confirmPassword: '',
   agreeTerms: false,
 })
 
-// Loading state
-const loading = ref(false)
 
-// Add confirm password validation to the rules
-rules.confirmPassword = [
-  {
-    validator: (_, value, callback) => {
-      if (value !== form.password) {
-        callback(new Error('Passwords do not match'))
-      } else {
-        callback()
-      }
-    },
-    trigger: 'blur',
-  },
-]
 
-// Add terms agreement validation to the rules
-rules.agreeTerms = [
-  {
-    validator: (_, value, callback) => {
-      if (!value) {
-        callback(new Error('You must accept the terms and conditions'))
-      } else {
-        callback()
-      }
-    },
-    trigger: 'change',
-  },
-]
+
+
+// Enhanced validation rules
+const rules = reactive({
+  ...formRules,
+})
 
 // Event handlers
 const handleSubmit = async () => {
@@ -225,39 +207,51 @@ const handleSubmit = async () => {
     const valid = await registerForm.value.validate()
     if (!valid) return
 
-    // Then validate using Zod schema
+    // Prepare form data for Zod validation
     const formData = {
       name: form.name,
       email: form.email,
       password: form.password,
       phone: form.phone,
-      address: form.address,
     }
 
-    // This will throw if validation fails
+    // Validate using Zod schema
     const validatedData = registerSchema.parse(formData)
 
     // Clear any previous errors
-    // userStore.setError(null)
+    userStore.setError(null)
 
-    // // Call the store register action with validated data
-    // const result = await userStore.register(
-    //   validatedData.name,
-    //   validatedData.email,
-    //   validatedData.password,
-    //   validatedData.phone,
-    //   validatedData.address,
-    // )
+    // Prepare registration request
+    const registerRequest: RegisterRequest = {
+      name: validatedData.name,
+      email: validatedData.email,
+      password: validatedData.password,
+      phone: validatedData.phone,
+    }
 
-    // if (result.success) {
-    //   ElMessage.success('Account created successfully! Welcome to Shopiplus!')
-    //   registerForm.value.resetFields()
-    //   loading.value = false
+    // Call the store register action
+    const result = await userStore.register(registerRequest)
 
-    //   router.push('/')
-    // } else {
-    //   ElMessage.error(result.error || 'Registration failed')
-    // }
+    if (result.success) {
+      ElMessage.success('Account created successfully! Welcome to Shopiplus!')
+      registerForm.value.resetFields()
+      
+      // Reset form data
+      Object.assign(form, {
+        name: '',
+        email: '',
+        phone: '',
+        password: '',
+        confirmPassword: '',
+        agreeTerms: false,
+      })
+
+      // Redirect to home page
+      emit('register-success')
+      router.push('/')
+    } else {
+      ElMessage.error(result.error || 'Registration failed')
+    }
   } catch (error) {
     if (error instanceof z.ZodError) {
       // Handle Zod validation errors
@@ -278,36 +272,11 @@ const handleFacebookSignup = () => {
   ElMessage.info('Facebook signup feature coming soon!')
 }
 
-const handleLogin = () => {
-  router.push('/login')
-}
-
-const handleClose = () => {
-  router.push('/')
-}
+// Initialize auth store on component mount
+userStore.initializeAuth()
 </script>
 
 <style scoped>
-.close-button-container {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 10;
-}
-
-.close-button {
-  color: rgba(255, 255, 255, 0.9);
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-
-.close-button:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.1);
-}
-
 .register-header {
   background: linear-gradient(135deg, #ff6600 0%, #ff8533 100%);
   color: white;
@@ -474,14 +443,14 @@ const handleClose = () => {
 }
 
 :deep(.el-divider__text) {
-  background: black;
+  background: white;
   color: #6b7280;
   font-size: 14px;
   font-weight: 500;
 }
 
-:deep(.el-divder__text .el-text) {
-  background: black;
+.divider-text {
+  background: white;
   color: #6b7280;
   font-size: 14px;
   font-weight: 500;
@@ -535,10 +504,6 @@ const handleClose = () => {
   font-weight: 500;
 }
 
-.login-text {
-  color: #6b7280;
-}
-
 :deep(.login-link-btn) {
   color: #ff6600;
   font-weight: 700;
@@ -581,11 +546,11 @@ const handleClose = () => {
   }
 
   :deep(.form-input .el-input__wrapper:hover) {
-    background: #2a2a2a;
+    background: #333333;
   }
 
   :deep(.form-input.is-focus .el-input__wrapper) {
-    background: #030303;
+    background: #333333;
   }
 
   :deep(.form-input .el-input__inner) {
@@ -609,15 +574,20 @@ const handleClose = () => {
   }
 
   .social-btn:hover {
-    background: #2a2a2a;
+    background: #333333;
   }
 
   .divider-text {
-    background: #0e0e0e;
+    background: #1f2937;
     color: #9ca3af;
   }
 
-  .login-text {
+  :deep(.el-divider__text) {
+    background: #1f2937;
+    color: #9ca3af;
+  }
+
+  .login-link {
     color: #d1d5db;
   }
 }

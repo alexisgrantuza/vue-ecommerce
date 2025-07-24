@@ -7,12 +7,19 @@
 
   <!-- Login Form -->
   <div class="login-form-container">
-    <el-form :model="form" :rules="rules" ref="loginForm" @submit="handleSubmit" class="login-form" hide-required-asterisk>
+    <el-form 
+      :model="form" 
+      :rules="rules" 
+      ref="loginForm" 
+      @submit.prevent="handleSubmit" 
+      class="login-form" 
+      hide-required-asterisk
+    >
       <el-form-item prop="email">
         <el-input
           v-model="form.email"
           type="email"
-          placeholder="Email or Phone Number"
+          placeholder="Email Address"
           :prefix-icon="Message"
           size="large"
           class="custom-input"
@@ -32,18 +39,22 @@
       </el-form-item>
 
       <div class="form-options">
-        <el-checkbox v-model="rememberMe" class="remember-me"> Remember me </el-checkbox>
-        <el-link href="#" class="forgot-password" underline="never"> Forgot Password? </el-link>
+        <el-checkbox v-model="rememberMe" class="remember-me"> 
+          Remember me 
+        </el-checkbox>
+        <el-link href="#" class="forgot-password" underline="never"> 
+          Forgot Password? 
+        </el-link>
       </div>
 
       <el-button
         type="primary"
         size="large"
         class="login-button"
-        :loading="loading"
+        :loading="userStore.loading"
         native-type="submit"
       >
-        <span v-if="!loading">LOGIN</span>
+        <span v-if="!userStore.loading">LOGIN</span>
         <span v-else>Signing in...</span>
       </el-button>
     </el-form>
@@ -55,7 +66,7 @@
       </el-divider>
 
       <div class="social-buttons">
-        <el-button class="social-btn google-btn">
+        <el-button class="social-btn google-btn" @click="handleGoogleLogin">
           <svg width="20" height="20" viewBox="0 0 24 24">
             <path
               fill="#4285f4"
@@ -77,7 +88,7 @@
           <span>Google</span>
         </el-button>
 
-        <el-button class="social-btn facebook-btn" >
+        <el-button class="social-btn facebook-btn" @click="handleFacebookLogin">
           <svg width="20" height="20" viewBox="0 0 24 24">
             <path
               fill="#1877f2"
@@ -105,18 +116,30 @@ import { ElMessage } from 'element-plus'
 import { Message, Lock } from '@element-plus/icons-vue'
 import type { FormInstance } from 'element-plus'
 import type { LoginRequest } from '@/types/api'
-import { formRules } from '@/utils/validators'
+import { useUserAuthStore } from '@/stores/userAuth'
 import { loginSchema } from '@/libs/z'
 import z from 'zod'
 import { useRouter } from 'vue-router'
+import { formRules } from '@/utils/validators'
 
 const router = useRouter()
+const userStore = useUserAuthStore()
+
+//state
+const rememberMe = ref(false)
+
+//props
+const props = defineProps({
+  loginDialogVisible: {
+    type: Boolean,
+  },
+})
 
 // Emits
-const emit = defineEmits(['show-register', 'login-success'])
+const emit = defineEmits(['show-login', 'login-success'])
 
 const handleShowRegister = () => {
-  emit('show-register')
+  emit('show-login')
 }
 
 // Form data
@@ -127,52 +150,74 @@ const form = reactive<LoginRequest>({
 
 // Form reference
 const loginForm = ref<FormInstance>()
-const loading = ref(false)
-const rememberMe = ref(false)
 
-// Form validation rules
-const rules = formRules
+
+// Enhanced validation rules using Zod
+const rules = reactive({
+  ...formRules,
+})
 
 // Form submission handler
 const handleSubmit = async () => {
-  if (!loginForm.value) return;
+  if (!loginForm.value) return
 
-  try{
-    const valid = await loginForm.value.validate();
-    if (!valid) return;
+  try {
+    // First validate using Element Plus form validation
+    const valid = await loginForm.value.validate()
+    if (!valid) return
     
     const formData = {
       email: form.email,
       password: form.password,
-    };
+    }
     
-    const validatedData = loginSchema.parse(formData);
+    // Validate using Zod schema
+    const validatedData = loginSchema.parse(formData)
     
+    // Clear any previous errors
+    userStore.setError(null)
     
+    // Call the store login action
+    const result = await userStore.login(validatedData, rememberMe.value)
     
-    // const { success, error } = await userStore.login(validatedData.email, validatedData.password);
+    if (result.success) {
+      ElMessage.success('Welcome back! Login successful!')
+      
+      loginForm.value.resetFields()
+      Object.assign(form, { email: '', password: '' })
+      rememberMe.value = false
 
-    
-    // if (success) {
-    //   ElMessage.success('Login successful!');
-    //   emit('login-success');
-    // } else {
-    //   ElMessage.error(error || 'Login failed');
-    // }
+      emit('login-success')
+      router.push('/')
+    } else {
+      ElMessage.error(result.error || 'Login failed. Please try again.')
+    }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      ElMessage.error(error.issues[0].message);
+      // validation errors
+      const firstError = error.issues[0]
+      ElMessage.error(firstError.message)
     } else {
-      console.error('Login error:', error);
-      ElMessage.error('Login failed. Please try again.');
+      console.error('Login error:', error)
+      ElMessage.error('Login failed. Please try again.')
     }
   }
 }
 
+// Social login handlers
+const handleGoogleLogin = () => {
+  ElMessage.info('Google login feature coming soon!')
+}
+
+const handleFacebookLogin = () => {
+  ElMessage.info('Facebook login feature coming soon!')
+}
+
+// Initialize auth store on component mount
+userStore.initializeAuth()
 </script>
 
 <style scoped>
-
 .close-button-container {
   position: absolute;
   top: 12px;
@@ -239,15 +284,18 @@ const handleSubmit = async () => {
   padding: 12px 16px;
   box-shadow: none;
   transition: all 0.3s ease;
+  background: #fafbfc;
 }
 
 :deep(.custom-input .el-input__wrapper:hover) {
   border-color: #ff6900;
+  background: #fff;
 }
 
 :deep(.custom-input.is-focus .el-input__wrapper) {
   border-color: #ff6900;
   box-shadow: 0 0 0 3px rgba(255, 105, 0, 0.1);
+  background: #fff;
 }
 
 :deep(.custom-input .el-input__inner) {
@@ -299,11 +347,12 @@ const handleSubmit = async () => {
   border: none;
   margin-bottom: 30px;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 105, 0, 0.3);
 }
 
 :deep(.login-button:hover) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 105, 0, 0.3);
+  box-shadow: 0 8px 25px rgba(255, 105, 0, 0.4);
 }
 
 :deep(.login-button:active) {
@@ -320,8 +369,8 @@ const handleSubmit = async () => {
 }
 
 :deep(.custom-divider .el-divider__text) {
-  background: rgb(0, 0, 0);
-  color: #e0e0e0;
+  background: white;
+  color: #999;
   font-size: 14px;
   font-weight: 500;
   padding: 0 20px;
@@ -344,7 +393,7 @@ const handleSubmit = async () => {
   height: 48px;
   border-radius: 12px;
   border: 2px solid #f0f0f0;
-  background: white;
+  background: #fafbfc;
   color: #333;
   font-size: 14px;
   font-weight: 600;
@@ -357,6 +406,7 @@ const handleSubmit = async () => {
 
 :deep(.social-btn:hover) {
   border-color: #ddd;
+  background: #fff;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -441,6 +491,14 @@ const handleSubmit = async () => {
     border-color: #404040;
   }
 
+  :deep(.custom-input .el-input__wrapper:hover) {
+    background: #333333;
+  }
+
+  :deep(.custom-input.is-focus .el-input__wrapper) {
+    background: #333333;
+  }
+
   :deep(.custom-input .el-input__inner) {
     color: #fff;
   }
@@ -451,8 +509,24 @@ const handleSubmit = async () => {
     color: #fff;
   }
 
+  :deep(.social-btn:hover) {
+    background: #333333;
+  }
+
   :deep(.custom-divider .el-divider__text) {
-    background: #000000;
+    background: #1a1a1a;
+    color: #ccc;
+  }
+
+  :deep(.divider-text) {
+    color: #ccc;
+  }
+
+  :deep(.signup-link .el-text) {
+    color: #ccc;
+  }
+
+  :deep(.remember-me .el-checkbox__label) {
     color: #ccc;
   }
 }

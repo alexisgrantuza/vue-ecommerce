@@ -99,8 +99,6 @@ export const useUserAuthStore = defineStore('userAuth', () => {
         throw new Error('User not found. Please check your email or register.')
       }
 
-      // In a real app, you'd verify the password hash
-      // For demo purposes, we'll check the plain password
       if (foundUser.password !== credentials.password) {
         throw new Error('Invalid password. Please try again.')
       }

@@ -80,7 +80,7 @@
               </span>
             </div>
             <div v-if="product.discount > 0" class="savings">
-              You save ₱ {{ calculateSavings() }}
+              You save ₱{{ calculateSavings() }}
             </div>
           </div>
 
@@ -153,10 +153,16 @@ import { useRoute, useRouter } from 'vue-router'
 import { Picture, ShoppingCart, Star } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { useProductsStore } from '@/stores/product'
+import { useCartStore } from '@/stores/cart'
+import { useWishlistStore } from '@/stores/wishlist'
+import { useUserAuthStore } from '@/stores/userAuth'
 
 const route = useRoute()
 const router = useRouter()
 const productsStore = useProductsStore()
+const cartStore = useCartStore()
+const wishlistStore = useWishlistStore()
+const userAuthStore = useUserAuthStore()
 
 const loading = ref(true)
 const product = ref()
@@ -203,16 +209,23 @@ const calculateSavings = (): string => {
 }
 
 const addToCart = () => {
-  if (!product.value) return
+  cartStore.addToCart(product.value)
 
-  // Add to cart logic here
-  ElMessage.success(`${product.value.title} added to cart (Quantity: ${quantity.value})`)
+  if(!userAuthStore.isAuthenticated) {
+    ElMessage.error('Please login to add to cart')
+    return
+  }
+
 }
 
 const addToWishlist = () => {
-  if (!product.value) return
+  wishlistStore.addToWishlist(product.value)
 
-  // Add to wishlist logic here
+  if(!userAuthStore.isAuthenticated) {
+    ElMessage.error('Please login to add to wishlist')
+    return
+  }
+
   ElMessage.success(`${product.value.title} added to wishlist`)
 }
 </script>

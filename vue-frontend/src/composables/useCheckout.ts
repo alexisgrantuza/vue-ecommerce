@@ -194,7 +194,7 @@ export function useCheckout() {
       ElMessage.success('Your order has been placed successfully! You can track your order in the orders section.')
       
       // Return the actual order ID from the created order
-      return order.id
+      return order?.id
     } catch (error) {
       console.error('Order placement failed:', error)
       ElMessage.error('Failed to place order. Please try again.')

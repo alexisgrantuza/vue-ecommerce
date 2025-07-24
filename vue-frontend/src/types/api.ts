@@ -33,17 +33,6 @@ export interface Product {
   updated_at: string;
 }
 
-// Enhanced props interface for ProductCard
-export interface ProductCardProps {
-  product: Product;
-  showAddToCart?: boolean;
-  cardSize?: 'small' | 'medium' | 'large';
-  layout?: 'grid' | 'list';
-  showDiscount?: boolean;
-  showRating?: boolean;
-  showDescription?: boolean;
-  clickable?: boolean;
-}
 
 export interface ProductCardEmits {
   (e: 'product-click', product: Product): void;
@@ -64,6 +53,13 @@ export interface Cart {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface CartItem {
+  product: Product
+  quantity: number
+}
+
+  
 
 export interface Order {
   id: string;
@@ -95,6 +91,23 @@ export interface OrderItem {
 
 export interface OrderItemWithProduct extends OrderItem {
   product: Product;
+}
+
+export interface OrderItemInput {
+  product_id: number;
+  quantity: number;
+  price: number;
+  product: any;
+}
+
+export interface UserOrdersStorage {
+  [userId: number]: OrderWithItems[]
+}
+
+export interface ShippingInfo {
+  address: string;
+  paymentMethod: string;
+  items?: OrderItemInput[];
 }
 
 export interface Wishlist {

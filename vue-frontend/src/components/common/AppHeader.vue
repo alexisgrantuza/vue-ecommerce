@@ -10,33 +10,51 @@
       <el-col :span="2">
         <el-link type="default" @click="handleLogoClick">Contact</el-link>
       </el-col>
-      <el-col :span="2">
-        <el-link type="default" @click="handleLoginClick">Login</el-link>
-      </el-col>
-      <el-col :span="2">
-        <el-link type="default" @click="handleRegisterClick">Register</el-link>
-      </el-col>
+      <template v-if="userStore.isAuthenticated">
+        <el-col :span="2">
+          <el-dropdown placement="bottom" class="user-dropdown">
+            <el-button class="dropdown-trigger">
+              {{ userStore.user?.name }}
+            </el-button>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item @click="handleLogoutClick">Logout</el-dropdown-item>
+                <el-dropdown-item @click="handleProfileClick">Profile</el-dropdown-item>
+                <el-dropdown-item @click="handleWishlistClick">Wishlist</el-dropdown-item>
+                <el-dropdown-item @click="handleCartClick">Cart</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </el-col>
+      </template>
+      <template v-else>
+        <el-col :span="2">
+          <el-link type="default" @click="handleShowLogin">Login</el-link>
+        </el-col>
+        <el-col :span="2">
+          <el-link type="default" @click="handleShowRegister">Register</el-link>
+        </el-col>
+      </template>
     </el-row>
   </el-header>
 
+  <!-- Rest of your template remains the same -->
   <el-dialog
     v-model="loginDialogVisible"
-    :before-close="handleLoginDialogClose"
     width="400px"
     :show-close="false"
     style="background-color: #000; border-radius: 12px"
   >
-    <login-form @show-register="handleShowRegister" />
+    <login-form @show-login="handleShowLogin" @login-success="loginDialogVisible = false"/>
   </el-dialog>
 
   <el-dialog
     v-model="registerDialogVisible"
-    :before-close="handleRegisterDialogClose"
     width="500px"
     :show-close="false"
     style="background-color: #000; border-radius: 12px"
   >
-    <register-form @show-login="handleShowLogin" />
+    <register-form @show-register="handleShowRegister" @register-success="registerDialogVisible = false"/>
   </el-dialog>
   <el-header class="app-header">
     <el-container class="header-container">
@@ -99,6 +117,7 @@ import { useCartStore } from '@/stores/cart'
 import { useWishlistStore } from '@/stores/wishlist'
 import loginForm from '../form/loginForm.vue'
 import registerForm from '../form/registerForm.vue'
+import { useUserAuthStore } from '@/stores/userAuth'
 
 // Router
 const router = useRouter()
@@ -106,6 +125,7 @@ const router = useRouter()
 // Stores
 const cartStore = useCartStore()
 const wishlistStore = useWishlistStore()
+const userStore = useUserAuthStore()
 
 // Reactive state
 const searchQuery = ref<string>('')
@@ -117,27 +137,12 @@ const handleLogoClick = (): void => {
   router.push('/')
 }
 
-const handleLoginClick = (): void => {
-  loginDialogVisible.value = true
-}
-
-const handleRegisterClick = (): void => {
-  registerDialogVisible.value = true
-}
-
-const handleLoginDialogClose = (): void => {
-  loginDialogVisible.value = false
-}
-
-const handleRegisterDialogClose = (): void => {
-  registerDialogVisible.value = false
-}
-
 const handleShowLogin = (): void => {
   registerDialogVisible.value = false
   setTimeout(() => {
     loginDialogVisible.value = true
   }, 100)
+  
 }
 
 const handleShowRegister = (): void => {
@@ -155,9 +160,53 @@ const handleSearch = (): void => {
     ElMessage.warning('Please enter a search term')
   }
 }
+
+const handleLogoutClick = (): void => {
+  userStore.logout()
+}
+
+const handleProfileClick = (): void => {
+  router.push('/profile')
+}
+
+const handleWishlistClick = (): void => {
+  router.push('/wishlist')
+}
+
+const handleCartClick = (): void => {
+  router.push('/cart')
+}
 </script>
 
 <style scoped>
+.user-dropdown :deep(.dropdown-trigger) {
+  background: none;
+  border: none;
+  color: #606266;
+  font-size: 14px;
+  font-weight: 500;
+  height: auto;
+  transition: color 0.2s ease;
+}
+
+.user-dropdown :deep(.dropdown-trigger:hover) {
+  color: #ff6600;
+  background: none;
+  border-color: transparent;
+}
+
+.user-dropdown :deep(.dropdown-trigger:focus) {
+  color: #ff6600;
+  background: none;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.user-dropdown :deep(.dropdown-trigger:active) {
+  background: none;
+  border-color: transparent;
+}
+
 /* Cart Drawer Styles */
 .cart-items {
   padding: 0 16px;

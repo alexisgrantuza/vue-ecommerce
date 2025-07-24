@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, defineEmits } from 'vue'
+import { ref, watch } from 'vue'
 import PaymentMethodCard from './PaymentMethodCard.vue'
 import type { PaymentMethod } from './PaymentMethodCard.vue'
 

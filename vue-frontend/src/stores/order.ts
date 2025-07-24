@@ -1,35 +1,72 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { Order, OrderItem, OrderWithItems } from '@/types/api'
+import type { Order, OrderItem, OrderWithItems, ShippingInfo, UserOrdersStorage } from '@/types/api'
+import { useUserAuthStore } from './userAuth'
+import { saveToLocalStorage, initializeFromLocalStorage } from '@/utils/helpers'
+
+
 
 export const useOrderStore = defineStore('order', () => {
-  // State - Changed to OrderWithItems[] to match what components expect
-  const orders = ref<OrderWithItems[]>([])
+  // State - Store orders for all users in a single object
+  const userOrders = ref<UserOrdersStorage>({})
   const loading = ref(false)
   const error = ref<string | null>(null)
   const selectedOrder = ref<OrderWithItems | null>(null)
 
-  // Getters
-  const orderCount = computed(() => orders.value.length)
+  // Get the current user's ID
+  const getCurrentUserId = (): number | null => {
+    const authStore = useUserAuthStore()
+    return authStore.user?.id || null
+  }
+
+  // Get current user's orders
+  const getCurrentUserOrders = computed((): OrderWithItems[] => {
+    const userId = getCurrentUserId()
+    return userId ? (userOrders.value[userId] || []) : []
+  })
+
+  // Getters - all based on current user's orders
+  const orderCount = computed(() => getCurrentUserOrders.value.length)
   const completedOrders = computed(() => 
-    orders.value.filter(order => order.status === 'delivered')
+    getCurrentUserOrders.value.filter(order => order.status === 'delivered')
   )
   const pendingOrders = computed(() =>
-    orders.value.filter(order => order.status === 'pending' || order.status === 'processing')
+    getCurrentUserOrders.value.filter(order => order.status === 'pending' || order.status === 'processing')
   )
-  const getOrderById = (orderId: string) => 
-    orders.value.find(order => order.id === orderId)
+  const getOrderById = (orderId: string) =>
+    getCurrentUserOrders.value.find(order => order.id === orderId)
 
-  // Initialize from localStorage
+  // Initialize user orders array if it doesn't exist
+  const ensureUserOrdersExists = (userId: number) => {
+    if (!userOrders.value[userId]) {
+      userOrders.value[userId] = []
+    }
+  }
+
+ 
+
+  
+
+  // Generate a unique order ID
+  const generateOrderId = () => {
+    return `ORD${Math.floor(100000 + Math.random() * 900000)}`
+  }
+
+  // Delete an order for current user
   const deleteOrder = async (orderId: string) => {
     try {
-      // In a real app, this would be an API call
+      const userId = getCurrentUserId()
+      if (!userId) {
+        throw new Error('No user is logged in')
+      }
+
       await new Promise(resolve => setTimeout(resolve, 300))
       
-      // Remove the order from the store
-      const orderIndex = orders.value.findIndex(order => order.id === orderId)
+      ensureUserOrdersExists(userId)
+      const orderIndex = userOrders.value[userId].findIndex(order => order.id === orderId)
+      
       if (orderIndex !== -1) {
-        orders.value.splice(orderIndex, 1)
+        userOrders.value[userId].splice(orderIndex, 1)
         saveToLocalStorage()
         return true
       }
@@ -40,60 +77,22 @@ export const useOrderStore = defineStore('order', () => {
     }
   }
 
-  const initializeFromLocalStorage = () => {
-    const savedOrders = localStorage.getItem('orders')
-    if (savedOrders) {
-      try {
-        const parsedOrders = JSON.parse(savedOrders)
-        // Ensure all orders have required fields and proper structure
-        orders.value = parsedOrders.map((order: any) => ({
-          ...order,
-          created_at: order.created_at || new Date().toISOString(),
-          updated_at: order.updated_at || new Date().toISOString(),
-          items: order.items || [],
-          // Ensure dates are properly formatted
-          shipped_at: order.shipped_at || null,
-          delivered_at: order.delivered_at || null
-        }))
-      } catch (err) {
-        console.error('Failed to parse orders from localStorage', err)
-        orders.value = []
-      }
+  // Create order for current user
+  const createOrder = (total: number, shippingInfo: ShippingInfo): OrderWithItems | null => {
+    const userId = getCurrentUserId()
+    if (!userId) {
+      console.error('Cannot create order: No user is logged in')
+      return null
     }
-  }
 
-  // Save to localStorage
-  const saveToLocalStorage = () => {
-    localStorage.setItem('orders', JSON.stringify(orders.value))
-  }
-
-  // Generate a unique order ID
-  const generateOrderId = () => {
-    return `ORD${Math.floor(100000 + Math.random() * 900000)}`
-  }
-
-  // Actions
-  interface OrderItemInput {
-    product_id: number;
-    quantity: number;
-    price: number;
-    product: any;
-  }
-
-  interface ShippingInfo {
-    address: string;
-    paymentMethod: string;
-    items?: OrderItemInput[];
-  }
-
-  const createOrder = (total: number, shippingInfo: ShippingInfo): OrderWithItems => {
+    ensureUserOrdersExists(userId)
     const orderId = generateOrderId()
     
     const order: OrderWithItems = {
       id: orderId,
-      user_id: 1, // Get from auth in a real app
+      user_id: userId,
       total_amount: total,
-      shipping: 0, // You can calculate shipping if needed
+      shipping: 0,
       status: 'pending',
       shipping_address: shippingInfo.address,
       payment_method: shippingInfo.paymentMethod,
@@ -105,7 +104,7 @@ export const useOrderStore = defineStore('order', () => {
       delivered_at: null,
       items: (shippingInfo.items?.map((item, index) => ({
         id: index + 1,
-        order_id: orderId, // Set the order ID immediately
+        order_id: orderId,
         product_id: item.product_id,
         quantity: item.quantity,
         price: item.price,
@@ -115,21 +114,26 @@ export const useOrderStore = defineStore('order', () => {
       })) || []) as (OrderItem & { product: any })[]
     }
 
-    // Add order to the beginning of the array (most recent first)
-    orders.value.unshift(order)
+    // Add order to the beginning of the user's orders array (most recent first)
+    userOrders.value[userId].unshift(order)
     saveToLocalStorage()
     
-    console.log('Order created and saved:', order)
+    console.log('Order created and saved for user', userId, ':', order)
     return order
   }
 
+  // Update order status for current user
   const updateOrderStatus = (orderId: string, status: Order['status']) => {
-    const order = orders.value.find(o => o.id === orderId)
+    const userId = getCurrentUserId()
+    if (!userId) return
+
+    ensureUserOrdersExists(userId)
+    const order = userOrders.value[userId].find(o => o.id === orderId)
+    
     if (order) {
       order.status = status
       order.updated_at = new Date().toISOString()
       
-      // Set timestamps based on status
       if (status === 'shipped' && !order.shipped_at) {
         order.shipped_at = new Date().toISOString()
       }
@@ -141,22 +145,27 @@ export const useOrderStore = defineStore('order', () => {
     }
   }
 
+  // Cancel order
   const cancelOrder = (orderId: string) => {
     updateOrderStatus(orderId, 'cancelled')
   }
 
+  // Fetch order history for current user
   const fetchOrderHistory = async () => {
     loading.value = true
     error.value = null
     
     try {
-      // In a real app, this would be an API call
+      const userId = getCurrentUserId()
+      if (!userId) {
+        throw new Error('No user is logged in')
+      }
+
       await new Promise(resolve => setTimeout(resolve, 300))
       
-      // Load from localStorage
       initializeFromLocalStorage()
       
-      console.log('Fetched orders:', orders.value)
+      console.log('Fetched orders for user', userId, ':', getCurrentUserOrders.value)
     } catch (err: any) {
       error.value = err.message || 'Failed to fetch order history'
       console.error('Error fetching order history:', err)
@@ -165,16 +174,22 @@ export const useOrderStore = defineStore('order', () => {
     }
   }
 
+  // Select order
   const selectOrder = (order: OrderWithItems | null) => {
     selectedOrder.value = order
   }
 
+  
+
+  
+
   // Initialize on store creation
   initializeFromLocalStorage()
+ 
 
   return {
     // State
-    orders,
+    orders: getCurrentUserOrders,
     loading,
     error,
     selectedOrder,
@@ -193,10 +208,7 @@ export const useOrderStore = defineStore('order', () => {
     selectOrder,
     deleteOrder,
     
-    // Utility methods
-    saveToLocalStorage,
-    initializeFromLocalStorage
+    // Access to all user orders (for admin purposes)
+    userOrders: computed(() => userOrders.value)
   }
 })
-
-export type OrderStore = ReturnType<typeof useOrderStore>
