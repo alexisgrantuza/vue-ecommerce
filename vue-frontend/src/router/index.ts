@@ -48,6 +48,11 @@ const router = createRouter({
           component: () => import('../views/OrderProducts/OrderHistory.vue'),
           meta: { requiresAuth: true },
         },
+        {
+          path: 'category',
+          name: 'category',
+          component: () => import('../views/Category/CategoryView.vue'),
+        },
       ],
     },
   ],
