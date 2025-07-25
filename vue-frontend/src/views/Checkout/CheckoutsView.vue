@@ -57,7 +57,10 @@
                 <p>
                   <strong>{{ selectedAddress.street }}</strong>
                 </p>
-                <p>{{ selectedAddress.city }}, {{ selectedAddress.state }} {{ selectedAddress.zipCode }}</p>
+                <p>
+                  {{ selectedAddress.city }}, {{ selectedAddress.state }}
+                  {{ selectedAddress.zipCode }}
+                </p>
               </el-card>
             </div>
 

@@ -7,12 +7,12 @@
 
   <!-- Login Form -->
   <div class="login-form-container">
-    <el-form 
-      :model="form" 
-      :rules="rules" 
-      ref="loginForm" 
-      @submit.prevent="handleSubmit" 
-      class="login-form" 
+    <el-form
+      :model="form"
+      :rules="rules"
+      ref="loginForm"
+      @submit.prevent="handleSubmit"
+      class="login-form"
       hide-required-asterisk
     >
       <el-form-item prop="email">
@@ -39,12 +39,8 @@
       </el-form-item>
 
       <div class="form-options">
-        <el-checkbox v-model="rememberMe" class="remember-me"> 
-          Remember me 
-        </el-checkbox>
-        <el-link href="#" class="forgot-password" underline="never"> 
-          Forgot Password? 
-        </el-link>
+        <el-checkbox v-model="rememberMe" class="remember-me"> Remember me </el-checkbox>
+        <el-link href="#" class="forgot-password" underline="never"> Forgot Password? </el-link>
       </div>
 
       <el-button
@@ -103,9 +99,7 @@
     <!-- Sign Up Link -->
     <div class="signup-link">
       <el-text>Don't have an account? </el-text>
-      <el-link class="signup-text" underline="never" @click="handleShowRegister">
-        Sign up
-      </el-link>
+      <el-link class="signup-text" underline="never" @click="handleShowRegister"> Sign up </el-link>
     </div>
   </div>
 </template>
@@ -151,7 +145,6 @@ const form = reactive<LoginRequest>({
 // Form reference
 const loginForm = ref<FormInstance>()
 
-
 // Enhanced validation rules using Zod
 const rules = reactive({
   ...formRules,
@@ -165,24 +158,24 @@ const handleSubmit = async () => {
     // First validate using Element Plus form validation
     const valid = await loginForm.value.validate()
     if (!valid) return
-    
+
     const formData = {
       email: form.email,
       password: form.password,
     }
-    
+
     // Validate using Zod schema
     const validatedData = loginSchema.parse(formData)
-    
+
     // Clear any previous errors
     userStore.setError(null)
-    
+
     // Call the store login action
     const result = await userStore.login(validatedData, rememberMe.value)
-    
+
     if (result.success) {
       ElMessage.success('Welcome back! Login successful!')
-      
+
       loginForm.value.resetFields()
       Object.assign(form, { email: '', password: '' })
       rememberMe.value = false

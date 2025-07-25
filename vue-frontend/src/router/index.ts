@@ -34,21 +34,21 @@ const router = createRouter({
           path: 'wishlist',
           name: 'wishlist',
           component: WishlistProducts,
-          meta: { requiresAuth: true }
+          meta: { requiresAuth: true },
         },
         {
           path: 'checkout',
           name: 'checkout',
           component: () => import('../views/Checkout/CheckoutsView.vue'),
-          meta: { requiresAuth: true }
+          meta: { requiresAuth: true },
         },
         {
           path: 'order-history',
           name: 'order-history',
           component: () => import('../views/OrderProducts/OrderHistory.vue'),
-          meta: { requiresAuth: true }
+          meta: { requiresAuth: true },
         },
-      ]
+      ],
     },
   ],
 })

@@ -299,7 +299,7 @@ export const carouselItems: string[] = [
 //     id: 2,
 //     title: 'Mens Casual Premium Slim Fit T-Shirts ',
 //     price: 22.3,
-//     description: 'Slim-fitting style, contrast raglan long sleeve, three-button henley placket, light weight & soft fabric for breathable and comfortable wearing. And Solid stitched shirts with round neck made for durability and a great fit for casual fashion wear and diehard baseball fans. The Henley style round neckline includes a three-button placket.',     
+//     description: 'Slim-fitting style, contrast raglan long sleeve, three-button henley placket, light weight & soft fabric for breathable and comfortable wearing. And Solid stitched shirts with round neck made for durability and a great fit for casual fashion wear and diehard baseball fans. The Henley style round neckline includes a three-button placket.',
 //     category: "men's clothing",
 //     image: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
 //     rating: { rate: 4.1, count: 259 }
@@ -380,7 +380,7 @@ export const carouselItems: string[] = [
 //     id: 11,
 //     title: 'Silicon Power 256GB SSD 3D NAND A55 SLC Cache Performance Boost SATA III 2.5',
 //     price: 109,
-//     description: '3D NAND flash are applied to deliver high transfer speeds Remarkable transfer speeds that enable faster bootup and improved overall system performance. The advanced SLC Cache Technology allows performance boost and longer lifespan 7mm slim design suitable for Ultrabooks and Ultra-slim notebooks. Supports TRIM command, Garbage Collection technology, RAID, and ECC (Error Checking & Correction) to provide the optimized performance and enhanced reliability.',       
+//     description: '3D NAND flash are applied to deliver high transfer speeds Remarkable transfer speeds that enable faster bootup and improved overall system performance. The advanced SLC Cache Technology allows performance boost and longer lifespan 7mm slim design suitable for Ultrabooks and Ultra-slim notebooks. Supports TRIM command, Garbage Collection technology, RAID, and ECC (Error Checking & Correction) to provide the optimized performance and enhanced reliability.',
 //     category: 'electronics',
 //     image: 'https://fakestoreapi.com/img/71kWymZ+c+L._AC_SX679_.jpg',
 //     rating: { rate: 4.8, count: 319 }
@@ -407,7 +407,7 @@ export const carouselItems: string[] = [
 //     id: 14,
 //     title: 'Samsung 49-Inch CHG90 144Hz Curved Gaming Monitor (LC49HG90DMNXZA) – Super Ultrawide Screen QLED ',
 //     price: 999.99,
-//     description: '49 INCH SUPER ULTRAWIDE 32:9 CURVED GAMING MONITOR with dual 27 inch screen side by side QUANTUM DOT (QLED) TECHNOLOGY, HDR support and factory calibration provides stunningly realistic and accurate color and contrast 144HZ HIGH REFRESH RATE and 1ms ultra fast response time work to eliminate motion blur, ghosting, and reduce input lag',       
+//     description: '49 INCH SUPER ULTRAWIDE 32:9 CURVED GAMING MONITOR with dual 27 inch screen side by side QUANTUM DOT (QLED) TECHNOLOGY, HDR support and factory calibration provides stunningly realistic and accurate color and contrast 144HZ HIGH REFRESH RATE and 1ms ultra fast response time work to eliminate motion blur, ghosting, and reduce input lag',
 //     category: 'electronics',
 //     image: 'https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg',
 //     rating: { rate: 2.2, count: 140 }
@@ -461,7 +461,7 @@ export const carouselItems: string[] = [
 //     id: 20,
 //     title: 'DANVOUY Womens T Shirt Casual Cotton Short',
 //     price: 12.99,
-//     description: '95%Cotton,5%Spandex, Features: Casual, Short Sleeve, Letter Print,V-Neck,Fashion Tees, The fabric is soft and has some stretch., Occasion: Casual/Office/Beach/School/Home/Street. Season: Spring,Summer,Autumn,Winter.',       
+//     description: '95%Cotton,5%Spandex, Features: Casual, Short Sleeve, Letter Print,V-Neck,Fashion Tees, The fabric is soft and has some stretch., Occasion: Casual/Office/Beach/School/Home/Street. Season: Spring,Summer,Autumn,Winter.',
 //     category: "women's clothing",
 //     image: 'https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg',
 //     rating: { rate: 3.6, count: 145 }

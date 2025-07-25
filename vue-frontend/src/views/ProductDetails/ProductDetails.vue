@@ -75,9 +75,7 @@
               <span class="current-price">
                 ₱{{ product.discount > 0 ? calculateDiscountedPrice() : product.price }}
               </span>
-              <span v-if="product.discount > 0" class="original-price">
-                ₱{{ product.price }}
-              </span>
+              <span v-if="product.discount > 0" class="original-price"> ₱{{ product.price }} </span>
             </div>
             <div v-if="product.discount > 0" class="savings">
               You save ₱{{ calculateSavings() }}
@@ -180,7 +178,7 @@ const fetchProduct = async () => {
   try {
     const response = await productsStore.fetchProductById(productId.value)
     console.log('API Response:', response)
-    
+
     if (response) {
       product.value = response
       selectedImage.value = response.images?.[0] || ''
@@ -211,17 +209,16 @@ const calculateSavings = (): string => {
 const addToCart = () => {
   cartStore.addToCart(product.value)
 
-  if(!userAuthStore.isAuthenticated) {
+  if (!userAuthStore.isAuthenticated) {
     ElMessage.error('Please login to add to cart')
     return
   }
-
 }
 
 const addToWishlist = () => {
   wishlistStore.addToWishlist(product.value)
 
-  if(!userAuthStore.isAuthenticated) {
+  if (!userAuthStore.isAuthenticated) {
     ElMessage.error('Please login to add to wishlist')
     return
   }

@@ -90,9 +90,10 @@ export const formRules = reactive<FormRules>({
           if (err instanceof z.ZodError) {
             callback(err.issues[0].message)
           } else {
-          callback('Invalid address')
+            callback('Invalid address')
+          }
         }
-        }      },
+      },
       trigger: 'blur',
     },
   ],

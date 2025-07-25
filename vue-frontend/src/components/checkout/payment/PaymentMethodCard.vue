@@ -2,7 +2,7 @@
   <div class="payment-method" :class="{ 'is-selected': isSelected }">
     <el-radio :value="paymentMethod.id" class="payment-radio">
       <div class="payment-content">
-        <el-avatar :size="40" class="payment-icon" :icon="paymentMethod.icon"/>
+        <el-avatar :size="40" class="payment-icon" :icon="paymentMethod.icon" />
         <div class="payment-info">
           <h4>{{ paymentMethod.name }}</h4>
           <p class="payment-desc">{{ paymentMethod.description }}</p>

@@ -1,6 +1,6 @@
 <template>
-  <el-dialog 
-    v-model="visible" 
+  <el-dialog
+    v-model="visible"
     :title="isEditing ? 'Edit Address' : 'Add New Address'"
     width="500px"
     :before-close="handleClose"
@@ -34,20 +34,12 @@
       <el-row :gutter="16">
         <el-col :span="12">
           <el-form-item label="City" prop="city">
-            <el-input
-              v-model="formData.city"
-              placeholder="e.g., Manila"
-              clearable
-            />
+            <el-input v-model="formData.city" placeholder="e.g., Manila" clearable />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="State/Province" prop="state">
-            <el-input
-              v-model="formData.state"
-              placeholder="e.g., Metro Manila"
-              clearable
-            />
+            <el-input v-model="formData.state" placeholder="e.g., Metro Manila" clearable />
           </el-form-item>
         </el-col>
       </el-row>
@@ -55,20 +47,12 @@
       <el-row :gutter="16">
         <el-col :span="12">
           <el-form-item label="ZIP Code" prop="zipCode">
-            <el-input
-              v-model="formData.zipCode"
-              placeholder="e.g., 1000"
-              clearable
-            />
+            <el-input v-model="formData.zipCode" placeholder="e.g., 1000" clearable />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="Country" prop="country">
-            <el-select
-              v-model="formData.country"
-              placeholder="Select Country"
-              style="width: 100%"
-            >
+            <el-select v-model="formData.country" placeholder="Select Country" style="width: 100%">
               <el-option label="Philippines" value="Philippines" />
               <el-option label="United States" value="United States" />
               <el-option label="Canada" value="Canada" />
@@ -80,20 +64,14 @@
       </el-row>
 
       <el-form-item>
-        <el-checkbox v-model="formData.isDefault">
-          Set as default address
-        </el-checkbox>
+        <el-checkbox v-model="formData.isDefault"> Set as default address </el-checkbox>
       </el-form-item>
     </el-form>
 
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="handleClose">Cancel</el-button>
-        <el-button 
-          type="primary" 
-          :loading="loading"
-          @click="handleSubmit"
-        >
+        <el-button type="primary" :loading="loading" @click="handleSubmit">
           {{ isEditing ? 'Update Address' : 'Add Address' }}
         </el-button>
       </div>
@@ -120,7 +98,7 @@ interface Emits {
 
 const props = withDefaults(defineProps<Props>(), {
   address: null,
-  loading: false
+  loading: false,
 })
 
 const emit = defineEmits<Emits>()
@@ -142,58 +120,59 @@ const formData = reactive<Omit<Address, 'id'>>({
   state: '',
   zipCode: '',
   country: 'Philippines',
-  isDefault: false
+  isDefault: false,
 })
 
 // Form validation rules
 const rules: FormRules = {
   houseNumber: [
     { required: true, message: 'House number is required', trigger: 'blur' },
-    { min: 1, max: 100, message: 'Length should be 1 to 100 characters', trigger: 'blur' }
+    { min: 1, max: 100, message: 'Length should be 1 to 100 characters', trigger: 'blur' },
   ],
   street: [
     { required: true, message: 'Street address is required', trigger: 'blur' },
-    { min: 5, max: 200, message: 'Length should be 5 to 200 characters', trigger: 'blur' }
+    { min: 5, max: 200, message: 'Length should be 5 to 200 characters', trigger: 'blur' },
   ],
   city: [
     { required: true, message: 'City is required', trigger: 'blur' },
-    { min: 2, max: 50, message: 'Length should be 2 to 50 characters', trigger: 'blur' }
+    { min: 2, max: 50, message: 'Length should be 2 to 50 characters', trigger: 'blur' },
   ],
   state: [
     { required: true, message: 'State/Province is required', trigger: 'blur' },
-    { min: 2, max: 50, message: 'Length should be 2 to 50 characters', trigger: 'blur' }
+    { min: 2, max: 50, message: 'Length should be 2 to 50 characters', trigger: 'blur' },
   ],
   zipCode: [
     { required: true, message: 'ZIP code is required', trigger: 'blur' },
-    { pattern: /^\d{4,10}$/, message: 'ZIP code should contain 4-10 digits', trigger: 'blur' }
+    { pattern: /^\d{4,10}$/, message: 'ZIP code should contain 4-10 digits', trigger: 'blur' },
   ],
-  country: [
-    { required: true, message: 'Country is required', trigger: 'change' }
-  ]
+  country: [{ required: true, message: 'Country is required', trigger: 'change' }],
 }
 
 // Watch for dialog visibility changes
-watch(() => props.modelValue, (newVal) => {
-  visible.value = newVal
-  if (newVal) {
-    // Reset form and populate data if editing
-    resetForm()
-    if (props.address) {
-      isEditing.value = true
-      Object.assign(formData, {
-        houseNumber: props.address.houseNumber,
-        street: props.address.street,
-        city: props.address.city,
-        state: props.address.state,
-        zipCode: props.address.zipCode,
-        country: props.address.country,
-        isDefault: props.address.isDefault
-      })
-    } else {
-      isEditing.value = false
+watch(
+  () => props.modelValue,
+  (newVal) => {
+    visible.value = newVal
+    if (newVal) {
+      // Reset form and populate data if editing
+      resetForm()
+      if (props.address) {
+        isEditing.value = true
+        Object.assign(formData, {
+          houseNumber: props.address.houseNumber,
+          street: props.address.street,
+          city: props.address.city,
+          state: props.address.state,
+          zipCode: props.address.zipCode,
+          country: props.address.country,
+          isDefault: props.address.isDefault,
+        })
+      } else {
+        isEditing.value = false
+      }
     }
-  }
-})
+  },
+)
 
 // Watch for dialog visibility to emit changes
 watch(visible, (newVal) => {
@@ -205,7 +184,7 @@ const resetForm = () => {
   if (formRef.value) {
     formRef.value.clearValidate()
   }
-  
+
   // Reset to default values
   Object.assign(formData, {
     houseNumber: '',
@@ -214,7 +193,7 @@ const resetForm = () => {
     state: '',
     zipCode: '',
     country: 'Philippines',
-    isDefault: false
+    isDefault: false,
   })
 }
 
@@ -243,7 +222,7 @@ const handleClose = () => {
 // Expose methods for parent component if needed
 defineExpose({
   resetForm,
-  validate: () => formRef.value?.validate()
+  validate: () => formRef.value?.validate(),
 })
 </script>
 
@@ -293,11 +272,11 @@ defineExpose({
     width: 95% !important;
     margin: 5vh auto;
   }
-  
+
   .el-col {
     margin-bottom: 0;
   }
-  
+
   :deep(.el-form-item) {
     margin-bottom: 18px;
   }

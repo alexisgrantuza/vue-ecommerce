@@ -32,6 +32,7 @@
                 :product="product"
                 @add-to-cart="handleAddToCart"
                 @product-click="navigateToProduct"
+                @show-login="authDialog.showLogin"
               />
             </el-col>
           </el-row>
@@ -71,6 +72,7 @@
                 :product="product"
                 @add-to-cart="handleAddToCart"
                 @product-click="navigateToProduct"
+                @show-login="authDialog.showLogin"
               />
             </el-col>
           </el-row>
@@ -98,6 +100,31 @@
       </div>
     </main>
 
+    <!-- Auth Dialogs -->
+    <el-dialog
+      v-model="authDialog.loginDialogVisible.value"
+      width="400px"
+      :show-close="false"
+      style="background-color: #000; border-radius: 12px"
+    >
+      <login-form 
+        @show-login="authDialog.showLogin" 
+        @login-success="authDialog.handleLoginSuccess" 
+      />
+    </el-dialog>
+
+    <el-dialog
+      v-model="authDialog.registerDialogVisible.value"
+      width="500px"
+      :show-close="false"
+      style="background-color: #000; border-radius: 12px"
+    >
+      <register-form
+        @show-register="authDialog.showRegister"
+        @register-success="authDialog.handleRegisterSuccess"
+      />
+    </el-dialog>
+
     <el-button type="primary" class="floating-about-button" @click="openAboutDialog" round>
       <el-icon><Service /></el-icon>
       About Us
@@ -107,14 +134,17 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { ArrowRight } from '@element-plus/icons-vue'
+import { ArrowRight, Service } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import Carousel from '../Carousel.vue'
 import TrustFeatures from '../TrustFeatures.vue'
 import ProductCard from '../common/card/ProductCard.vue'
+import LoginForm from '../form/loginForm.vue'
+import RegisterForm from '../form/registerForm.vue'
 import { useProductsStore } from '@/stores/product'
 import { useRouter } from 'vue-router'
 import type { Product } from '@/types/api'
+import { useAuthDialog } from '@/composables/useForm'
 
 const loading = ref<boolean>(true)
 const loadingMore = ref<boolean>(false)
@@ -123,6 +153,9 @@ const displayedCount = ref<number>(20)
 const displaySaleCount = ref<number>(8)
 const productsStore = useProductsStore()
 const router = useRouter()
+
+// Auth Dialog Composable
+const authDialog = useAuthDialog()
 
 // Fetch products on component mount
 onMounted(async () => {
@@ -173,6 +206,7 @@ const openAboutDialog = (): void => {
 }
 
 const handleAddToCart = (product: Product): void => {
+  // This will be handled by the ProductCard component's auth logic
   ElMessage.success(`${product.title} added to cart`)
 }
 

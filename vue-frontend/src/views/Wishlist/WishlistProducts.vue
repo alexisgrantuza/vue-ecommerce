@@ -1,31 +1,22 @@
-
 <template>
   <div class="wishlist-container">
     <el-container class="wishlist-page">
       <el-main>
         <h1>My Wishlist</h1>
-        
+
         <!-- Empty State -->
         <div v-if="wishlistStore.wishlistCount === 0" class="empty-wishlist">
           <el-empty description="Your wishlist is empty" />
-          <el-button 
-            type="primary" 
-            @click="$router.push('/')"
-            class="shop-now-btn"
-          >
+          <el-button type="primary" @click="$router.push('/')" class="shop-now-btn">
             Continue Shopping
           </el-button>
         </div>
-        
+
         <!-- Wishlist Items -->
         <div v-else class="wishlist-grid">
-          <div 
-            v-for="product in wishlistStore.items" 
-            :key="product.id" 
-            class="wishlist-item"
-          >
+          <div v-for="product in wishlistStore.items" :key="product.id" class="wishlist-item">
             <div class="product-image">
-              <el-image 
+              <el-image
                 :src="product.images?.[0] || 'https://via.placeholder.com/300'"
                 :alt="product.title"
                 fit="cover"
@@ -38,43 +29,37 @@
                   </div>
                 </template>
               </el-image>
-              
+
               <!-- Remove from wishlist button -->
-              <el-button 
-                circle 
-                class="remove-btn"
-                @click="removeFromWishlist(product)"
-              >
+              <el-button circle class="remove-btn" @click="removeFromWishlist(product)">
                 <el-icon><Close /></el-icon>
               </el-button>
-              
+
               <!-- Discount tag -->
               <el-tag v-if="product.discount > 0" class="discount-tag" type="danger" size="small">
                 -{{ product.discount }}%
               </el-tag>
             </div>
-            
+
             <div class="product-details">
               <h3 class="product-title" @click="$router.push(`/product/${product.id}`)">
                 {{ product.title }}
               </h3>
-              
+
               <div class="price-section">
                 <span class="current-price">
-                  ₱{{ product.discount > 0 ? 
-                      (product.price * (100 - product.discount) / 100).toFixed(2) : 
-                      product.price.toFixed(2) }}
+                  ₱{{
+                    product.discount > 0
+                      ? ((product.price * (100 - product.discount)) / 100).toFixed(2)
+                      : product.price.toFixed(2)
+                  }}
                 </span>
                 <span v-if="product.discount > 0" class="original-price">
                   ₱{{ product.price.toFixed(2) }}
                 </span>
               </div>
-              
-              <el-button 
-                type="primary" 
-                class="add-to-cart-btn"
-                @click="addToCart(product)"
-              >
+
+              <el-button type="primary" class="add-to-cart-btn" @click="addToCart(product)">
                 Add to Cart
               </el-button>
             </div>
@@ -220,8 +205,6 @@ const addToCart = (product: Product) => {
   min-height: 44px;
 }
 
-
-
 .price-section {
   margin: 15px 0;
   display: flex;
@@ -261,7 +244,7 @@ const addToCart = (product: Product) => {
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
   }
-  
+
   .product-image {
     height: 200px;
   }
@@ -271,7 +254,7 @@ const addToCart = (product: Product) => {
   .wishlist-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .wishlist-page h1 {
     font-size: 24px;
     margin-bottom: 20px;

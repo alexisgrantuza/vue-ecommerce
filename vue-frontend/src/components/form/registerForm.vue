@@ -189,10 +189,6 @@ const form = reactive<FormData>({
   agreeTerms: false,
 })
 
-
-
-
-
 // Enhanced validation rules
 const rules = reactive({
   ...formRules,
@@ -235,7 +231,7 @@ const handleSubmit = async () => {
     if (result.success) {
       ElMessage.success('Account created successfully! Welcome to Shopiplus!')
       registerForm.value.resetFields()
-      
+
       // Reset form data
       Object.assign(form, {
         name: '',

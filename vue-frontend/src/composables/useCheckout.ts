@@ -32,28 +32,28 @@ export function useCheckout() {
       id: 'cod',
       name: 'Cash on Delivery',
       icon: 'el-icon-user',
-      description: 'Pay with cash upon delivery'
+      description: 'Pay with cash upon delivery',
     },
     {
       id: 'gcash',
       name: 'GCash',
       icon: 'el-icon-user',
-      description: 'Pay using GCash'
+      description: 'Pay using GCash',
     },
     {
       id: 'credit_card',
       name: 'Credit/Debit Card',
       icon: 'el-icon-user',
-      description: 'Pay using Visa, Mastercard, etc.'
+      description: 'Pay using Visa, Mastercard, etc.',
     },
     {
       id: 'bank_transfer',
       name: 'Bank Transfer',
       icon: 'el-icon-user',
-      description: 'Pay via bank transfer'
-    }
+      description: 'Pay via bank transfer',
+    },
   ])
-  
+
   const selectedPaymentMethodId = ref('cod')
   const isPlacingOrder = ref(false)
 
@@ -65,13 +65,15 @@ export function useCheckout() {
   const subtotal = computed(() => cartStore.cartTotal)
   const shippingFee = computed(() => (cartItems.value.length > 0 ? 50 : 0))
   const total = computed(() => subtotal.value + shippingFee.value)
-  
-  const selectedAddress = computed(() => 
-    addresses.value.find(addr => addr.id === selectedAddressId.value) || null
+
+  const selectedAddress = computed(
+    () => addresses.value.find((addr) => addr.id === selectedAddressId.value) || null,
   )
-  
-  const selectedPaymentMethod = computed(() => 
-    paymentMethods.value.find(method => method.id === selectedPaymentMethodId.value) || paymentMethods.value[0]
+
+  const selectedPaymentMethod = computed(
+    () =>
+      paymentMethods.value.find((method) => method.id === selectedPaymentMethodId.value) ||
+      paymentMethods.value[0],
   )
 
   const canProceed = computed(() => {
@@ -103,27 +105,31 @@ export function useCheckout() {
   const addAddress = (address: Omit<Address, 'id'>) => {
     const newAddress = {
       ...address,
-      id: Date.now()
+      id: Date.now(),
     }
-    
+
     if (newAddress.isDefault) {
-      addresses.value.forEach(addr => { addr.isDefault = false })
+      addresses.value.forEach((addr) => {
+        addr.isDefault = false
+      })
     }
-    
+
     addresses.value.push(newAddress)
-    
+
     if (addresses.value.length === 1) {
       selectedAddressId.value = newAddress.id
     }
-    
+
     return newAddress
   }
 
   const updateAddress = (address: Address) => {
-    const index = addresses.value.findIndex(addr => addr.id === address.id)
+    const index = addresses.value.findIndex((addr) => addr.id === address.id)
     if (index > -1) {
       if (address.isDefault) {
-        addresses.value.forEach(addr => { addr.isDefault = false })
+        addresses.value.forEach((addr) => {
+          addr.isDefault = false
+        })
       }
       addresses.value[index] = { ...address }
       return true
@@ -132,7 +138,7 @@ export function useCheckout() {
   }
 
   const removeAddress = (id: number) => {
-    const index = addresses.value.findIndex(addr => addr.id === id)
+    const index = addresses.value.findIndex((addr) => addr.id === id)
     if (index > -1) {
       if (selectedAddressId.value === id) {
         selectedAddressId.value = null
@@ -166,33 +172,35 @@ export function useCheckout() {
 
     try {
       isPlacingOrder.value = true
-      
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+
       // Prepare shipping info with cart items
       const shippingInfo = {
         address: `${selectedAddress.value.street}, ${selectedAddress.value.city}, ${selectedAddress.value.state} ${selectedAddress.value.zipCode}`,
         paymentMethod: selectedPaymentMethod.value.id,
-        items: cartItems.value.map(item => ({
+        items: cartItems.value.map((item) => ({
           product_id: item.product.id,
           quantity: item.quantity,
           price: item.product.price,
-          product: item.product
-        }))
+          product: item.product,
+        })),
       }
-      
+
       // Save order to localStorage via Pinia store
       const orderStore = useOrderStore()
       const order = orderStore.createOrder(total.value, shippingInfo)
-      
+
       console.log('Order created:', order)
-      
+
       // Clear the cart after successful order
       cartStore.clearCart()
-      
-      ElMessage.success('Your order has been placed successfully! You can track your order in the orders section.')
-      
+
+      ElMessage.success(
+        'Your order has been placed successfully! You can track your order in the orders section.',
+      )
+
       // Return the actual order ID from the created order
       return order?.id
     } catch (error) {
@@ -223,7 +231,7 @@ export function useCheckout() {
     shippingFee,
     total,
     canProceed,
-    
+
     // Methods
     goToStep,
     goToNextStep,
@@ -234,6 +242,6 @@ export function useCheckout() {
     selectAddress,
     editAddress,
     selectPaymentMethod,
-    placeOrder
+    placeOrder,
   }
 }

@@ -36,14 +36,14 @@ export const useProductsStore = defineStore('products', () => {
   const fetchProducts = async () => {
     loading.value = true
     error.value = null
-    
+
     try {
       // Initialize localStorage on first load
       initializeLocalStorage()
-      
+
       // Load products from localStorage
       loadProducts()
-      
+
       console.log(`Successfully loaded ${products.value.length} products from localStorage`)
       return null
     } catch (err: any) {
@@ -58,15 +58,15 @@ export const useProductsStore = defineStore('products', () => {
   const fetchProductById = async (id: number) => {
     loading.value = true
     error.value = null
-    
+
     try {
       // Make sure we have the latest data
       if (products.value.length === 0) {
         loadProducts()
       }
-      
-      const product = products.value.find(p => p.id === id)
-      
+
+      const product = products.value.find((p) => p.id === id)
+
       if (product) {
         console.log('Product loaded:', product)
         return product

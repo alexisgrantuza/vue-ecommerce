@@ -13,8 +13,7 @@ export const useWishlistStore = defineStore('wishlist', () => {
 
   // Getters
   const wishlistCount = computed(() => items.value.length)
-  const isInWishlist = (productId: number) => 
-    items.value.some(item => item.id === productId)
+  const isInWishlist = (productId: number) => items.value.some((item) => item.id === productId)
 
   // Initialize from localStorage
   const initializeFromLocalStorage = () => {
@@ -54,7 +53,7 @@ export const useWishlistStore = defineStore('wishlist', () => {
   }
 
   const removeFromWishlist = (productId: number) => {
-    const index = items.value.findIndex(item => item.id === productId)
+    const index = items.value.findIndex((item) => item.id === productId)
     if (index !== -1) {
       items.value.splice(index, 1)
       saveToLocalStorage()
@@ -80,29 +79,36 @@ export const useWishlistStore = defineStore('wishlist', () => {
   }
 
   // Watch for user authentication changes
-  watch(() => userAuth.isAuthenticated, (isAuthenticated) => {
-    if (isAuthenticated) {
-      initializeFromLocalStorage()
-    } else {
-      items.value = []
-    }
-  }, { immediate: true })
-
-  // Watch for user ID changes
-  watch(() => userAuth.user?.id, (newUserId, oldUserId) => {
-    if (newUserId !== oldUserId) {
-      // Save current user's wishlist before switching
-      if (oldUserId) {
-        userWishlists.value[oldUserId] = [...items.value]
-      }
-      // Load new user's wishlist
-      if (newUserId) {
-        items.value = userWishlists.value[newUserId] || []
+  watch(
+    () => userAuth.isAuthenticated,
+    (isAuthenticated) => {
+      if (isAuthenticated) {
+        initializeFromLocalStorage()
       } else {
         items.value = []
       }
-    }
-  })
+    },
+    { immediate: true },
+  )
+
+  // Watch for user ID changes
+  watch(
+    () => userAuth.user?.id,
+    (newUserId, oldUserId) => {
+      if (newUserId !== oldUserId) {
+        // Save current user's wishlist before switching
+        if (oldUserId) {
+          userWishlists.value[oldUserId] = [...items.value]
+        }
+        // Load new user's wishlist
+        if (newUserId) {
+          items.value = userWishlists.value[newUserId] || []
+        } else {
+          items.value = []
+        }
+      }
+    },
+  )
 
   return {
     // State
@@ -110,16 +116,16 @@ export const useWishlistStore = defineStore('wishlist', () => {
     loading,
     error,
     userWishlists, // Expose userWishlists for debugging if needed
-    
+
     // Getters
     wishlistCount,
     isInWishlist,
-    
+
     // Actions
     addToWishlist,
     removeFromWishlist,
     toggleWishlistItem,
-    clearWishlist
+    clearWishlist,
   }
 })
 

@@ -1,9 +1,9 @@
 <template>
   <div class="product-card" @click="handleProductClick">
     <div class="product-image">
-      <el-image 
-        :src="product.images?.[0] || 'https://via.placeholder.com/300'" 
-        :alt="product.title" 
+      <el-image
+        :src="product.images?.[0] || 'https://via.placeholder.com/300'"
+        :alt="product.title"
         fit="cover"
         class="product-img"
         lazy
@@ -17,10 +17,10 @@
       <el-tag v-if="product.discount > 0" class="discount-tag" type="danger" size="small">
         -{{ product.discount }}%
       </el-tag>
-      <el-button 
-        :class="['wishlist-btn', { 'in-wishlist': isInWishlist }]" 
-        size="small" 
-        circle 
+      <el-button
+        :class="['wishlist-btn', { 'in-wishlist': isInWishlist }]"
+        size="small"
+        circle
         @click.stop="toggleWishlist"
         :title="isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'"
       >
@@ -30,24 +30,24 @@
         </el-icon>
       </el-button>
     </div>
-    
+
     <div class="product-content">
       <!-- Title -->
       <h3 class="product-title">{{ product.title }}</h3>
-      
+
       <!-- Description -->
       <p class="product-description">
         {{ product.description || 'New range of formal shirt' }}
         <span class="read-more">Read More</span>
       </p>
-      
+
       <!-- Category -->
       <div class="product-category">
         <el-tag type="info" size="small" class="category-tag">
           {{ product.category || 'Clothes' }}
         </el-tag>
       </div>
-      
+
       <!-- Price Section -->
       <div class="price-section">
         <span class="price-label">Price</span>
@@ -55,18 +55,11 @@
           <span class="current-price">
             ₱{{ product.discount > 0 ? calculateDiscountedPrice() : product.price }}
           </span>
-          <el-button 
-            type="primary" 
-            class="add-to-cart-btn"
-            size="default"
-            @click.stop="addToCart"
-          >
+          <el-button type="primary" class="add-to-cart-btn" size="default" @click.stop="addToCart">
             Add To Cart
           </el-button>
         </div>
-        <span v-if="product.discount > 0" class="original-price">
-          ₱{{ product.price }}
-        </span>
+        <span v-if="product.discount > 0" class="original-price"> ₱{{ product.price }} </span>
       </div>
     </div>
   </div>
@@ -79,10 +72,12 @@ import { ElMessage } from 'element-plus'
 import { useCartStore } from '@/stores/cart'
 import { useWishlistStore } from '@/stores/wishlist'
 import { computed } from 'vue'
+import { useUserAuthStore } from '@/stores/userAuth'
 
 // Store Instances
 const cartStore = useCartStore()
 const wishlistStore = useWishlistStore()
+const userStore = useUserAuthStore()
 
 // Props
 const props = defineProps<{
@@ -93,28 +88,45 @@ const props = defineProps<{
 const isInWishlist = computed(() => wishlistStore.isInWishlist(props.product.id))
 
 // Emits
-const emit = defineEmits(['product-click'])
+const emit = defineEmits<{
+  'product-click': [product: Product]
+  'show-login': []
+}>()
 
 // Methods
 const calculateDiscountedPrice = (): string => {
   const price = parseFloat(props.product.price.toString())
-  return (price * (100 - props.product.discount) / 100).toFixed(0)
+  return ((price * (100 - props.product.discount)) / 100).toFixed(0)
 }
 
 const addToCart = (e: Event) => {
   e.stopPropagation()
+
+  if (!userStore.isAuthenticated) {
+    ElMessage.info('Please login to add items to cart')
+    emit('show-login')
+    return
+  }
+
   cartStore.addToCart(props.product)
   ElMessage.success(`${props.product.title} added to cart`)
 }
 
 const toggleWishlist = (e: Event) => {
   e.stopPropagation()
+
+  if (!userStore.isAuthenticated) {
+    ElMessage.info('Please login to add items to wishlist')
+    emit('show-login')
+    return
+  }
+
   const wasAdded = wishlistStore.toggleWishlistItem(props.product)
   ElMessage({
-    message: wasAdded 
-      ? `${props.product.title} added to wishlist` 
+    message: wasAdded
+      ? `${props.product.title} added to wishlist`
       : `${props.product.title} removed from wishlist`,
-    type: wasAdded ? 'success' : 'info'
+    type: wasAdded ? 'success' : 'info',
   })
 }
 
@@ -330,9 +342,15 @@ const handleProductClick = () => {
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.3); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* Responsive adjustments */
@@ -355,19 +373,19 @@ const handleProductClick = () => {
     margin-left: auto;
     margin-right: auto;
   }
-  
+
   .product-content {
     padding: 16px;
   }
-  
+
   .product-title {
     font-size: 16px;
   }
-  
+
   .current-price {
     font-size: 20px;
   }
-  
+
   .add-to-cart-btn {
     padding: 6px 12px;
     font-size: 13px;

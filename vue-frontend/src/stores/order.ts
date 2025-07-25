@@ -2,9 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { Order, OrderItem, OrderWithItems, ShippingInfo, UserOrdersStorage } from '@/types/api'
 import { useUserAuthStore } from './userAuth'
-import { saveToLocalStorage, initializeFromLocalStorage } from '@/utils/helpers'
-
-
+import { loadFromLocalStorage, saveToLocalStorage } from '@/utils/helpers'
 
 export const useOrderStore = defineStore('order', () => {
   // State - Store orders for all users in a single object
@@ -22,19 +20,21 @@ export const useOrderStore = defineStore('order', () => {
   // Get current user's orders
   const getCurrentUserOrders = computed((): OrderWithItems[] => {
     const userId = getCurrentUserId()
-    return userId ? (userOrders.value[userId] || []) : []
+    return userId ? userOrders.value[userId] || [] : []
   })
 
   // Getters - all based on current user's orders
   const orderCount = computed(() => getCurrentUserOrders.value.length)
-  const completedOrders = computed(() => 
-    getCurrentUserOrders.value.filter(order => order.status === 'delivered')
+  const completedOrders = computed(() =>
+    getCurrentUserOrders.value.filter((order) => order.status === 'delivered'),
   )
   const pendingOrders = computed(() =>
-    getCurrentUserOrders.value.filter(order => order.status === 'pending' || order.status === 'processing')
+    getCurrentUserOrders.value.filter(
+      (order) => order.status === 'pending' || order.status === 'processing',
+    ),
   )
   const getOrderById = (orderId: string) =>
-    getCurrentUserOrders.value.find(order => order.id === orderId)
+    getCurrentUserOrders.value.find((order) => order.id === orderId)
 
   // Initialize user orders array if it doesn't exist
   const ensureUserOrdersExists = (userId: number) => {
@@ -42,10 +42,6 @@ export const useOrderStore = defineStore('order', () => {
       userOrders.value[userId] = []
     }
   }
-
- 
-
-  
 
   // Generate a unique order ID
   const generateOrderId = () => {
@@ -60,14 +56,14 @@ export const useOrderStore = defineStore('order', () => {
         throw new Error('No user is logged in')
       }
 
-      await new Promise(resolve => setTimeout(resolve, 300))
-      
+      await new Promise((resolve) => setTimeout(resolve, 300))
+
       ensureUserOrdersExists(userId)
-      const orderIndex = userOrders.value[userId].findIndex(order => order.id === orderId)
-      
+      const orderIndex = userOrders.value[userId].findIndex((order) => order.id === orderId)
+
       if (orderIndex !== -1) {
         userOrders.value[userId].splice(orderIndex, 1)
-        saveToLocalStorage()
+        saveToLocalStorage(userOrders.value)
         return true
       }
       return false
@@ -87,7 +83,7 @@ export const useOrderStore = defineStore('order', () => {
 
     ensureUserOrdersExists(userId)
     const orderId = generateOrderId()
-    
+
     const order: OrderWithItems = {
       id: orderId,
       user_id: userId,
@@ -110,14 +106,13 @@ export const useOrderStore = defineStore('order', () => {
         price: item.price,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        product: item.product
-      })) || []) as (OrderItem & { product: any })[]
+        product: item.product,
+      })) || []) as (OrderItem & { product: any })[],
     }
 
-    // Add order to the beginning of the user's orders array (most recent first)
     userOrders.value[userId].unshift(order)
-    saveToLocalStorage()
-    
+    saveToLocalStorage(userOrders.value)
+
     console.log('Order created and saved for user', userId, ':', order)
     return order
   }
@@ -128,20 +123,20 @@ export const useOrderStore = defineStore('order', () => {
     if (!userId) return
 
     ensureUserOrdersExists(userId)
-    const order = userOrders.value[userId].find(o => o.id === orderId)
-    
+    const order = userOrders.value[userId].find((o) => o.id === orderId)
+
     if (order) {
       order.status = status
       order.updated_at = new Date().toISOString()
-      
+
       if (status === 'shipped' && !order.shipped_at) {
         order.shipped_at = new Date().toISOString()
       }
       if (status === 'delivered' && !order.delivered_at) {
         order.delivered_at = new Date().toISOString()
       }
-      
-      saveToLocalStorage()
+
+      saveToLocalStorage(userOrders.value)
     }
   }
 
@@ -154,20 +149,19 @@ export const useOrderStore = defineStore('order', () => {
   const fetchOrderHistory = async () => {
     loading.value = true
     error.value = null
-    
+
     try {
       const userId = getCurrentUserId()
       if (!userId) {
         throw new Error('No user is logged in')
       }
 
-      await new Promise(resolve => setTimeout(resolve, 300))
-      
+      await new Promise((resolve) => setTimeout(resolve, 300))
+
       initializeFromLocalStorage()
-      
+
       console.log('Fetched orders for user', userId, ':', getCurrentUserOrders.value)
     } catch (err: any) {
-      error.value = err.message || 'Failed to fetch order history'
       console.error('Error fetching order history:', err)
     } finally {
       loading.value = false
@@ -181,11 +175,16 @@ export const useOrderStore = defineStore('order', () => {
 
   
 
+  // Initialize on store creation
+  const initializeFromLocalStorage = () => {
+    const storedData = loadFromLocalStorage()
+    if (storedData) {
+      userOrders.value = storedData
+    }
+  }
   
-
   // Initialize on store creation
   initializeFromLocalStorage()
- 
 
   return {
     // State
@@ -193,13 +192,13 @@ export const useOrderStore = defineStore('order', () => {
     loading,
     error,
     selectedOrder,
-    
+
     // Getters
     orderCount,
     completedOrders,
     pendingOrders,
     getOrderById,
-    
+
     // Actions
     createOrder,
     updateOrderStatus,
@@ -207,8 +206,8 @@ export const useOrderStore = defineStore('order', () => {
     fetchOrderHistory,
     selectOrder,
     deleteOrder,
-    
+
     // Access to all user orders (for admin purposes)
-    userOrders: computed(() => userOrders.value)
+    userOrders: computed(() => userOrders.value),
   }
 })

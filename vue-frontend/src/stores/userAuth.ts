@@ -8,14 +8,18 @@ export const useUserAuthStore = defineStore('userAuth', () => {
   const token = ref('')
   const loading = ref(false)
   const error = ref<string | null>(null)
-
-  // Initialize store from localStorage
+  
+  // Initialize store from localStorage or sessionStorage
   function initializeAuth() {
-    const storedUser = localStorage.getItem('user')
-    const storedToken = localStorage.getItem('token')
-    const rememberMe = localStorage.getItem('rememberMe')
+    let storedUser = localStorage.getItem('user')
+    let storedToken = localStorage.getItem('token')
 
-    if (storedUser && storedToken && rememberMe === 'true') {
+    if (!storedUser || !storedToken) {
+      storedUser = sessionStorage.getItem('user')
+      storedToken = sessionStorage.getItem('token')
+    }
+
+    if (storedUser && storedToken) {
       try {
         user.value = JSON.parse(storedUser)
         token.value = storedToken
@@ -32,46 +36,38 @@ export const useUserAuthStore = defineStore('userAuth', () => {
       loading.value = true
       error.value = null
 
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 800))
+      await new Promise((resolve) => setTimeout(resolve, 800))
 
-      // Get existing users
       const users = JSON.parse(localStorage.getItem('users') || '[]')
 
-      // Check if user already exists
       const userExists = users.some((u: User) => u.email === userData.email)
       if (userExists) {
         throw new Error('Email already registered')
       }
 
-      // Create new user
       const newUser: User = {
         id: Date.now(),
         name: userData.name,
         email: userData.email,
-        password: userData.password, // In real app, this would be hashed
+        password: userData.password,
         phone: userData.phone || '',
         address: userData.address ? [userData.address] : [],
         created_at: new Date(),
-        updated_at: new Date()
+        updated_at: new Date(),
       }
 
-      // Add to users array and save
       users.push(newUser)
       localStorage.setItem('users', JSON.stringify(users))
 
-      // Auto-login the new user
       const tokenValue = `user-token-${Date.now()}`
       user.value = newUser
       token.value = tokenValue
-      
-      // Store in localStorage
+
       localStorage.setItem('user', JSON.stringify(newUser))
       localStorage.setItem('token', tokenValue)
-      localStorage.setItem('rememberMe', 'true')
 
       isAuthenticated.value = true
-      
+
       return { success: true, user: newUser }
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Registration failed. Please try again.'
@@ -88,13 +84,11 @@ export const useUserAuthStore = defineStore('userAuth', () => {
       loading.value = true
       error.value = null
 
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 600))
+      await new Promise((resolve) => setTimeout(resolve, 600))
 
-      // Get existing users
       const users = JSON.parse(localStorage.getItem('users') || '[]')
       const foundUser = users.find((u: User) => u.email === credentials.email)
-      
+
       if (!foundUser) {
         throw new Error('User not found. Please check your email or register.')
       }
@@ -103,29 +97,28 @@ export const useUserAuthStore = defineStore('userAuth', () => {
         throw new Error('Invalid password. Please try again.')
       }
 
-      // Login successful
       const tokenValue = `user-token-${Date.now()}`
       user.value = foundUser
       token.value = tokenValue
       isAuthenticated.value = true
 
-      // Store in localStorage if remember me is checked
+      // Store in localStorage if remember me is true
       if (rememberMe) {
         localStorage.setItem('user', JSON.stringify(foundUser))
         localStorage.setItem('token', tokenValue)
-        localStorage.setItem('rememberMe', 'true')
       } else {
         // Store in sessionStorage for current session only
         sessionStorage.setItem('user', JSON.stringify(foundUser))
         sessionStorage.setItem('token', tokenValue)
+        // Remove any existing localStorage data
+        localStorage.removeItem('user')
+        localStorage.removeItem('token')
       }
 
       return { success: true, user: foundUser }
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Login failed. Please try again.'
-      error.value = message
       console.error('Login error:', err)
-      return { success: false, error: message }
+      return { success: false, error: err }
     } finally {
       loading.value = false
     }
@@ -136,11 +129,10 @@ export const useUserAuthStore = defineStore('userAuth', () => {
     user.value = null
     token.value = ''
     error.value = null
-    
+
     // Clear all stored data
     localStorage.removeItem('user')
     localStorage.removeItem('token')
-    localStorage.removeItem('rememberMe')
     sessionStorage.removeItem('user')
     sessionStorage.removeItem('token')
   }
@@ -154,21 +146,21 @@ export const useUserAuthStore = defineStore('userAuth', () => {
   const getCurrentUser = () => user.value
   const getToken = () => token.value
 
-  return { 
+  return {
     // State
-    isAuthenticated, 
-    user, 
+    isAuthenticated,
+    user,
     token,
     loading,
     error,
-    
+
     // Actions
-    register, 
-    login, 
+    register,
+    login,
     logout,
     setError,
     initializeAuth,
-    
+
     // Getters
     isLoggedIn,
     getCurrentUser,

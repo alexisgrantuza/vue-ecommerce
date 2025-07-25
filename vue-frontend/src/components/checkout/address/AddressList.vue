@@ -1,14 +1,14 @@
 <template>
   <div class="address-list">
     <h2>Delivery Address</h2>
-    
+
     <el-row :gutter="20">
-      <el-col 
-        v-for="address in addresses" 
-        :key="address.id" 
-        :xs="24" 
-        :sm="12" 
-        :md="12" 
+      <el-col
+        v-for="address in addresses"
+        :key="address.id"
+        :xs="24"
+        :sm="12"
+        :md="12"
         class="address-col"
       >
         <AddressCard
@@ -19,7 +19,7 @@
           @remove="handleRemoveAddress"
         />
       </el-col>
-      
+
       <el-col :xs="24" :sm="12" :md="12" class="address-col">
         <el-card class="add-address-card" shadow="hover" @click="handleAddNewAddress">
           <el-icon :size="30"><Plus /></el-icon>
@@ -44,7 +44,7 @@ import { Plus } from '@element-plus/icons-vue'
 import AddressCard from './AddressCard.vue'
 import AddressForm from './AddressForm.vue'
 import type { Address } from '@/types/api'
-    
+
 const props = defineProps<{
   addresses: Address[]
   selectedAddressId: number | null
@@ -78,23 +78,19 @@ const handleEditAddress = (address: Address) => {
 
 const handleRemoveAddress = async (id: number) => {
   try {
-    await ElMessageBox.confirm(
-      'Are you sure you want to delete this address?',
-      'Delete Address',
-      {
-        confirmButtonText: 'Delete',
-        cancelButtonText: 'Cancel',
-        type: 'warning',
-      }
-    )
-    
+    await ElMessageBox.confirm('Are you sure you want to delete this address?', 'Delete Address', {
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+      type: 'warning',
+    })
+
     emit('remove', id)
-    
+
     // If the deleted address was selected, clear the selection
     if (props.selectedAddressId === id) {
       emit('update:selectedAddressId', null)
     }
-    
+
     ElMessage.success('Address deleted successfully')
   } catch (error) {
     // User cancelled - no action needed
@@ -104,15 +100,15 @@ const handleRemoveAddress = async (id: number) => {
 const handleFormSubmit = async (addressData: Omit<Address, 'id'>) => {
   try {
     isSubmitting.value = true
-    
+
     // Simulate API call delay (remove in production)
-    await new Promise(resolve => setTimeout(resolve, 500))
-    
+    await new Promise((resolve) => setTimeout(resolve, 500))
+
     if (editingAddress.value) {
       // Update existing address
       const updatedAddress: Address = {
         ...addressData,
-        id: editingAddress.value.id
+        id: editingAddress.value.id,
       }
       emit('update', updatedAddress)
       ElMessage.success('Address updated successfully')
@@ -121,11 +117,10 @@ const handleFormSubmit = async (addressData: Omit<Address, 'id'>) => {
       emit('add', addressData)
       ElMessage.success('Address added successfully')
     }
-    
+
     // Close form and reset state
     showAddressForm.value = false
     editingAddress.value = null
-    
   } catch (error) {
     console.error('Error saving address:', error)
     ElMessage.error('Failed to save address. Please try again.')

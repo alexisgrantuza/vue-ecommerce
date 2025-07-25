@@ -8,8 +8,8 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 import App from './App.vue'
 import router from './router'
-import { testApiConnection } from './utils/testApi'
 import { useProductsStore } from './stores/product'
+import { useUserAuthStore } from './stores/userAuth'
 
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -20,12 +20,12 @@ app.use(createPinia())
 app.use(router)
 app.use(ElementPlus)
 
-
 const productsStore = useProductsStore()
+const authStore = useUserAuthStore()
 
 productsStore.fetchProducts()
 console.log(productsStore.products)
-
+authStore.initializeAuth()
 // testApiConnection()
 
 app.mount('#app')

@@ -3,7 +3,12 @@
     <div class="order-header">
       <h1>My Orders</h1>
       <el-tabs v-model="activeStatus" @tab-change="filterOrders">
-        <el-tab-pane v-for="status in orderStatuses" :key="status.value" :label="status.label" :name="status.value" />
+        <el-tab-pane
+          v-for="status in orderStatuses"
+          :key="status.value"
+          :label="status.label"
+          :name="status.value"
+        />
       </el-tabs>
     </div>
 
@@ -16,9 +21,9 @@
     </div>
 
     <div v-else class="orders-list">
-      <el-card 
-        v-for="order in filteredOrders" 
-        :key="order.id" 
+      <el-card
+        v-for="order in filteredOrders"
+        :key="order.id"
         :id="`order-${order.id}`"
         class="order-card"
       >
@@ -34,7 +39,7 @@
               </el-tag>
             </div>
             <el-dropdown trigger="click" @command="handleCommand($event, order)">
-              <el-button type="text" class="meatball-menu" @click.stop>
+              <el-button type="primary" class="meatball-menu" @click.stop>
                 <el-icon><MoreFilled /></el-icon>
               </el-button>
               <template #dropdown>
@@ -55,10 +60,10 @@
 
         <div class="order-items">
           <div v-for="item in order.items" :key="item.id" class="order-item">
-            <el-image 
-              :src="item.product.images?.[0] || '/placeholder-image.jpg'" 
-              fit="cover" 
-              class="product-image" 
+            <el-image
+              :src="item.product.images?.[0] || '/placeholder-image.jpg'"
+              fit="cover"
+              class="product-image"
             />
             <div class="item-details">
               <h4>{{ item.product.title }}</h4>
@@ -68,7 +73,7 @@
               </div>
               <div v-if="order.status === 'shipped'" class="tracking-info">
                 <el-tooltip :content="getTrackingStatus(order)" placement="top">
-                  <el-button type="text" size="small" @click="showTrackingDetails(order)">
+                  <el-button type="primary" size="small" @click="showTrackingDetails(order)">
                     <el-icon><LocationInformation /></el-icon>
                     Track Order
                   </el-button>
@@ -83,10 +88,19 @@
             Total: <span>₱{{ order.total_amount.toFixed(2) }}</span>
           </div>
           <div class="order-actions">
-            <el-button v-if="order.status === 'pending'" type="danger" plain @click="cancelOrder(order)">
+            <el-button
+              v-if="order.status === 'pending'"
+              type="danger"
+              plain
+              @click="cancelOrder(order)"
+            >
               Cancel Order
             </el-button>
-            <el-button v-if="order.payment_status === 'pending' && order.status === 'pending'" type="primary" @click="payNow(order)">
+            <el-button
+              v-if="order.payment_status === 'pending' && order.status === 'pending'"
+              type="primary"
+              @click="payNow(order)"
+            >
               Pay Now
             </el-button>
             <el-button v-if="order.status === 'delivered'" type="success" @click="buyAgain(order)">
@@ -100,16 +114,32 @@
     <!-- Tracking Dialog -->
     <el-dialog v-model="showTrackingDialog" title="Order Tracking" width="600px">
       <div v-if="selectedOrder" class="tracking-container">
-        <el-steps :active="getTrackingStep(selectedOrder.status)" finish-status="success" process-status="process">
+        <el-steps
+          :active="getTrackingStep(selectedOrder.status)"
+          finish-status="success"
+          process-status="process"
+        >
           <el-step title="Order Placed" :description="formatDate(selectedOrder.created_at)" />
           <el-step title="Processing" description="Preparing your order" />
-          <el-step title="Shipped" :description="selectedOrder.shipped_at ? formatDate(selectedOrder.shipped_at) : 'In transit'" />
-          <el-step title="Delivered" :description="selectedOrder.delivered_at ? formatDate(selectedOrder.delivered_at) : 'On the way'" />
+          <el-step
+            title="Shipped"
+            :description="
+              selectedOrder.shipped_at ? formatDate(selectedOrder.shipped_at) : 'In transit'
+            "
+          />
+          <el-step
+            title="Delivered"
+            :description="
+              selectedOrder.delivered_at ? formatDate(selectedOrder.delivered_at) : 'On the way'
+            "
+          />
         </el-steps>
 
         <div class="tracking-details">
           <h4>Shipping Details</h4>
-          <p><strong>Tracking Number:</strong> {{ selectedOrder.tracking_number || 'Not available' }}</p>
+          <p>
+            <strong>Tracking Number:</strong> {{ selectedOrder.tracking_number || 'Not available' }}
+          </p>
           <p><strong>Shipping Address:</strong> {{ selectedOrder.shipping_address }}</p>
           <p><strong>Estimated Delivery:</strong> {{ getEstimatedDelivery(selectedOrder) }}</p>
         </div>
@@ -117,9 +147,9 @@
     </el-dialog>
 
     <!-- Order Details Dialog -->
-    <el-dialog 
-      v-model="showOrderDetails" 
-      :title="`Order #${selectedOrder?.id}`" 
+    <el-dialog
+      v-model="showOrderDetails"
+      :title="`Order #${selectedOrder?.id}`"
       width="800px"
       :before-close="closeOrderDetails"
     >
@@ -127,20 +157,20 @@
         <!-- Order Status -->
         <div class="order-status-section">
           <h3>Order Status</h3>
-          <el-select 
-            v-model="selectedOrder.status" 
+          <el-select
+            v-model="selectedOrder.status"
             placeholder="Select status"
             @change="updateOrderStatus(selectedOrder)"
             class="status-selector"
           >
             <el-option
-              v-for="status in orderStatuses.filter(s => s.value !== 'all')"
+              v-for="status in orderStatuses.filter((s) => s.value !== 'all')"
               :key="status.value"
               :label="status.label"
               :value="status.value"
             />
           </el-select>
-          
+
           <el-timeline class="timeline">
             <el-timeline-item
               v-for="(step, index) in orderTimeline"
@@ -158,8 +188,8 @@
           <h3>Order Items</h3>
           <div class="order-items-list">
             <div v-for="item in selectedOrder.items" :key="item.id" class="order-item-detail">
-              <el-image 
-                :src="item.product.images?.[0] || '/placeholder-image.jpg'" 
+              <el-image
+                :src="item.product.images?.[0] || '/placeholder-image.jpg'"
                 class="product-image"
                 fit="cover"
               />
@@ -172,11 +202,11 @@
                   <span class="subtotal">₱{{ (item.price * item.quantity).toFixed(2) }}</span>
                 </div>
               </div>
-              <el-button 
-                type="danger" 
-                size="small" 
-                :icon="Delete" 
-                circle 
+              <el-button
+                type="danger"
+                size="small"
+                :icon="Delete"
+                circle
                 @click="removeOrderItem(selectedOrder, item)"
                 class="remove-item-btn"
               />
@@ -228,10 +258,12 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { LocationInformation, MoreFilled, View, Delete } from '@element-plus/icons-vue'
 import { useOrderStore } from '@/stores/order'
 import type { Order, OrderItem, OrderWithItems } from '@/types/api'
+import { saveToLocalStorage } from '@/utils/helpers'
 
 const router = useRouter()
 const route = useRoute()
 const orderStore = useOrderStore()
+
 
 // Component state
 const loading = ref(true)
@@ -243,11 +275,11 @@ const handleCommand = async (command: string, order: OrderWithItems) => {
     // Set the selected order and show the details dialog
     selectedOrder.value = { ...order }
     showOrderDetails.value = true
-    
+
     // Update URL with orderId
-    router.push({ 
-      path: '/order-history', 
-      query: { orderId: order.id } 
+    router.push({
+      path: '/order-history',
+      query: { orderId: order.id },
     })
   } else if (command === 'delete') {
     try {
@@ -259,7 +291,7 @@ const handleCommand = async (command: string, order: OrderWithItems) => {
           cancelButtonText: 'Cancel',
           type: 'warning',
           confirmButtonClass: 'el-button--danger',
-        }
+        },
       )
       // Call the store action to delete the order
       await orderStore.deleteOrder(order.id)
@@ -283,7 +315,7 @@ const orderTimeline = [
   { status: 'pending', label: 'Order Placed' },
   { status: 'processing', label: 'Processing' },
   { status: 'shipped', label: 'Shipped' },
-  { status: 'delivered', label: 'Delivered' }
+  { status: 'delivered', label: 'Delivered' },
 ]
 
 // Use computed to get orders from store
@@ -304,29 +336,29 @@ const fetchOrders = async () => {
   try {
     loading.value = true
     console.log('Fetching orders...')
-    
+
     // Fetch orders from the store
     await orderStore.fetchOrderHistory()
-    
+
     console.log('Orders fetched:', orders.value)
-    
+
     // If we came from checkout with a new order ID, scroll to it
     const orderId = route.query.orderId as string
     if (orderId) {
       console.log('Looking for order with ID:', orderId)
-      
+
       // Wait for DOM to update
       await nextTick()
-      
+
       // Small delay to ensure the DOM is fully rendered
       setTimeout(() => {
         // Try to find the order in our data first
-        const targetOrder = orders.value.find(order => order.id === orderId)
+        const targetOrder = orders.value.find((order) => order.id === orderId)
         if (targetOrder) {
           console.log('Found target order:', targetOrder)
           ElMessage.success(`Order ${orderId} has been placed successfully!`)
         }
-        
+
         // Try to scroll to the order element
         const orderElement = document.getElementById(`order-${orderId}`)
         if (orderElement) {
@@ -335,7 +367,7 @@ const fetchOrders = async () => {
         } else {
           console.log('Order element not found in DOM')
         }
-        
+
         // Remove the orderId from URL after processing
         router.replace({ query: {} })
       }, 1000)
@@ -352,7 +384,7 @@ const fetchOrders = async () => {
 const filteredOrders = computed(() => {
   console.log('Filtering orders. Active status:', activeStatus.value, 'Orders:', orders.value)
   if (activeStatus.value === 'all') return orders.value
-  return orders.value.filter(order => order.status === activeStatus.value)
+  return orders.value.filter((order) => order.status === activeStatus.value)
 })
 
 // Format date for display
@@ -363,7 +395,7 @@ const formatDate = (date: Date | string) => {
     month: 'long',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   })
 }
 
@@ -396,20 +428,20 @@ const removeOrderItem = async (order: OrderWithItems, item: OrderItem) => {
         cancelButtonText: 'Cancel',
         type: 'warning',
         confirmButtonClass: 'el-button--danger',
-      }
+      },
     )
-    
+
     // In a real app, this would be an API call
-    const itemIndex = order.items.findIndex(i => i.id === item.id)
+    const itemIndex = order.items.findIndex((i) => i.id === item.id)
     if (itemIndex !== -1) {
       order.items.splice(itemIndex, 1)
-      
+
       // Update order total
       order.total_amount = calculateSubtotal(order) + (order.shipping || 0)
-      
+
       // Save changes to the store
-      orderStore.saveToLocalStorage()
-      
+      saveToLocalStorage(orderStore.userOrders)
+
       ElMessage.success('Item removed from order')
     }
   } catch (error) {
@@ -422,7 +454,7 @@ const removeOrderItem = async (order: OrderWithItems, item: OrderItem) => {
 
 // Calculate subtotal for order items
 const calculateSubtotal = (order: OrderWithItems) => {
-  return order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+  return order.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 }
 
 // Format payment method for display
@@ -430,16 +462,16 @@ const formatPaymentMethod = (method: string) => {
   if (!method) return 'N/A'
   return method
     .split('_')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
 }
 
 // Get timeline item type based on order status
 const getTimelineItemType = (step: { status: string }, index: number) => {
   if (!selectedOrder.value) return 'primary' as const
-  
-  const currentStepIndex = orderTimeline.findIndex(s => s.status === selectedOrder.value?.status)
-  
+
+  const currentStepIndex = orderTimeline.findIndex((s) => s.status === selectedOrder.value?.status)
+
   if (index < currentStepIndex) return 'success' as const
   if (index === currentStepIndex) return 'primary' as const
   return 'info' as const
@@ -466,7 +498,7 @@ const formatStatus = (status: string) => {
     processing: 'Processing',
     shipped: 'Shipped',
     delivered: 'Delivered',
-    cancelled: 'Cancelled'
+    cancelled: 'Cancelled',
   }
   return statusMap[status] || status
 }
@@ -478,7 +510,7 @@ const getStatusType = (status: string) => {
     processing: 'primary',
     shipped: 'info',
     delivered: 'success',
-    cancelled: 'danger'
+    cancelled: 'danger',
   } as const
   return typeMap[status as keyof typeof typeMap] || ''
 }
@@ -490,7 +522,7 @@ const getTrackingStep = (status: string) => {
     processing: 2,
     shipped: 3,
     delivered: 4,
-    cancelled: 0
+    cancelled: 0,
   }
   return stepMap[status] || 0
 }
@@ -523,19 +555,15 @@ const showTrackingDetails = (order: OrderWithItems) => {
 // Cancel order
 const cancelOrder = async (order: OrderWithItems) => {
   try {
-    await ElMessageBox.confirm(
-      'Are you sure you want to cancel this order?',
-      'Cancel Order',
-      {
-        confirmButtonText: 'Yes, Cancel',
-        cancelButtonText: 'No, Keep It',
-        type: 'warning'
-      }
-    )
-    
+    await ElMessageBox.confirm('Are you sure you want to cancel this order?', 'Cancel Order', {
+      confirmButtonText: 'Yes, Cancel',
+      cancelButtonText: 'No, Keep It',
+      type: 'warning',
+    })
+
     // Update order status using the store method
     orderStore.updateOrderStatus(order.id, 'cancelled')
-    
+
     ElMessage.success('Order has been cancelled')
   } catch (error) {
     // User cancelled the action
@@ -589,18 +617,18 @@ onMounted(() => {
 }
 
 .meatball-menu:hover {
-  color: #409EFF;
+  color: #409eff;
   background-color: #f5f7fa;
   border-radius: 4px;
 }
 
 .delete-action {
-  color: #F56C6C;
+  color: #f56c6c;
 }
 
 .delete-action:hover {
   color: #fff;
-  background-color: #F56C6C;
+  background-color: #f56c6c;
 }
 
 /* Order Details Dialog Styles */
@@ -924,22 +952,22 @@ onMounted(() => {
     align-items: flex-start;
     gap: 10px;
   }
-  
+
   .order-footer {
     flex-direction: column;
     gap: 15px;
     align-items: flex-start;
   }
-  
+
   .order-actions {
     width: 100%;
     justify-content: flex-end;
   }
-  
+
   .order-item {
     flex-direction: column;
   }
-  
+
   .product-image {
     width: 100%;
     height: 200px;
