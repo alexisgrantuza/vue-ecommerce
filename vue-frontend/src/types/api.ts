@@ -17,17 +17,18 @@ export interface Category {
 
 export interface Product {
   id: number
-  title: string
-  description: string
-  price: number
-  category: Category
-  images: string[]
-  is_active: boolean
-  rating: number
-  num_reviews: number
-  discount: number
-  popular: boolean
-  onSale: boolean
+  title?: string
+  description?: string
+  price?: number
+  category?: Category
+  images?: string[]
+  is_active?: boolean
+  rating?: number
+  num_reviews?: number
+  discount?: number
+  popular?: boolean
+  onSale?: boolean
+  brand?: string
   created_at: string
   updated_at: string
 }

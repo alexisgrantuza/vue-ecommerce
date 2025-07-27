@@ -146,7 +146,6 @@ const handleLogoClick = (): void => {
 const handleSearch = (): void => {
   if (searchQuery.value.trim()) {
     ElMessage.success(`Searching for: ${searchQuery.value}`)
-    // Implement search logic here
   } else {
     ElMessage.warning('Please enter a search term')
   }
