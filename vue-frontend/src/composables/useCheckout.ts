@@ -183,7 +183,7 @@ export function useCheckout() {
         items: cartItems.value.map((item) => ({
           product_id: item.product.id,
           quantity: item.quantity,
-          price: item.product.price,
+          price: item.product.price ?? 0,
           product: item.product,
         })),
       }

@@ -1,6 +1,6 @@
 <template>
-  <div class="default-layout">
-    <main class="layout-main">
+  <el-container class="default-layout">
+    <el-main class="layout-main">
       <div class="layout-container">
         <Carousel />
         <TrustFeatures />
@@ -32,7 +32,6 @@
                 :product="product"
                 @add-to-cart="handleAddToCart"
                 @product-click="navigateToProduct"
-                @show-login="authDialog.showLogin"
               />
             </el-col>
           </el-row>
@@ -44,7 +43,6 @@
           />
         </section>
 
-        <!-- Featured Products Section -->
         <section class="product-section">
           <div class="section-header">
             <div class="section-title">
@@ -72,12 +70,10 @@
                 :product="product"
                 @add-to-cart="handleAddToCart"
                 @product-click="navigateToProduct"
-                @show-login="authDialog.showLogin"
               />
             </el-col>
           </el-row>
 
-          <!-- Load More Button -->
           <div v-if="!loading && products.length > 0 && hasMoreProducts" class="load-more-section">
             <el-button
               type="primary"
@@ -98,38 +94,13 @@
           />
         </section>
       </div>
-    </main>
-
-    <!-- Auth Dialogs -->
-    <el-dialog
-      v-model="authDialog.loginDialogVisible.value"
-      width="400px"
-      :show-close="false"
-      style="background-color: #000; border-radius: 12px"
-    >
-      <login-form 
-        @show-login="authDialog.showLogin" 
-        @login-success="authDialog.handleLoginSuccess" 
-      />
-    </el-dialog>
-
-    <el-dialog
-      v-model="authDialog.registerDialogVisible.value"
-      width="500px"
-      :show-close="false"
-      style="background-color: #000; border-radius: 12px"
-    >
-      <register-form
-        @show-register="authDialog.showRegister"
-        @register-success="authDialog.handleRegisterSuccess"
-      />
-    </el-dialog>
+    </el-main>
 
     <el-button type="primary" class="floating-about-button" @click="openAboutDialog" round>
       <el-icon><Service /></el-icon>
       About Us
     </el-button>
-  </div>
+  </el-container>
 </template>
 
 <script setup lang="ts">
@@ -139,9 +110,8 @@ import { ElMessage } from 'element-plus'
 import Carousel from '../Carousel.vue'
 import TrustFeatures from '../TrustFeatures.vue'
 import ProductCard from '../common/card/ProductCard.vue'
-import LoginForm from '../form/loginForm.vue'
-import RegisterForm from '../form/registerForm.vue'
 import { useProductsStore } from '@/stores/product'
+import { useCartStore } from '@/stores/cart'
 import { useRouter } from 'vue-router'
 import type { Product } from '@/types/api'
 import { useAuthDialog } from '@/composables/useForm'
@@ -152,6 +122,7 @@ const aboutDialogVisible = ref<boolean>(false)
 const displayedCount = ref<number>(20)
 const displaySaleCount = ref<number>(8)
 const productsStore = useProductsStore()
+const cartStore = useCartStore()
 const router = useRouter()
 
 // Auth Dialog Composable
@@ -206,12 +177,14 @@ const openAboutDialog = (): void => {
 }
 
 const handleAddToCart = (product: Product): void => {
-  // This will be handled by the ProductCard component's auth logic
-  ElMessage.success(`${product.title} added to cart`)
+  const success = authDialog.requireAuth('add items to cart', () => {
+    // This callback will only run if user is authenticated
+    cartStore.addToCart(product)
+    ElMessage.success(`${product.title} added to cart`)
+  })
 }
 
 const navigateToProduct = (product: Product): void => {
-  console.log(product.id)
   router.push(`/product/${product.id}`)
 }
 </script>

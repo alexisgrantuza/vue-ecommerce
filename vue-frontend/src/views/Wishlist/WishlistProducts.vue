@@ -4,7 +4,6 @@
       <el-main>
         <h1>My Wishlist</h1>
 
-        <!-- Empty State -->
         <div v-if="wishlistStore.wishlistCount === 0" class="empty-wishlist">
           <el-empty description="Your wishlist is empty" />
           <el-button type="primary" @click="$router.push('/')" class="shop-now-btn">
@@ -30,13 +29,12 @@
                 </template>
               </el-image>
 
-              <!-- Remove from wishlist button -->
               <el-button circle class="remove-btn" @click="removeFromWishlist(product)">
                 <el-icon><Close /></el-icon>
               </el-button>
 
               <!-- Discount tag -->
-              <el-tag v-if="product.discount > 0" class="discount-tag" type="danger" size="small">
+              <el-tag v-if="product.discount" class="discount-tag" type="danger" size="small">
                 -{{ product.discount }}%
               </el-tag>
             </div>
@@ -49,13 +47,13 @@
               <div class="price-section">
                 <span class="current-price">
                   ₱{{
-                    product.discount > 0
+                    product.discount && product.price
                       ? ((product.price * (100 - product.discount)) / 100).toFixed(2)
-                      : product.price.toFixed(2)
+                      : product.price?.toFixed(2)
                   }}
                 </span>
-                <span v-if="product.discount > 0" class="original-price">
-                  ₱{{ product.price.toFixed(2) }}
+                <span v-if="product.discount && product.price" class="original-price">
+                  ₱{{ product.price?.toFixed(2) }}
                 </span>
               </div>
 

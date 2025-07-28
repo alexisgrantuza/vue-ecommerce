@@ -24,13 +24,13 @@
               <div class="cart-item-price">
                 <span class="current-price">
                   ₱{{
-                    item.product.discount > 0
-                      ? ((item.product.price * (100 - item.product.discount)) / 100).toFixed(2)
-                      : item.product.price.toFixed(2)
+                    item.product.discount
+                      ? ((item.product.price || 0 * (100 - item.product.discount)) / 100).toFixed(2)
+                      : item.product.price?.toFixed(2)
                   }}
                 </span>
-                <span v-if="item.product.discount > 0" class="original-price">
-                  ₱{{ item.product.price.toFixed(2) }}
+                <span v-if="item.product.discount" class="original-price">
+                  ₱{{ item.product.price?.toFixed(2) }}
                 </span>
               </div>
               <div class="cart-item-actions">

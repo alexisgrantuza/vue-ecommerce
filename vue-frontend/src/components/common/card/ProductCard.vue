@@ -14,7 +14,7 @@
           </div>
         </template>
       </el-image>
-      <el-tag v-if="product.discount > 0" class="discount-tag" type="danger" size="small">
+      <el-tag v-if="product.discount" class="discount-tag" type="danger" size="small">
         -{{ product.discount }}%
       </el-tag>
       <el-button
@@ -32,34 +32,30 @@
     </div>
 
     <div class="product-content">
-      <!-- Title -->
       <h3 class="product-title">{{ product.title }}</h3>
 
-      <!-- Description -->
       <p class="product-description">
         {{ product.description || 'New range of formal shirt' }}
         <span class="read-more">Read More</span>
       </p>
 
-      <!-- Category -->
       <div class="product-category">
         <el-tag type="info" size="small" class="category-tag">
           {{ product.category || 'Clothes' }}
         </el-tag>
       </div>
 
-      <!-- Price Section -->
       <div class="price-section">
         <span class="price-label">Price</span>
         <div class="price-row">
           <span class="current-price">
-            ₱{{ product.discount > 0 ? calculateDiscountedPrice() : product.price }}
+            ₱{{ product.discount ? calculateDiscountedPrice() : product.price }}
           </span>
           <el-button type="primary" class="add-to-cart-btn" size="default" @click.stop="addToCart">
             Add To Cart
           </el-button>
         </div>
-        <span v-if="product.discount > 0" class="original-price"> ₱{{ product.price }} </span>
+        <span v-if="product.discount" class="original-price"> ₱{{ product.price }} </span>
       </div>
     </div>
   </div>
@@ -95,8 +91,8 @@ const emit = defineEmits<{
 
 // Methods
 const calculateDiscountedPrice = (): string => {
-  const price = parseFloat(props.product.price.toString())
-  return ((price * (100 - props.product.discount)) / 100).toFixed(0)
+  const price = parseFloat(props.product.price?.toString() || '0')
+  return ((price * (100 - (props.product.discount || 0))) / 100).toFixed(0)
 }
 
 const addToCart = (e: Event) => {

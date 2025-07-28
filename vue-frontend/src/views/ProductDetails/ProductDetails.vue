@@ -1,23 +1,19 @@
 <template>
   <div class="product-view">
     <div class="container">
-      <!-- Breadcrumb -->
       <el-breadcrumb class="breadcrumb" separator="/">
         <el-breadcrumb-item>
           <router-link to="/">Home</router-link>
         </el-breadcrumb-item>
         <el-breadcrumb-item>
-          <router-link to="/products">Products</router-link>
+          <router-link to="/category">Category</router-link>
         </el-breadcrumb-item>
-        <el-breadcrumb-item>{{ product?.title || 'Product' }}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{ product?.category || 'Product' }}</el-breadcrumb-item>
       </el-breadcrumb>
 
-      <!-- Loading State -->
       <div v-if="loading" class="loading-section">
         <el-skeleton :rows="8" animated />
       </div>
-
-      <!-- Product Details -->
       <div v-else-if="product" class="product-details">
         <div class="product-gallery">
           <div class="main-image">
@@ -36,7 +32,6 @@
             </el-image>
           </div>
 
-          <!-- Thumbnail Gallery -->
           <div v-if="product.images && product.images.length > 1" class="thumbnail-gallery">
             <div
               v-for="(image, index) in product.images"
@@ -56,7 +51,6 @@
         </div>
 
         <div class="product-info">
-          <!-- Product Header -->
           <div class="product-header">
             <h1 class="product-title">{{ product.title }}</h1>
             <div class="product-meta">
@@ -69,7 +63,6 @@
             </div>
           </div>
 
-          <!-- Price Section -->
           <div class="price-section">
             <div class="price-display">
               <span class="current-price">
@@ -82,13 +75,10 @@
             </div>
           </div>
 
-          <!-- Product Description -->
           <div class="product-description">
             <h3>Description</h3>
             <p>{{ product.description || 'No description available for this product.' }}</p>
           </div>
-
-          <!-- Product Actions -->
           <div class="product-actions">
             <div class="quantity-selector">
               <label>Quantity:</label>
@@ -114,7 +104,6 @@
             </div>
           </div>
 
-          <!-- Product Specifications -->
           <div class="product-specs">
             <h3>Specifications</h3>
             <div class="spec-item">
@@ -129,7 +118,6 @@
         </div>
       </div>
 
-      <!-- Error State -->
       <div v-else class="error-section">
         <el-result
           icon="error"
@@ -142,6 +130,7 @@
         </el-result>
       </div>
     </div>
+    
   </div>
 </template>
 
@@ -154,14 +143,21 @@ import { useProductsStore } from '@/stores/product'
 import { useCartStore } from '@/stores/cart'
 import { useWishlistStore } from '@/stores/wishlist'
 import { useUserAuthStore } from '@/stores/userAuth'
+import { useAuthDialog } from '@/composables/useForm'
 
+
+// Router
 const route = useRoute()
 const router = useRouter()
+
+// Stores
 const productsStore = useProductsStore()
 const cartStore = useCartStore()
 const wishlistStore = useWishlistStore()
 const userAuthStore = useUserAuthStore()
+const authDialog = useAuthDialog()
 
+// Reactive state
 const loading = ref(true)
 const product = ref()
 const selectedImage = ref<string>('')
@@ -177,7 +173,6 @@ const fetchProduct = async () => {
   loading.value = true
   try {
     const response = await productsStore.fetchProductById(productId.value)
-    console.log('API Response:', response)
 
     if (response) {
       product.value = response
@@ -207,10 +202,9 @@ const calculateSavings = (): string => {
 }
 
 const addToCart = () => {
-  cartStore.addToCart(product.value)
 
   if (!userAuthStore.isAuthenticated) {
-    ElMessage.error('Please login to add to cart')
+    authDialog.showLogin()
     return
   }
 }
@@ -219,7 +213,7 @@ const addToWishlist = () => {
   wishlistStore.addToWishlist(product.value)
 
   if (!userAuthStore.isAuthenticated) {
-    ElMessage.error('Please login to add to wishlist')
+    authDialog.showLogin()
     return
   }
 
