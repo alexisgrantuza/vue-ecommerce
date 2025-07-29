@@ -38,31 +38,6 @@
     </el-row>
   </el-header>
 
-  <!-- Login/Register Dialogs -->
-  <el-dialog
-    v-model="authDialog.loginDialogVisible.value"
-    width="400px"
-    :show-close="false"
-    style="background-color: #000; border-radius: 12px"
-  >
-    <login-form 
-      @show-login="authDialog.showLogin" 
-      @login-success="authDialog.handleLoginSuccess" 
-    />
-  </el-dialog>
-
-  <el-dialog
-    v-model="authDialog.registerDialogVisible.value"
-    width="500px"
-    :show-close="false"
-    style="background-color: #000; border-radius: 12px"
-  >
-    <register-form
-      @show-register="authDialog.showRegister"
-      @register-success="authDialog.handleRegisterSuccess"
-    />
-  </el-dialog>
-
   <el-header class="app-header">
     <el-container class="header-container">
       <el-text class="logo-text" @click="handleLogoClick">Shopiplus</el-text>
@@ -119,8 +94,6 @@ import { ElMessage } from 'element-plus'
 import { Search, Star, ShoppingCart } from '@element-plus/icons-vue'
 import { useCartStore } from '@/stores/cart'
 import { useWishlistStore } from '@/stores/wishlist'
-import loginForm from '../form/loginForm.vue'
-import registerForm from '../form/registerForm.vue'
 import { useUserAuthStore } from '@/stores/userAuth'
 import { useAuthDialog } from '@/composables/useForm'
 

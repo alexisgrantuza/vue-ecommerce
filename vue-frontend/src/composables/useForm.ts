@@ -1,37 +1,40 @@
-// src/composables/useForm.ts
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useCartStore } from '@/stores/cart'
 import { useUserAuthStore } from '@/stores/userAuth'
 import { useRouter } from 'vue-router'
 
+// Create a global state for the auth dialog
+const globalAuthState = {
+  loginDialogVisible: ref(false),
+  registerDialogVisible: ref(false)
+}
+
 export const useAuthDialog = () => {
-  const loginDialogVisible = ref(false)
-  const registerDialogVisible = ref(false)
   const userStore = useUserAuthStore()
   const cartStore = useCartStore()
   const router = useRouter()
 
   const showLogin = () => {
-    registerDialogVisible.value = false
+    globalAuthState.registerDialogVisible.value = false
     setTimeout(() => {
-      loginDialogVisible.value = true
+      globalAuthState.loginDialogVisible.value = true
     }, 100)
   }
 
   const showRegister = () => {
-    loginDialogVisible.value = false
+    globalAuthState.loginDialogVisible.value = false
     setTimeout(() => {
-      registerDialogVisible.value = true
+      globalAuthState.registerDialogVisible.value = true
     }, 100)
   }
 
   const hideLogin = () => {
-    loginDialogVisible.value = false
+    globalAuthState.loginDialogVisible.value = false
   }
 
   const hideRegister = () => {
-    registerDialogVisible.value = false
+    globalAuthState.registerDialogVisible.value = false
   }
 
   const requireAuth = (action: string, callback?: () => void) => {
@@ -73,9 +76,8 @@ export const useAuthDialog = () => {
   }
 
   return {
-    // State
-    loginDialogVisible,
-    registerDialogVisible,
+    loginDialogVisible: globalAuthState.loginDialogVisible,
+    registerDialogVisible: globalAuthState.registerDialogVisible,
     
     // Actions
     showLogin,

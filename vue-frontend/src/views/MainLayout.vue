@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import AppHeader from '@/components/common/AppHeader.vue'
 import AppFooter from '@/components/common/AppFooter.vue'
-import { useAuthDialog } from '@/composables/useForm'
+import AuthDialog from '@/components/auth/AuthDialog.vue'
 
-const authDialog = useAuthDialog()
 </script>
 
 <template>

@@ -1,30 +1,35 @@
 <template>
   <el-dialog
     v-model="loginDialogVisible"
-    title="Login"
     width="400px"
+    :show-close="false"
     :before-close="hideLogin"
-    destroy-on-close
+    style="background-color: #000; border-radius: 12px"
   >
-    <LoginForm @success="handleLoginSuccess" @register-clicked="showRegister" />
+    <login-form 
+      @register-clicked="showRegister"
+      @success="handleLoginSuccess"
+    />
   </el-dialog>
 
-  <!-- Register Dialog -->
   <el-dialog
     v-model="registerDialogVisible"
-    title="Register"
     width="500px"
+    :show-close="false"
     :before-close="hideRegister"
-    destroy-on-close
+    style="background-color: #000; border-radius: 12px"
   >
-    <RegisterForm @success="handleRegisterSuccess" @login-clicked="showLogin" />
+    <register-form
+      @login-clicked="showLogin"
+      @success="handleRegisterSuccess"
+    />
   </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { useAuthDialog } from '@/composables/useForm'
 import LoginForm from '@/components/form/loginForm.vue'
 import RegisterForm from '@/components/form/registerForm.vue'
+import { useAuthDialog } from '@/composables/useForm'
 
 const {
   loginDialogVisible,
@@ -37,3 +42,4 @@ const {
   handleRegisterSuccess
 } = useAuthDialog()
 </script>
+

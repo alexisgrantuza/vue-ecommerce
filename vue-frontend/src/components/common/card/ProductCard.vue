@@ -100,7 +100,7 @@ const addToCart = (e: Event) => {
 
   if (!userStore.isAuthenticated) {
     ElMessage.info('Please login to add items to cart')
-    emit('show-login')
+    emit('show-login') // This will trigger the centralized auth dialog
     return
   }
 
@@ -113,7 +113,7 @@ const toggleWishlist = (e: Event) => {
 
   if (!userStore.isAuthenticated) {
     ElMessage.info('Please login to add items to wishlist')
-    emit('show-login')
+    emit('show-login') // This will trigger the centralized auth dialog
     return
   }
 

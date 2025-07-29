@@ -1,3 +1,4 @@
+<!-- 1. Update your main layout/page component (DefaultLayout.vue) -->
 <template>
   <el-container class="default-layout">
     <el-main class="layout-main">
@@ -30,8 +31,8 @@
             >
               <ProductCard
                 :product="product"
-                @add-to-cart="handleAddToCart"
                 @product-click="navigateToProduct"
+                @show-login="showLogin"
               />
             </el-col>
           </el-row>
@@ -68,8 +69,8 @@
             >
               <ProductCard
                 :product="product"
-                @add-to-cart="handleAddToCart"
                 @product-click="navigateToProduct"
+                @show-login="showLogin"
               />
             </el-col>
           </el-row>
@@ -100,6 +101,9 @@
       <el-icon><Service /></el-icon>
       About Us
     </el-button>
+
+    <!-- Centralized Auth Dialogs -->
+    <AuthDialog />
   </el-container>
 </template>
 
@@ -110,6 +114,7 @@ import { ElMessage } from 'element-plus'
 import Carousel from '../Carousel.vue'
 import TrustFeatures from '../TrustFeatures.vue'
 import ProductCard from '../common/card/ProductCard.vue'
+import AuthDialog from '../auth/AuthDialog.vue' // Import your auth dialog component
 import { useProductsStore } from '@/stores/product'
 import { useCartStore } from '@/stores/cart'
 import { useRouter } from 'vue-router'
@@ -125,8 +130,8 @@ const productsStore = useProductsStore()
 const cartStore = useCartStore()
 const router = useRouter()
 
-// Auth Dialog Composable
-const authDialog = useAuthDialog()
+// Auth Dialog Composable - destructure showLogin to use it directly
+const { showLogin } = useAuthDialog()
 
 // Fetch products on component mount
 onMounted(async () => {
@@ -160,13 +165,9 @@ const hasMoreProducts = computed(() => {
 
 const loadMoreProducts = async (): Promise<void> => {
   loadingMore.value = true
-
   await new Promise((resolve) => setTimeout(resolve, 500))
-
   displayedCount.value += 8
-
   loadingMore.value = false
-
   ElMessage.success(
     `Loaded ${Math.min(8, products.value.length - (displayedCount.value - 8))} more products`,
   )
@@ -174,14 +175,6 @@ const loadMoreProducts = async (): Promise<void> => {
 
 const openAboutDialog = (): void => {
   aboutDialogVisible.value = true
-}
-
-const handleAddToCart = (product: Product): void => {
-  const success = authDialog.requireAuth('add items to cart', () => {
-    // This callback will only run if user is authenticated
-    cartStore.addToCart(product)
-    ElMessage.success(`${product.title} added to cart`)
-  })
 }
 
 const navigateToProduct = (product: Product): void => {

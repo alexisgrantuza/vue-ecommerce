@@ -1,11 +1,9 @@
 <template>
-  <!-- Header -->
   <div class="login-header">
     <el-text class="login-title">Welcome Back!</el-text>
     <el-text class="login-subtitle">Sign in to continue shopping</el-text>
   </div>
 
-  <!-- Login Form -->
   <div class="login-form-container">
     <el-form
       :model="form"
@@ -55,7 +53,6 @@
       </el-button>
     </el-form>
 
-    <!-- Social Login -->
     <div class="social-login">
       <el-divider class="custom-divider">
         <el-text class="divider-text">Or continue with</el-text>
@@ -96,7 +93,6 @@
       </div>
     </div>
 
-    <!-- Sign Up Link -->
     <div class="signup-link">
       <el-text>Don't have an account? </el-text>
       <el-link class="signup-text" underline="never" @click="handleShowRegister"> Sign up </el-link>
@@ -130,10 +126,10 @@ const props = defineProps({
 })
 
 // Emits
-const emit = defineEmits(['show-login', 'login-success'])
+const emit = defineEmits(['register-clicked', 'success'])
 
 const handleShowRegister = () => {
-  emit('show-login')
+  emit('register-clicked')
 }
 
 // Form data
@@ -155,7 +151,6 @@ const handleSubmit = async () => {
   if (!loginForm.value) return
 
   try {
-    // First validate using Element Plus form validation
     const valid = await loginForm.value.validate()
     if (!valid) return
 
@@ -164,13 +159,10 @@ const handleSubmit = async () => {
       password: form.password,
     }
 
-    // Validate using Zod schema
     const validatedData = loginSchema.parse(formData)
 
-    // Clear any previous errors
     userStore.setError(null)
 
-    // Call the store login action
     const result = await userStore.login(validatedData, rememberMe.value)
 
     if (result.success) {
@@ -180,14 +172,13 @@ const handleSubmit = async () => {
       Object.assign(form, { email: '', password: '' })
       rememberMe.value = false
 
-      emit('login-success')
+      emit('success')
       router.push('/')
     } else {
       ElMessage.error(result.error || 'Login failed. Please try again.')
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      // validation errors
       const firstError = error.issues[0]
       ElMessage.error(firstError.message)
     } else {
