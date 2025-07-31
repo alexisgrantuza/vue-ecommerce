@@ -5,7 +5,7 @@ import { useUserAuthStore } from './userAuth'
 import { loadFromLocalStorage, saveToLocalStorage } from '@/utils/helpers'
 
 export const useOrderStore = defineStore('order', () => {
-  // State - Store orders for all users in a single object
+  // State
   const userOrders = ref<UserOrdersStorage>({})
   const loading = ref(false)
   const error = ref<string | null>(null)
@@ -173,8 +173,6 @@ export const useOrderStore = defineStore('order', () => {
     selectedOrder.value = order
   }
 
-  
-
   // Initialize on store creation
   const initializeFromLocalStorage = () => {
     const storedData = loadFromLocalStorage()
@@ -182,7 +180,7 @@ export const useOrderStore = defineStore('order', () => {
       userOrders.value = storedData
     }
   }
-  
+
   // Initialize on store creation
   initializeFromLocalStorage()
 

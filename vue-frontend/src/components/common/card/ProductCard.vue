@@ -100,7 +100,7 @@ const addToCart = (e: Event) => {
 
   if (!userStore.isAuthenticated) {
     ElMessage.info('Please login to add items to cart')
-    emit('show-login') // This will trigger the centralized auth dialog
+    emit('show-login')
     return
   }
 
@@ -113,7 +113,7 @@ const toggleWishlist = (e: Event) => {
 
   if (!userStore.isAuthenticated) {
     ElMessage.info('Please login to add items to wishlist')
-    emit('show-login') // This will trigger the centralized auth dialog
+    emit('show-login') 
     return
   }
 
@@ -141,7 +141,6 @@ const handleProductClick = () => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  position: relative;
   cursor: pointer;
 }
 
@@ -288,18 +287,12 @@ const handleProductClick = () => {
   padding: 8px 16px;
   transition: all 0.2s ease;
   box-shadow: 0 2px 8px rgba(255, 102, 0, 0.3);
-  position: relative;
-  z-index: 10;
 }
 
 .add-to-cart-btn:hover {
   background: linear-gradient(135deg, #e55a00 0%, #e55a00 100%);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(255, 102, 0, 0.4);
-}
-
-.add-to-cart-btn:active {
-  transform: translateY(0);
 }
 
 .wishlist-btn {
@@ -338,57 +331,68 @@ const handleProductClick = () => {
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.3);
-  }
-  100% {
-    transform: scale(1);
-  }
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
 }
 
-/* Responsive adjustments */
-@media (max-width: 1200px) {
-  .product-card {
-    width: calc(33.333% - 14px);
+/* Mobile First Responsive Design */
+@media (max-width: 768px) {
+  .product-image {
+    height: 200px;
   }
-}
-
-@media (max-width: 900px) {
-  .product-card {
-    width: calc(50% - 10px);
-  }
-}
-
-@media (max-width: 600px) {
-  .product-card {
-    width: 100%;
-    max-width: 350px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
+  
   .product-content {
     padding: 16px;
+    gap: 10px;
   }
-
+  
   .product-title {
     font-size: 16px;
+    min-height: 40px;
   }
-
+  
   .current-price {
     font-size: 20px;
   }
-
+  
   .add-to-cart-btn {
     padding: 6px 12px;
-    font-size: 13px;
+    font-size: 12px;
+  }
+  
+  .price-row {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
   }
 }
 
-/* Dark theme Element Plus overrides */
+@media (max-width: 480px) {
+  .product-image {
+    height: 180px;
+  }
+  
+  .discount-tag {
+    top: 8px;
+    right: 8px;
+    font-size: 11px;
+    padding: 2px 6px;
+  }
+  
+  .wishlist-btn {
+    width: 28px;
+    height: 28px;
+    top: 8px;
+    left: 8px;
+  }
+  
+  .add-to-cart-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 :deep(.el-tag) {
   background: #2d2d2d;
   color: #999;

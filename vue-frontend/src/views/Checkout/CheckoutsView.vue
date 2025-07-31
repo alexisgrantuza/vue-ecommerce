@@ -1,13 +1,10 @@
 <template>
   <div class="checkout-container">
-    <!-- Checkout Steps -->
     <CheckoutSteps :current-step="currentStep" :steps="steps" />
 
     <el-row :gutter="20" class="checkout-main">
-      <!-- Left Column: Checkout Form -->
       <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
         <el-card shadow="hover" class="checkout-card">
-          <!-- Step 1: Delivery Address -->
           <div v-if="currentStep === 1">
             <AddressList
               :addresses="addresses"
@@ -19,7 +16,6 @@
             />
           </div>
 
-          <!-- Step 2: Payment Method -->
           <div v-else-if="currentStep === 2">
             <PaymentMethodSelector
               :payment-methods="paymentMethods"
@@ -28,7 +24,6 @@
             />
           </div>
 
-          <!-- Step 3: Review Order -->
           <div v-else-if="currentStep === 3">
             <h2>Review Your Order</h2>
             <div class="order-items">
@@ -36,13 +31,13 @@
                 v-for="item in cartItems"
                 :key="item.product.id"
                 :item="{
-                  id: item.product.id, // Add this line
+                  id: item.product.id,
                   product: {
                     id: item.product.id,
-                    title: item.product.title,
-                    price: item.product.price,
-                    images: item.product.images,
-                    category: item.product.category,
+                    title: item.product.title || '',
+                    price: item.product.price || 0,
+                    images: item.product.images || [],
+                    category: item.product.category || { id: 0, name: 'Uncategorized' },
                   },
                   quantity: item.quantity,
                 }"
@@ -82,7 +77,6 @@
         </el-card>
       </el-col>
 
-      <!-- Right Column: Order Summary -->
       <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
         <OrderSummary
           :subtotal="subtotal"
@@ -131,21 +125,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Lock, ArrowLeft } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { useCheckout } from '@/composables/useCheckout'
-import CheckoutSteps from '@/components/checkout/shared/CheckoutSteps.vue'
-import AddressList from '@/components/checkout/address/AddressList.vue'
-import PaymentMethodSelector from '@/components/checkout/payment/PaymentMethodSelector.vue'
-import OrderItem from '@/components/checkout/Order/OrderItem.vue'
-import OrderSummary from '@/components/checkout/Order/OrderSummary.vue'
+import CheckoutSteps from '@/views/Checkout/_components/shared/CheckoutSteps.vue'
+import AddressList from '@/views/Checkout/_components/address/AddressList.vue'
+import PaymentMethodSelector from '@/views/Checkout/_components/payment/PaymentMethodSelector.vue'
+import OrderItem from '@/views/Checkout/_components/Order/OrderItem.vue'
+import OrderSummary from '@/views/Checkout/_components/Order/OrderSummary.vue'
 import type { Address } from '@/types/api'
 
 const router = useRouter()
 
-// Use the checkout composable
 const {
   // State
   steps,
@@ -162,7 +155,6 @@ const {
   cartItems,
   subtotal,
   shippingFee,
-  total,
   canProceed,
 
   // Methods
@@ -172,7 +164,6 @@ const {
   updateAddress,
   removeAddress,
   selectAddress,
-  editAddress,
   selectPaymentMethod,
   placeOrder,
 } = useCheckout()
@@ -180,14 +171,12 @@ const {
 // Handle address form submission
 const handleAddressSubmit = async (addressData: Omit<Address, 'id'>) => {
   if (editingAddress.value) {
-    // Update existing address
     updateAddress({
       ...addressData,
       id: editingAddress.value.id,
     })
     ElMessage.success('Address updated successfully')
   } else {
-    // Add new address
     const newAddress = addAddress(addressData)
     selectAddress(newAddress.id)
     ElMessage.success('Address added successfully')
@@ -198,33 +187,27 @@ const handleAddressSubmit = async (addressData: Omit<Address, 'id'>) => {
 
 const handleAddAddress = (addressData: Omit<Address, 'id'>) => {
   const newAddress = addAddress(addressData)
-  // Auto-select the newly added address
   selectAddress(newAddress.id)
 }
 
-// Handle updating an existing address
 const handleUpdateAddress = (address: Address) => {
   updateAddress(address)
 }
 
-// Handle removing an address
 const handleRemoveAddress = (id: number) => {
   removeAddress(id)
 }
 
-// Handle voucher application
 const handleVoucherApplied = (code: string) => {
   console.log('Voucher applied:', code)
-  // In a real app, you would validate the voucher with your backend
   ElMessage.success(`Voucher code "${code}" applied successfully`)
 }
 
-// Handle placing the order
 const handlePlaceOrder = async () => {
   const orderId = await placeOrder()
   if (orderId) {
     router.push({
-      name: 'order-history', // Remove the leading slash to match the route name
+      name: 'order-history',
       query: { orderId },
     })
   }
@@ -232,7 +215,6 @@ const handlePlaceOrder = async () => {
 
 // Lifecycle hooks
 onMounted(() => {
-  // Set the first address as selected if none is selected
   if (addresses.value.length > 0 && !selectedAddressId.value) {
     selectAddress(addresses.value[0].id)
   }
@@ -322,7 +304,6 @@ onMounted(() => {
   color: var(--el-color-success);
 }
 
-/* Responsive styles */
 @media (max-width: 768px) {
   .checkout-container {
     padding: 10px;

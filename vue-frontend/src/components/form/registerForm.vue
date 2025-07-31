@@ -1,5 +1,4 @@
 <template>
-  <!-- Header -->
   <div class="register-header">
     <div class="header-content">
       <el-text class="register-title">Join Shopiplus</el-text>
@@ -7,7 +6,6 @@
     </div>
   </div>
 
-  <!-- Registration Form -->
   <div class="register-form-container">
     <el-form
       :model="form"
@@ -16,7 +14,6 @@
       class="register-form"
       @submit.prevent="handleSubmit"
     >
-      <!-- Name Field -->
       <el-form-item prop="name">
         <el-input
           v-model="form.name"
@@ -27,7 +24,6 @@
         />
       </el-form-item>
 
-      <!-- Email Field -->
       <el-form-item prop="email">
         <el-input
           v-model="form.email"
@@ -39,7 +35,6 @@
         />
       </el-form-item>
 
-      <!-- Phone Field -->
       <el-form-item prop="phone">
         <el-input
           v-model="form.phone"
@@ -50,7 +45,6 @@
         />
       </el-form-item>
 
-      <!-- Password Field -->
       <el-form-item prop="password">
         <el-input
           v-model="form.password"
@@ -63,7 +57,6 @@
         />
       </el-form-item>
 
-      <!-- Confirm Password Field -->
       <el-form-item prop="confirmPassword">
         <el-input
           v-model="form.confirmPassword"
@@ -76,7 +69,6 @@
         />
       </el-form-item>
 
-      <!-- Terms Agreement -->
       <el-form-item prop="agreeTerms" class="terms-agreement">
         <el-checkbox v-model="form.agreeTerms" class="terms-checkbox">
           <span class="terms-text">
@@ -88,7 +80,6 @@
         </el-checkbox>
       </el-form-item>
 
-      <!-- Submit Button -->
       <el-button
         type="primary"
         size="large"
@@ -100,7 +91,6 @@
       </el-button>
     </el-form>
 
-    <!-- Social Registration -->
     <div class="social-section">
       <el-divider>
         <el-text class="divider-text">Or continue with</el-text>
@@ -141,7 +131,6 @@
       </div>
     </div>
 
-    <!-- Login Link -->
     <div class="login-link">
       <div class="signin-prompt">
         Already have an account?
@@ -199,11 +188,9 @@ const handleSubmit = async () => {
   if (!registerForm.value) return
 
   try {
-    // First validate using Element Plus form validation
     const valid = await registerForm.value.validate()
     if (!valid) return
 
-    // Prepare form data for Zod validation
     const formData = {
       name: form.name,
       email: form.email,
@@ -211,13 +198,10 @@ const handleSubmit = async () => {
       phone: form.phone,
     }
 
-    // Validate using Zod schema
     const validatedData = registerSchema.parse(formData)
 
-    // Clear any previous errors
     userStore.setError(null)
 
-    // Prepare registration request
     const registerRequest: RegisterRequest = {
       name: validatedData.name,
       email: validatedData.email,
@@ -225,14 +209,12 @@ const handleSubmit = async () => {
       phone: validatedData.phone,
     }
 
-    // Call the store register action
     const result = await userStore.register(registerRequest)
 
     if (result.success) {
       ElMessage.success('Account created successfully! Welcome to Shopiplus!')
       registerForm.value.resetFields()
 
-      // Reset form data
       Object.assign(form, {
         name: '',
         email: '',
@@ -242,7 +224,6 @@ const handleSubmit = async () => {
         agreeTerms: false,
       })
 
-      // Redirect to home page
       emit('register-success')
       router.push('/')
     } else {

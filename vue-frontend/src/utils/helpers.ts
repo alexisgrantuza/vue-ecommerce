@@ -9,7 +9,7 @@ export const saveToLocalStorage = (userOrders: UserOrdersStorage): void => {
   }
 }
 
-// Clear orders for current user (useful for logout)
+// Clear orders for current user 
 export const clearCurrentUserOrders = (userOrders: UserOrdersStorage, userId: number | null): void => {
   if (userId && userOrders[userId]) {
     const updatedOrders = { ...userOrders }

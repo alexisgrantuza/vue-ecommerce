@@ -1,3 +1,5 @@
+import { orderTimeline } from '@/constants'
+
 // types/api.ts - Fixed version
 export interface User {
   id: number
@@ -63,7 +65,7 @@ export interface Order {
   user_id: number
   total_amount: number
   shipping: number
-  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
+  status: 'all' | 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
   shipping_address: string
   payment_method: string
   payment_status: 'pending' | 'paid' | 'failed'
@@ -97,8 +99,18 @@ export interface OrderItemInput {
   product: any
 }
 
+export interface orderTimeline {
+  status: Order['status']
+  label: string
+}
+
 export interface UserOrdersStorage {
   [userId: number]: OrderWithItems[]
+}
+
+export interface orderStatuses {
+  label: string
+  value: Order['status']
 }
 
 export interface ShippingInfo {
@@ -174,4 +186,27 @@ export interface UpdateCartRequest {
 export interface CreateOrderRequest {
   shipping_address: Address
   payment_method: string
+}
+
+export interface LinkItem {
+  value: string
+  link: string
+}
+
+export interface PaymentMethod {
+  id: string
+  name: string
+  icon: string
+  description: string
+}
+
+export interface SearchSuggestion {
+  id: number
+  title: string
+  price: number
+  discount: number
+  image: string
+  category: Category
+  product: Product
+  value: string
 }

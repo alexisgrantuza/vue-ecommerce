@@ -1,6 +1,8 @@
 // Footer sections for App.vue
 import { type FooterSection, type TrustFeature } from '@/types'
+import { type orderStatuses as OrderStatusType, type PaymentMethod, type orderTimeline as OrderTimelineType } from '@/types/api'
 import { HelpFilled, Flag, Star, CreditCard } from '@element-plus/icons-vue'
+import { ref } from 'vue'
 
 export const footerSections: FooterSection[] = [
   {
@@ -66,6 +68,49 @@ export const trustFeatures: TrustFeature[] = [
     title: 'Easy Returns',
     description: '15-day return policy',
   },
+]
+
+export const paymentMethods = ref<PaymentMethod[]>([
+  {
+    id: 'cod',
+    name: 'Cash on Delivery',
+    icon: 'el-icon-user',
+    description: 'Pay with cash upon delivery',
+  },
+  {
+    id: 'gcash',
+    name: 'GCash',
+    icon: 'el-icon-user',
+    description: 'Pay using GCash',
+  },
+  {
+    id: 'credit_card',
+    name: 'Credit/Debit Card',
+    icon: 'el-icon-user',
+    description: 'Pay using Visa, Mastercard, etc.',
+  },
+  {
+    id: 'bank_transfer',
+    name: 'Bank Transfer',
+    icon: 'el-icon-user',
+    description: 'Pay via bank transfer',
+  },
+])
+
+export const orderStatuses: OrderStatusType[] = [
+  { label: 'All Orders', value: 'all' },
+  { label: 'To Pay', value: 'pending' },
+  { label: 'To Ship', value: 'processing' },
+  { label: 'To Receive', value: 'shipped' },
+  { label: 'Completed', value: 'delivered' },
+  { label: 'Cancelled', value: 'cancelled' },
+]
+
+export const orderTimeline: OrderTimelineType[] = [
+  { status: 'pending', label: 'Order Placed' },
+  { status: 'processing', label: 'Processing' },
+  { status: 'shipped', label: 'Shipped' },
+  { status: 'delivered', label: 'Delivered' },
 ]
 
 export const carouselItems: string[] = [

@@ -31,6 +31,12 @@ const router = createRouter({
           component: () => import('../views/Cart/CartView.vue'),
         },
         {
+          path: 'category',
+          name: 'category',
+          component: () => import('../views/Category/CategoryView.vue'),
+          props: true,
+        },
+        {
           path: 'wishlist',
           name: 'wishlist',
           component: WishlistProducts,
@@ -47,11 +53,6 @@ const router = createRouter({
           name: 'order-history',
           component: () => import('../views/OrderProducts/OrderHistory.vue'),
           meta: { requiresAuth: true },
-        },
-        {
-          path: 'category',
-          name: 'category',
-          component: () => import('../views/Category/CategoryView.vue'),
         },
       ],
     },

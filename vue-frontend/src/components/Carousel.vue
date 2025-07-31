@@ -91,6 +91,10 @@ const handleIndicatorClick = (index: number) => {
   .carousel-image-container {
     height: 150px;
   }
+
+  .lazada-carousel {
+    display: none;
+  }
 }
 
 .el-carousel__item:nth-child(2n + 1) {

@@ -132,21 +132,17 @@ const handleShowRegister = () => {
   emit('register-clicked')
 }
 
-// Form data
 const form = reactive<LoginRequest>({
   email: '',
   password: '',
 })
 
-// Form reference
 const loginForm = ref<FormInstance>()
 
-// Enhanced validation rules using Zod
 const rules = reactive({
   ...formRules,
 })
 
-// Form submission handler
 const handleSubmit = async () => {
   if (!loginForm.value) return
 
@@ -188,7 +184,6 @@ const handleSubmit = async () => {
   }
 }
 
-// Social login handlers
 const handleGoogleLogin = () => {
   ElMessage.info('Google login feature coming soon!')
 }
@@ -197,7 +192,6 @@ const handleFacebookLogin = () => {
   ElMessage.info('Facebook login feature coming soon!')
 }
 
-// Initialize auth store on component mount
 userStore.initializeAuth()
 </script>
 
@@ -209,7 +203,6 @@ userStore.initializeAuth()
   z-index: 10;
 }
 
-/* Style the close button */
 :deep(.close-button) {
   color: white;
   font-size: 20px;
@@ -231,7 +224,6 @@ userStore.initializeAuth()
   text-align: center;
 }
 
-/* Style el-text in header */
 :deep(.login-title) {
   display: block;
   color: white;
@@ -256,12 +248,10 @@ userStore.initializeAuth()
   width: 100%;
 }
 
-/* Style form items */
 :deep(.el-form-item) {
   margin-bottom: 20px;
 }
 
-/* Style custom inputs */
 :deep(.custom-input .el-input__wrapper) {
   border-radius: 12px;
   border: 2px solid #f0f0f0;
@@ -300,14 +290,12 @@ userStore.initializeAuth()
   margin-bottom: 25px;
 }
 
-/* Style remember me checkbox */
 :deep(.remember-me .el-checkbox__label) {
   color: #666;
   font-weight: 500;
   font-size: 14px;
 }
 
-/* Style forgot password link */
 :deep(.forgot-password) {
   color: #ff6900;
   font-size: 14px;
@@ -319,7 +307,6 @@ userStore.initializeAuth()
   color: #e55a00;
 }
 
-/* Style login button */
 :deep(.login-button) {
   width: 100%;
   height: 52px;
@@ -347,7 +334,6 @@ userStore.initializeAuth()
   margin-bottom: 30px;
 }
 
-/* Style custom divider */
 :deep(.custom-divider) {
   margin: 20px 0;
 }
@@ -371,7 +357,6 @@ userStore.initializeAuth()
   gap: 12px;
 }
 
-/* Style social buttons */
 :deep(.social-btn) {
   flex: 1;
   height: 48px;
@@ -412,7 +397,6 @@ userStore.initializeAuth()
   gap: 4px;
 }
 
-/* Style signup text */
 :deep(.signup-link .el-text) {
   color: #666;
   font-size: 14px;
@@ -429,7 +413,6 @@ userStore.initializeAuth()
   color: #e55a00;
 }
 
-/* Mobile Responsive */
 @media (max-width: 480px) {
   .login-page {
     padding: 10px;
@@ -461,57 +444,6 @@ userStore.initializeAuth()
 
   :deep(.social-btn) {
     width: 100%;
-  }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .login-container {
-    background: #1a1a1a;
-  }
-
-  :deep(.custom-input .el-input__wrapper) {
-    background: #2a2a2a;
-    border-color: #404040;
-  }
-
-  :deep(.custom-input .el-input__wrapper:hover) {
-    background: #333333;
-  }
-
-  :deep(.custom-input.is-focus .el-input__wrapper) {
-    background: #333333;
-  }
-
-  :deep(.custom-input .el-input__inner) {
-    color: #fff;
-  }
-
-  :deep(.social-btn) {
-    background: #2a2a2a;
-    border-color: #404040;
-    color: #fff;
-  }
-
-  :deep(.social-btn:hover) {
-    background: #333333;
-  }
-
-  :deep(.custom-divider .el-divider__text) {
-    background: #1a1a1a;
-    color: #ccc;
-  }
-
-  :deep(.divider-text) {
-    color: #ccc;
-  }
-
-  :deep(.signup-link .el-text) {
-    color: #ccc;
-  }
-
-  :deep(.remember-me .el-checkbox__label) {
-    color: #ccc;
   }
 }
 </style>

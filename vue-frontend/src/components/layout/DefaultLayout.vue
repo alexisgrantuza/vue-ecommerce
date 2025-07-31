@@ -1,4 +1,3 @@
-<!-- 1. Update your main layout/page component (DefaultLayout.vue) -->
 <template>
   <el-container class="default-layout">
     <el-main class="layout-main">
@@ -19,23 +18,25 @@
 
           <el-skeleton v-if="loading" :rows="6" animated />
 
-          <el-row v-else :gutter="20" class="products-grid">
-            <el-col
-              v-for="product in displayedSaleProducts"
-              :key="product.id"
-              :xs="24"
-              :sm="12"
-              :md="8"
-              :lg="6"
-              class="product-col"
-            >
-              <ProductCard
-                :product="product"
-                @product-click="navigateToProduct"
-                @show-login="showLogin"
-              />
-            </el-col>
-          </el-row>
+          <div v-else class="products-grid">
+            <el-row :gutter="16">
+              <el-col
+                v-for="product in displayedSaleProducts"
+                :key="product.id"
+                :xs="24"
+                :sm="12"
+                :md="8"
+                :lg="6"
+                class="product-col"
+              >
+                <ProductCard
+                  :product="product"
+                  @product-click="navigateToProduct"
+                  @show-login="showLogin"
+                />
+              </el-col>
+            </el-row>
+          </div>
 
           <el-empty
             v-if="!loading && products.length === 0"
@@ -57,23 +58,25 @@
 
           <el-skeleton v-if="loading" :rows="6" animated />
 
-          <el-row v-else :gutter="20" class="products-grid">
-            <el-col
-              v-for="product in displayedProducts"
-              :key="product.id"
-              :xs="24"
-              :sm="12"
-              :md="8"
-              :lg="6"
-              class="product-col"
-            >
-              <ProductCard
-                :product="product"
-                @product-click="navigateToProduct"
-                @show-login="showLogin"
-              />
-            </el-col>
-          </el-row>
+          <div v-else class="products-grid">
+            <el-row :gutter="16">
+              <el-col
+                v-for="product in displayedProducts"
+                :key="product.id"
+                :xs="24"
+                :sm="12"
+                :md="8"
+                :lg="6"
+                class="product-col"
+              >
+                <ProductCard
+                  :product="product"
+                  @product-click="navigateToProduct"
+                  @show-login="showLogin"
+                />
+              </el-col>
+            </el-row>
+          </div>
 
           <div v-if="!loading && products.length > 0 && hasMoreProducts" class="load-more-section">
             <el-button
@@ -99,10 +102,9 @@
 
     <el-button type="primary" class="floating-about-button" @click="openAboutDialog" round>
       <el-icon><Service /></el-icon>
-      About Us
+      <span class="about-text">About Us</span>
     </el-button>
 
-    <!-- Centralized Auth Dialogs -->
     <AuthDialog />
   </el-container>
 </template>
@@ -114,9 +116,8 @@ import { ElMessage } from 'element-plus'
 import Carousel from '../Carousel.vue'
 import TrustFeatures from '../TrustFeatures.vue'
 import ProductCard from '../common/card/ProductCard.vue'
-import AuthDialog from '../auth/AuthDialog.vue' // Import your auth dialog component
+import AuthDialog from '../auth/authDialog.vue' 
 import { useProductsStore } from '@/stores/product'
-import { useCartStore } from '@/stores/cart'
 import { useRouter } from 'vue-router'
 import type { Product } from '@/types/api'
 import { useAuthDialog } from '@/composables/useForm'
@@ -127,10 +128,8 @@ const aboutDialogVisible = ref<boolean>(false)
 const displayedCount = ref<number>(20)
 const displaySaleCount = ref<number>(8)
 const productsStore = useProductsStore()
-const cartStore = useCartStore()
 const router = useRouter()
 
-// Auth Dialog Composable - destructure showLogin to use it directly
 const { showLogin } = useAuthDialog()
 
 // Fetch products on component mount
@@ -187,31 +186,36 @@ const navigateToProduct = (product: Product): void => {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  z-index: 1000;
   width: 100%;
   background-color: var(--el-bg-color);
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  overflow-x: hidden; 
 }
 
 .layout-main {
   flex: 1;
-  padding: 20px 0;
-  background-color: var(--el-bg-color-page);
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; 
 }
 
 .layout-container {
-  max-width: 1600px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 0 20px;
   width: 100%;
+  box-sizing: border-box; 
 }
 
-.products-section {
+.products-section,
+.product-section {
   margin-bottom: 80px;
+  width: 100%;
+  overflow: hidden; 
 }
 
 .section-header {
   margin-bottom: 24px;
+  width: 100%;
 }
 
 .section-title {
@@ -220,6 +224,7 @@ const navigateToProduct = (product: Product): void => {
   align-items: center;
   padding-bottom: 12px;
   border-bottom: 2px solid #ff6600;
+  width: 100%;
 }
 
 .section-title h2 {
@@ -229,6 +234,7 @@ const navigateToProduct = (product: Product): void => {
   margin: 0;
   position: relative;
   padding-bottom: 8px;
+  flex-shrink: 0; 
 }
 
 .section-title h2::after {
@@ -252,19 +258,34 @@ const navigateToProduct = (product: Product): void => {
   padding: 4px 8px;
   border-radius: 4px;
   transition: all 0.2s ease;
+  flex-shrink: 0; 
 }
 
 .view-all-btn:hover {
   background-color: rgba(255, 102, 0, 0.1);
 }
 
-.view-all-btn .el-icon {
-  font-size: 14px;
-  margin-left: 2px;
+.products-grid {
+  width: 100%;
+  overflow: hidden; 
 }
 
 .product-col {
   margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+:deep(.el-row) {
+  width: 100%;
+  margin-left: -8px !important;
+  margin-right: -8px !important;
+}
+
+:deep(.el-col) {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+  box-sizing: border-box;
 }
 
 .load-more-section {
@@ -272,6 +293,7 @@ const navigateToProduct = (product: Product): void => {
   justify-content: center;
   margin-top: 40px;
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .load-more-btn {
@@ -282,25 +304,11 @@ const navigateToProduct = (product: Product): void => {
   font-weight: 500;
   border-radius: 8px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(255, 102, 0, 0.2);
 }
 
 .load-more-btn:hover {
   background-color: #e55a00;
   border-color: #e55a00;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 102, 0, 0.3);
-}
-
-.load-more-btn:active {
-  transform: translateY(0);
-}
-
-.layout-footer {
-  background-color: var(--el-bg-color);
-  color: var(--el-text-color-regular);
-  padding: 40px 0 0;
-  margin-top: auto;
 }
 
 .floating-about-button {
@@ -310,20 +318,82 @@ const navigateToProduct = (product: Product): void => {
   z-index: 1000;
   background-color: #ff6600;
   border-color: #ff6600;
-  box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.floating-about-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 102, 0, 0.4);
+.empty-state {
+  width: 100%;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
+  .layout-container {
+    padding: 0 16px;
+    max-width: 100%;
+  }
+  
+  .products-section,
+  .product-section {
+    margin-bottom: 60px;
+  }
+  
+  .section-title h2 {
+    font-size: 20px;
+  }
+  
+  .section-title h2::after {
+    width: 60px;
+    height: 3px;
+  }
+  
+  :deep(.el-row) {
+    margin-left: -6px !important;
+    margin-right: -6px !important;
+  }
+
+  :deep(.el-col) {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+  
   .load-more-btn {
     padding: 10px 24px;
     font-size: 14px;
+  }
+  
+  .floating-about-button {
+    bottom: 20px;
+    right: 20px;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .layout-container {
+    padding: 0 8px;
+    max-width: 100%;
+  }
+  
+  .section-title h2 {
+    font-size: 16px;
+  }
+  
+  :deep(.el-row) {
+    margin-left: -2px !important;
+    margin-right: -2px !important;
+  }
+
+  :deep(.el-col) {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+  }
+  
+  .floating-about-button {
+    bottom: 12px;
+    right: 12px;
+    padding: 8px 10px;
   }
 }
 </style>

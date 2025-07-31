@@ -13,7 +13,6 @@ export const useProductsStore = defineStore('products', () => {
   // Getters
   const allProducts = computed(() => products.value)
 
-  // Initialize localStorage with mock data if empty
   const initializeLocalStorage = () => {
     if (!localStorage.getItem('products')) {
       localStorage.setItem('products', JSON.stringify(mockData))
@@ -38,10 +37,8 @@ export const useProductsStore = defineStore('products', () => {
     error.value = null
 
     try {
-      // Initialize localStorage on first load
       initializeLocalStorage()
 
-      // Load products from localStorage
       loadProducts()
 
       console.log(`Successfully loaded ${products.value.length} products from localStorage`)
@@ -60,7 +57,6 @@ export const useProductsStore = defineStore('products', () => {
     error.value = null
 
     try {
-      // Make sure we have the latest data
       if (products.value.length === 0) {
         loadProducts()
       }

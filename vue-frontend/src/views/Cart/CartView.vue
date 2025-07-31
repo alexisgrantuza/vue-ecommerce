@@ -4,13 +4,11 @@
       <el-main>
         <h2>Your Shopping Cart</h2>
 
-        <!-- Empty Cart State -->
         <div v-if="cartStore.cartItems.length === 0" class="empty-cart">
           <el-empty description="Your cart is empty" />
           <el-button type="primary" @click="$router.push('/')"> Continue Shopping </el-button>
         </div>
 
-        <!-- Cart Items -->
         <div v-else class="cart-items">
           <div v-for="item in cartStore.cartItems" :key="item.product.id" class="cart-item">
             <el-image
@@ -64,7 +62,6 @@
             </div>
           </div>
 
-          <!-- Cart Summary -->
           <div class="cart-summary">
             <div class="summary-row">
               <span>Subtotal ({{ cartStore.itemCount }} items)</span>

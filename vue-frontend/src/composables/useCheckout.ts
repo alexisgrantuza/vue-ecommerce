@@ -4,16 +4,9 @@ import { ElMessage } from 'element-plus'
 import { useCartStore } from '@/stores/cart'
 import { useOrderStore } from '@/stores/order'
 import type { Address } from '@/types/api'
-
-interface PaymentMethod {
-  id: string
-  name: string
-  icon: string
-  description: string
-}
+import { paymentMethods } from '@/constants'
 
 export function useCheckout() {
-  const router = useRouter()
   const cartStore = useCartStore()
 
   // Steps
@@ -25,34 +18,6 @@ export function useCheckout() {
   const selectedAddressId = ref<number | null>(null)
   const showAddressForm = ref(false)
   const editingAddress = ref<Address | null>(null)
-
-  // Payment Methods
-  const paymentMethods = ref<PaymentMethod[]>([
-    {
-      id: 'cod',
-      name: 'Cash on Delivery',
-      icon: 'el-icon-user',
-      description: 'Pay with cash upon delivery',
-    },
-    {
-      id: 'gcash',
-      name: 'GCash',
-      icon: 'el-icon-user',
-      description: 'Pay using GCash',
-    },
-    {
-      id: 'credit_card',
-      name: 'Credit/Debit Card',
-      icon: 'el-icon-user',
-      description: 'Pay using Visa, Mastercard, etc.',
-    },
-    {
-      id: 'bank_transfer',
-      name: 'Bank Transfer',
-      icon: 'el-icon-user',
-      description: 'Pay via bank transfer',
-    },
-  ])
 
   const selectedPaymentMethodId = ref('cod')
   const isPlacingOrder = ref(false)
@@ -173,10 +138,8 @@ export function useCheckout() {
     try {
       isPlacingOrder.value = true
 
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1500))
 
-      // Prepare shipping info with cart items
       const shippingInfo = {
         address: `${selectedAddress.value.street}, ${selectedAddress.value.city}, ${selectedAddress.value.state} ${selectedAddress.value.zipCode}`,
         paymentMethod: selectedPaymentMethod.value.id,
@@ -194,14 +157,12 @@ export function useCheckout() {
 
       console.log('Order created:', order)
 
-      // Clear the cart after successful order
       cartStore.clearCart()
 
       ElMessage.success(
         'Your order has been placed successfully! You can track your order in the orders section.',
       )
 
-      // Return the actual order ID from the created order
       return order?.id
     } catch (error) {
       console.error('Order placement failed:', error)
