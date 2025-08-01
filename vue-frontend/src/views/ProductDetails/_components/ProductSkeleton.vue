@@ -10,4 +10,18 @@
   padding: 40px;
   border-radius: 12px;
 }
+
+@media (max-width: 768px) {
+  .loading-section {
+    padding: 30px 20px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loading-section {
+    padding: 20px 15px;
+    border-radius: 6px;
+  }
+}
 </style>

@@ -163,12 +163,54 @@ const handleBackToHome = () => {
   border-radius: 12px;
 }
 
-/* Responsive Design */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 15px;
+  }
+  
+  .product-details {
+    gap: 40px;
+    padding: 30px;
+  }
+}
+
 @media (max-width: 768px) {
+  .product-view {
+    padding: 15px 0;
+  }
+  
+  .container {
+    padding: 0 10px;
+  }
+  
   .product-details {
     grid-template-columns: 1fr;
     gap: 30px;
     padding: 20px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .product-details {
+    gap: 25px;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-view {
+    padding: 10px 0;
+  }
+  
+  .container {
+    padding: 0 5px;
+  }
+  
+  .product-details {
+    gap: 20px;
+    padding: 12px;
+    border-radius: 6px;
   }
 }
 </style>

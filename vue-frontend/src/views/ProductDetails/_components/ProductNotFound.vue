@@ -25,4 +25,39 @@
   padding: 40px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 }
+
+@media (max-width: 768px) {
+  .error-section {
+    padding: 30px 20px;
+    border-radius: 8px;
+  }
+  
+  .error-section :deep(.el-result__title) {
+    font-size: 18px;
+  }
+  
+  .error-section :deep(.el-result__subtitle) {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .error-section {
+    padding: 20px 15px;
+    min-height: 40vh;
+  }
+  
+  .error-section :deep(.el-result__title) {
+    font-size: 16px;
+  }
+  
+  .error-section :deep(.el-result__subtitle) {
+    font-size: 12px;
+  }
+  
+  .error-section :deep(.el-button) {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+}
 </style>

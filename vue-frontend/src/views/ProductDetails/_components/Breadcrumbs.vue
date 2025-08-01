@@ -57,6 +57,7 @@ defineProps<{
 @media (max-width: 480px) {
   .breadcrumb {
     margin-bottom: 15px;
+    padding: 0;
   }
   
   .breadcrumb :deep(.el-breadcrumb__item) {

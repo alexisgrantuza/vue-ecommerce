@@ -118,4 +118,90 @@ const handleThumbnailClick = (image: string) => {
   height: 100%;
   object-fit: cover;
 }
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .main-image {
+    height: 450px;
+  }
+  
+  .thumbnail {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-gallery {
+    gap: 15px;
+  }
+  
+  .main-image {
+    height: 400px;
+    border-radius: 8px;
+  }
+  
+  .thumbnail-gallery {
+    gap: 8px;
+    padding: 3px 0;
+  }
+  
+  .thumbnail {
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+  }
+  
+  .image-error {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .main-image {
+    height: 350px;
+  }
+  
+  .thumbnail {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-gallery {
+    gap: 12px;
+  }
+  
+  .main-image {
+    height: 300px;
+    border-radius: 6px;
+  }
+  
+  .thumbnail-gallery {
+    gap: 6px;
+  }
+  
+  .thumbnail {
+    width: 45px;
+    height: 45px;
+    border-radius: 4px;
+  }
+  
+  .image-error {
+    font-size: 14px;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .main-image {
+    height: 250px;
+  }
+  
+  .thumbnail {
+    width: 40px;
+    height: 40px;
+  }
+}
 </style>
