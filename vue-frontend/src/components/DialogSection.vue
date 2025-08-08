@@ -51,7 +51,6 @@ const closeAboutDialog = (): void => {
 </script>
 
 <style scoped>
-/* About Dialog Styles */
 .about-content {
   line-height: 1.6;
 }

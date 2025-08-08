@@ -133,8 +133,8 @@ import { useCheckout } from '@/composables/useCheckout'
 import CheckoutSteps from '@/views/Checkout/_components/shared/CheckoutSteps.vue'
 import AddressList from '@/views/Checkout/_components/address/AddressList.vue'
 import PaymentMethodSelector from '@/views/Checkout/_components/payment/PaymentMethodSelector.vue'
-import OrderItem from '@/views/Checkout/_components/Order/OrderItem.vue'
-import OrderSummary from '@/views/Checkout/_components/Order/OrderSummary.vue'
+import OrderItem from '@/views/Checkout/_components/order/OrderItem.vue'
+import OrderSummary from '@/views/Checkout/_components/order/OrderSummary.vue'
 import type { Address } from '@/types/api'
 
 const router = useRouter()

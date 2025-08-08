@@ -335,15 +335,16 @@ userStore.initializeAuth()
 }
 
 :deep(.custom-divider) {
-  margin: 20px 0;
+  margin: 30px 0;
 }
 
 :deep(.custom-divider .el-divider__text) {
-  background: white;
+  background: black;
   color: #999;
   font-size: 14px;
   font-weight: 500;
   padding: 0 20px;
+  border: none;
 }
 
 :deep(.divider-text) {

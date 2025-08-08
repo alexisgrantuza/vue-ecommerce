@@ -141,10 +141,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive } from 'vue'
 import { ElMessage, type FormInstance } from 'element-plus'
 import { User, Message, Phone, Lock } from '@element-plus/icons-vue'
-import type { RegisterRequest, Address } from '@/types/api'
+import type { RegisterRequest } from '@/types/api'
 import { useRouter } from 'vue-router'
 import { useUserAuthStore } from '@/stores/userAuth'
 import { registerSchema } from '@/libs/z'
@@ -155,10 +155,10 @@ const router = useRouter()
 const userStore = useUserAuthStore()
 
 // Emits
-const emit = defineEmits(['show-register', 'register-success'])
+const emit = defineEmits(['login-clicked', 'success'])
 
 const handleShowLogin = () => {
-  emit('show-register')
+  emit('login-clicked')
 }
 
 // Form reference
@@ -185,9 +185,9 @@ const rules = reactive({
 
 // Event handlers
 const handleSubmit = async () => {
-  if (!registerForm.value) return
-
   try {
+    if (!registerForm.value) return
+    
     const valid = await registerForm.value.validate()
     if (!valid) return
 
@@ -199,7 +199,6 @@ const handleSubmit = async () => {
     }
 
     const validatedData = registerSchema.parse(formData)
-
     userStore.setError(null)
 
     const registerRequest: RegisterRequest = {
@@ -209,34 +208,23 @@ const handleSubmit = async () => {
       phone: validatedData.phone,
     }
 
-    const result = await userStore.register(registerRequest)
+    const registerResult = await userStore.register(registerRequest)
 
-    if (result.success) {
-      ElMessage.success('Account created successfully! Welcome to Shopiplus!')
+    if (registerResult.success) {
+      ElMessage.success('Registration successful! Welcome to Shopiplus!')
       registerForm.value.resetFields()
-
-      Object.assign(form, {
-        name: '',
-        email: '',
-        phone: '',
-        password: '',
-        confirmPassword: '',
-        agreeTerms: false,
-      })
-
-      emit('register-success')
+      emit('login-clicked')
       router.push('/')
     } else {
-      ElMessage.error(result.error || 'Registration failed')
+      ElMessage.error(registerResult.error || 'Registration failed')
+      registerForm.value.resetFields()
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      // Handle Zod validation errors
       const firstError = error.issues[0]
       ElMessage.error(firstError.message)
     } else {
-      console.error('Registration error:', error)
-      ElMessage.error('Registration failed. Please try again.')
+      ElMessage.error(error as string)
     }
   }
 }
@@ -249,8 +237,7 @@ const handleFacebookSignup = () => {
   ElMessage.info('Facebook signup feature coming soon!')
 }
 
-// Initialize auth store on component mount
-userStore.initializeAuth()
+
 </script>
 
 <style scoped>
@@ -304,7 +291,6 @@ userStore.initializeAuth()
   width: 100%;
 }
 
-/* Form styling */
 :deep(.el-form-item) {
   margin-bottom: 20px;
 }
@@ -402,10 +388,6 @@ userStore.initializeAuth()
   box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
 }
 
-.register-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 102, 0, 0.4);
-}
 
 .register-button:active {
   transform: translateY(0);
@@ -420,15 +402,14 @@ userStore.initializeAuth()
 }
 
 :deep(.el-divider__text) {
-  background: white;
+  background: rgb(0, 0, 0);
   color: #6b7280;
   font-size: 14px;
   font-weight: 500;
 }
 
 .divider-text {
-  background: white;
-  color: #6b7280;
+  color: #ffffff;
   font-size: 14px;
   font-weight: 500;
 }
@@ -454,25 +435,13 @@ userStore.initializeAuth()
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.social-btn:hover {
-  border-color: #d1d5db;
-  background: #fff;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
 
 .social-icon {
   width: 20px;
   height: 20px;
 }
 
-.google-btn:hover {
-  border-color: #4285f4;
-}
 
-.facebook-btn:hover {
-  border-color: #1877f2;
-}
 
 .login-link {
   text-align: center;
@@ -515,57 +484,4 @@ userStore.initializeAuth()
   }
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  :deep(.form-input .el-input__wrapper) {
-    background: #2a2a2a;
-    border-color: #4b5563;
-  }
-
-  :deep(.form-input .el-input__wrapper:hover) {
-    background: #333333;
-  }
-
-  :deep(.form-input.is-focus .el-input__wrapper) {
-    background: #333333;
-  }
-
-  :deep(.form-input .el-input__inner) {
-    color: #f9fafb;
-  }
-
-  :deep(.form-textarea .el-textarea__inner) {
-    background: #2a2a2a;
-    border-color: #4b5563;
-    color: #f9fafb;
-  }
-
-  :deep(.terms-checkbox .el-checkbox__label) {
-    color: #d1d5db;
-  }
-
-  .social-btn {
-    background: #2a2a2a;
-    border-color: #4b5563;
-    color: #f9fafb;
-  }
-
-  .social-btn:hover {
-    background: #333333;
-  }
-
-  .divider-text {
-    background: #1f2937;
-    color: #9ca3af;
-  }
-
-  :deep(.el-divider__text) {
-    background: #1f2937;
-    color: #9ca3af;
-  }
-
-  .login-link {
-    color: #d1d5db;
-  }
-}
 </style>

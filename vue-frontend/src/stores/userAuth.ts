@@ -63,17 +63,10 @@ export const useUserAuthStore = defineStore('userAuth', () => {
       user.value = newUser
       token.value = tokenValue
 
-      localStorage.setItem('user', JSON.stringify(newUser))
-      localStorage.setItem('token', tokenValue)
-
-      isAuthenticated.value = true
-
       return { success: true, user: newUser }
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Registration failed. Please try again.'
-      error.value = message
       console.error('Registration error:', err)
-      return { success: false, error: message }
+      return { success: false, error: err }
     } finally {
       loading.value = false
     }
@@ -85,7 +78,7 @@ export const useUserAuthStore = defineStore('userAuth', () => {
       error.value = null
 
       await new Promise((resolve) => setTimeout(resolve, 600))
-
+      
       const users = JSON.parse(localStorage.getItem('users') || '[]')
       const foundUser = users.find((u: User) => u.email === credentials.email)
 

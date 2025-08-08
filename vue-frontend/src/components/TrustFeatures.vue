@@ -33,7 +33,6 @@ import { trustFeatures } from '@/constants/index'
 </script>
 
 <style scoped>
-/* Trust Features Section */
 .trust-section {
   padding: 40px 0;
 }

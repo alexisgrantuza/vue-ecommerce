@@ -30,10 +30,10 @@
       </template>
       <template v-else>
         <el-col :span="2">
-          <el-link type="default" @click="$emit('login')">Login</el-link>
+          <el-link type="default" @click="showLogin">Login</el-link>
         </el-col>
         <el-col :span="2">
-          <el-link type="default" @click="$emit('register')">Register</el-link>
+          <el-link type="default" @click="showRegister">Register</el-link>
         </el-col>
       </template>
     </el-row>
@@ -56,11 +56,11 @@
               <el-icon><Phone /></el-icon>
               Contact
             </el-dropdown-item>
-            <el-dropdown-item divided v-if="!isAuthenticated" @click="$emit('login')">
+            <el-dropdown-item divided v-if="!isAuthenticated" @click="showLogin">
               <el-icon><User /></el-icon>
               Login
             </el-dropdown-item>
-            <el-dropdown-item v-if="!isAuthenticated" @click="$emit('register')">
+            <el-dropdown-item v-if="!isAuthenticated" @click="showRegister">
               <el-icon><UserFilled /></el-icon>
               Register
             </el-dropdown-item>
@@ -117,11 +117,16 @@ import {
   ShoppingCart, 
   SwitchButton 
 } from '@element-plus/icons-vue'
+import { useAuthDialog } from '@/composables/useForm';
+
+const { showLogin, showRegister } = useAuthDialog()
 
 defineProps<{
   isAuthenticated: boolean
   userName?: string
 }>()
+
+
 
 defineEmits(['logo-click', 'logout', 'profile', 'login', 'register', 'wishlist', 'cart'])
 </script>

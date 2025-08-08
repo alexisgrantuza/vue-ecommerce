@@ -17,7 +17,6 @@
       </el-carousel-item>
     </el-carousel>
 
-    <!-- Custom indicators -->
     <div class="custom-indicators">
       <div
         v-for="(item, index) in carouselItems"
@@ -46,7 +45,6 @@ const handleIndicatorClick = (index: number) => {
 </script>
 
 <style scoped>
-/* Lazada Style Carousel */
 .lazada-carousel {
   width: 100%;
   margin: 20px auto;
@@ -80,7 +78,6 @@ const handleIndicatorClick = (index: number) => {
   transform: scale(1.02);
 }
 
-/* Responsive Design */
 @media (min-width: 768px) {
   .carousel-image-container {
     height: 300px;
