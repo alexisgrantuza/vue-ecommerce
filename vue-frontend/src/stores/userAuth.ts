@@ -4,7 +4,7 @@ import type { User, RegisterRequest, LoginRequest } from '@/types/api'
 
 export const useUserAuthStore = defineStore('userAuth', () => {
   const isAuthenticated = ref(false)
-  const user = ref<User | null>(null)
+  const user = ref<Partial<User> | null>(null)
   const token = ref('')
   const loading = ref(false)
   const error = ref<string | null>(null)
@@ -28,6 +28,23 @@ export const useUserAuthStore = defineStore('userAuth', () => {
         console.error('Error parsing stored user data:', error)
         logout()
       }
+    }
+  }
+
+  // Update user in the users array
+  function updateUserInUsersArray(updatedUser: Partial<User>) {
+    if (!updatedUser.id) return
+
+    try {
+      const users = JSON.parse(localStorage.getItem('users') || '[]')
+      const userIndex = users.findIndex((u: User) => u.id === updatedUser.id)
+      
+      if (userIndex !== -1) {
+        users[userIndex] = { ...users[userIndex], ...updatedUser }
+        localStorage.setItem('users', JSON.stringify(users))
+      }
+    } catch (error) {
+      console.error('Error updating user in users array:', error)
     }
   }
 
@@ -100,7 +117,7 @@ export const useUserAuthStore = defineStore('userAuth', () => {
         localStorage.setItem('user', JSON.stringify(foundUser))
         localStorage.setItem('token', tokenValue)
       } else {
-        // Store in sessionStorage for current session only
+        // Store in sessionStorage
         sessionStorage.setItem('user', JSON.stringify(foundUser))
         sessionStorage.setItem('token', tokenValue)
         // Remove any existing localStorage data
@@ -153,6 +170,7 @@ export const useUserAuthStore = defineStore('userAuth', () => {
     logout,
     setError,
     initializeAuth,
+    updateUserInUsersArray,
 
     // Getters
     isLoggedIn,

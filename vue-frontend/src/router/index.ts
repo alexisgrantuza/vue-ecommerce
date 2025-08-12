@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/Home/HomeView.vue'
 import WishlistProducts from '@/views/Wishlist/WishlistProducts.vue'
+import { useUserAuthStore } from '@/stores/userAuth'
+import ErrorPage from '../views/ErrorPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -54,9 +56,31 @@ const router = createRouter({
           component: () => import('../views/OrderProducts/OrderHistory.vue'),
           meta: { requiresAuth: true },
         },
+        {
+          path: '/:pathMatch(.*)*',
+          name: 'not-found',
+          component: ErrorPage,
+        },
+        {
+          path: 'profile',
+          name: 'profile',
+          component: () => import('../views/Profile/UserProfile.vue'),
+          meta: { requiresAuth: true },
+        },
       ],
     },
   ],
+})
+
+router.beforeEach((to, from, next) => {
+  const userStore = useUserAuthStore()
+  const isAuthenticated = userStore.isAuthenticated
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next({ name: 'home' })
+  } else {
+    next()
+  }
 })
 
 export default router

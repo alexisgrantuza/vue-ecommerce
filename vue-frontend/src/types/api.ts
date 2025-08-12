@@ -128,17 +128,16 @@ export interface Wishlist {
 }
 
 export interface Address {
-  id: number
-  houseNumber: string
-  street: string
-  city: string
-  state: string
-  zipCode: string
-  country: string
-  isDefault: boolean
+  id?: number
+  houseNumber?: string
+  street?: string
+  city?: string
+  state?: string
+  zipCode?: string
+  country?: string
+  isDefault?: boolean
 }
 
-// Extended types for API responses and joined data
 export interface CartWithProduct extends Cart {
   product: Product
 }

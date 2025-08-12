@@ -142,7 +142,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { ElMessage, type FormInstance } from 'element-plus'
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { User, Message, Phone, Lock } from '@element-plus/icons-vue'
 import type { RegisterRequest } from '@/types/api'
 import { useRouter } from 'vue-router'
@@ -164,12 +164,7 @@ const handleShowLogin = () => {
 // Form reference
 const registerForm = ref<FormInstance>()
 
-// Form data with proper typing
-interface FormData extends RegisterRequest {
-  addressString?: string
-}
-
-const form = reactive<FormData>({
+const form = reactive<RegisterRequest>({
   name: '',
   email: '',
   phone: '',
@@ -178,18 +173,47 @@ const form = reactive<FormData>({
   agreeTerms: false,
 })
 
-// Enhanced validation rules
-const rules = reactive({
+const validatePasswordConfirm = (rule: any, value: string, callback: (error?: Error | string) => void) => {
+  if (value !== form.password) {
+    callback(new Error('Passwords do not match!'))
+  } else {
+    callback()
+  }
+}
+
+const rules = reactive<FormRules>({
   ...formRules,
+  confirmPassword: [
+    {
+      required: true,
+      message: 'Please confirm your password',
+      trigger: 'blur'
+    },
+    {
+      validator: validatePasswordConfirm,
+      trigger: 'blur'
+    }
+  ],
+  agreeTerms: [
+    {
+      required: true,
+      message: 'Please agree to the terms and conditions',
+      trigger: 'change'
+    }
+  ]
 })
 
-// Event handlers
 const handleSubmit = async () => {
   try {
     if (!registerForm.value) return
     
     const valid = await registerForm.value.validate()
     if (!valid) return
+
+    if (!form.agreeTerms) {
+      ElMessage.error('Please agree to the terms and conditions')
+      return
+    }
 
     const formData = {
       name: form.name,
@@ -220,12 +244,8 @@ const handleSubmit = async () => {
       registerForm.value.resetFields()
     }
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const firstError = error.issues[0]
-      ElMessage.error(firstError.message)
-    } else {
-      ElMessage.error(error as string)
-    }
+    console.error('Registration error:', error)
+    ElMessage.error('Registration failed')
   }
 }
 
